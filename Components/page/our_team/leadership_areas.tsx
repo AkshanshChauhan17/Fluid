@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "Healthcare Operations",
-    bg: "bg-[#EDF5FF]",
+    bg: "bg-[#EDF5FF] col-span-2 sm:col-span-1",
     text: "text-[#1D3855]",
   },
 ];
@@ -92,17 +92,17 @@ export default function LeadershipAreas() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white px-4">
+    <section ref={sectionRef} className="bg-white px-8 sm:px-4">
       <div className="max-w-7xl mx-auto text-center">
 
-        <div className="flex justify-center gap-[16px] mb-[40px]">
+        <div className="grid grid-cols-2 md:flex justify-center gap-[16px] mb-[40px]">
           {items.map((item, index) => (
             <div
               key={index}
-              className={`reveal-card ${item.bg} rounded-[24px] min-w-[200px] max-w-[200px] max-h-[200px] min-h-[200px] flex items-center justify-center p-[16px]`}
+              className={`reveal-card ${item.bg} rounded-[24px] w-full md:min-w-[200px] md:max-w-[200px] min-h-[150px] md:min-h-[200px] max-h-[150px] md:max-h-[200px] flex items-center justify-center p-[16px]`}
             >
               <h3
-                className={`${item.text} text-[20px] font-[600] max-w-[140px] leading-tight text-center`}
+                className={`${item.text} text-[18px] md:text-[20px] font-[600] max-w-[120px] md:max-w-[140px] leading-tight text-center`}
               >
                 {item.title}
               </h3>
@@ -110,13 +110,13 @@ export default function LeadershipAreas() {
           ))}
         </div>
 
-        <p className="word-group max-w-[750px] mx-auto text-[16px] leading-relaxed text-[#1D3855] mb-[16px]">
+        <p className="word-group max-w-[750px] mx-auto text-[14px] md:text-[16px] leading-relaxed text-[#1D3855] mb-[16px]">
           {splitWords(
             "Our team works closely with healthcare organizations, medical associations, and technology partners to deliver secure payment solutions designed for the evolving regulatory landscape."
           )}
         </p>
 
-        <h3 className="reveal-text text-[20px] font-[600] text-[#3B747F]">
+        <h3 className="reveal-text text-[18px] md:text-[20px] font-[600] text-[#3B747F] leading-snug">
           Together we are building the next generation of healthcare payment infrastructure
         </h3>
       </div>

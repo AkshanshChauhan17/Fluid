@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import Link from "next/link";
 import {
   FaFacebookF,
   FaTwitter,
@@ -10,7 +11,7 @@ import {
 export default function Footer() {
   return (
     <footer className="bg-[#0F2133] text-white px-8 md:px-16 lg:px-24 py-14">
-      <div className="grid grid-cols-1 md:grid-cols-6 max-w-7xl mx-auto gap-10 pb-10 border-b border-white/10">
+      <div className="grid grid-cols-2 md:grid-cols-6 max-w-7xl mx-auto gap-10 pb-10 border-b border-white/10">
 
         <div className="col-span-1">
           <div className="flex w-[150px] h-[55px] items-center bg-contain bg-no-repeat gap-2 mb-6" style={{backgroundImage: "url(./logo.png)"}}>
@@ -26,7 +27,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="col-span-1"></div>
+        <div className="col-span-1 hidden sm:block"></div>
 
         <div>
           <h3 className="font-[500] text-lg mb-4">Product</h3>
@@ -62,7 +63,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="font-[500] text-lg mb-4">Contacts us</h3>
+          <h3 className="font-[500] text-lg mb-4 col-span-2">Contacts us</h3>
 
           <div className="space-y-4 text-white/70">
             <div className="flex gap-3">
@@ -93,13 +94,13 @@ export default function Footer() {
         <div className="flex gap-3">
           <span>All Rights Reserved</span>
           <span>|</span>
-          <a href="#" className="hover:text-white underline">
+          <Link href="/terms_and_conditions" className="hover:text-white underline">
             Terms and Conditions
-          </a>
+          </Link>
           <span>|</span>
-          <a href="#" className="hover:text-white underline">
+          <Link href="/privacy_policy" className="hover:text-white underline">
             Privacy Policy
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

@@ -64,23 +64,23 @@ export default function LegalHero({
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white">
+    <section ref={sectionRef} className="bg-white px-8 sm:px-0">
       <div className="max-w-7xl mx-auto">
 
-        <p className="reveal-text text-[#5DA7CF] text-[16px] font-[400] tracking-[2px] uppercase mb-[20px]">
+        <p className="reveal-text text-[#5DA7CF] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-[20px]">
           {tab}
         </p>
 
-        <h1 className="reveal-text text-[44px] leading-tight font-[500] text-[#1D3855] max-w-[1000px] mb-[32px]">
+        <h1 className="reveal-text text-[30px] sm:text-[44px] leading-tight font-[500] text-[#1D3855] max-w-[1000px] mb-[24px] sm:mb-[32px]">
           {heading}
         </h1>
 
         <div className="space-y-[12px]">
-          <p className="word-group text-[#73797B] font-[400] text-[16px] leading-relaxed">
+          <p className="word-group text-[#73797B] font-[400] text-[14px] sm:text-[16px] leading-relaxed">
             {splitWords(description1)}
           </p>
 
-          <p className="word-group text-[#73797B] font-[400] text-[16px] leading-relaxed">
+          <p className="word-group text-[#73797B] font-[400] text-[14px] sm:text-[16px] leading-relaxed">
             {splitWords(description2)}
           </p>
         </div>

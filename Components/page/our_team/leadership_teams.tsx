@@ -107,13 +107,13 @@ export default function LeadershipTeams() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white">
+    <section ref={sectionRef} className="bg-white px-8 sm:px-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[12px]">
 
         {leaders.map((leader, index) => (
           <div key={index} className="reveal-card overflow-hidden">
 
-            <div className="relative h-[340px] rounded-[16px] overflow-hidden">
+            <div className="relative h-[280px] sm:h-[340px] rounded-[16px] overflow-hidden">
               <div className="image-inner absolute inset-0">
                 <Image
                   src={leader.image}
@@ -126,13 +126,13 @@ export default function LeadershipTeams() {
 
             <div className="p-[16px] py-[20px] min-h-[190px] flex flex-col rounded-[16px] mt-[12px] bg-[#F8FAFD]">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="reveal-text text-[20px] font-[600] text-[#1f3552]">
+                <h3 className="reveal-text text-[18px] sm:text-[20px] font-[600] text-[#1f3552]">
                   {leader.name}
                 </h3>
-                <FaLinkedin className="reveal-text text-[#0a66c2] text-[32px]" />
+                <FaLinkedin className="reveal-text text-[#0a66c2] text-[28px] sm:text-[32px]" />
               </div>
 
-              <p className="reveal-text text-[16px] font-[400] text-[#73797B] mb-4">
+              <p className="reveal-text text-[15px] sm:text-[16px] font-[400] text-[#73797B] mb-4">
                 {leader.role}
               </p>
 

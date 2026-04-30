@@ -79,29 +79,29 @@ export default function AboutGrid() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white px-4 md:px-8 lg:px-12 py-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-2 grid-rows-7 gap-4">
+    <section ref={sectionRef} className="bg-white px-8 md:px-8 lg:px-12 py-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 md:grid-rows-7 gap-4">
 
-        <div className="reveal-card bg-[#4b8792] rounded-[16px] p-8 py-10 row-span-2 flex flex-col">
-          <h2 className="reveal-text text-white text-[32px] leading-tight font-[500] mb-[24px]">
+        <div className="reveal-card bg-[#4b8792] rounded-[16px] p-6 md:p-8 py-8 md:py-10 md:row-span-2 flex flex-col">
+          <h2 className="reveal-text text-white text-[26px] md:text-[32px] leading-tight font-[500] mb-[24px]">
             Healthcare - focused fintech
           </h2>
-          <p className="word-group text-[#EEEEEE] text-[16px] font-[400] leading-relaxed">
+          <p className="word-group text-[#EEEEEE] text-[15px] md:text-[16px] font-[400] leading-relaxed">
             {splitWords("Fluid Financial is a healthcare-focused fintech company delivering secure payment infrastructure for medical, dental, and wellness providers.")}
           </p>
         </div>
 
-        <div className="reveal-card bg-[#061d36] rounded-[16px] p-8 py-10 row-span-4 flex flex-col">
-          <h2 className="reveal-text text-white text-[32px] leading-tight font-[500] mb-[24px]">
+        <div className="reveal-card bg-[#061d36] rounded-[16px] p-6 md:p-8 py-8 md:py-10 md:row-span-4 flex flex-col">
+          <h2 className="reveal-text text-white text-[26px] md:text-[32px] leading-tight font-[500] mb-[24px]">
             Traditional payment processors were designed for retail commerce.
           </h2>
 
-          <p className="reveal-text text-[#D0D5DD] text-[24px] font-[500] leading-snug mb-[24px]">
+          <p className="reveal-text text-[#D0D5DD] text-[20px] md:text-[24px] font-[500] leading-snug mb-[24px]">
             Healthcare requires a different level of security,
             compliance, and operational alignment.
           </p>
 
-          <p className="word-group text-[#D0D5DD] text-[16px] font-[400] leading-relaxed mb-[24px]">
+          <p className="word-group text-[#D0D5DD] text-[15px] md:text-[16px] font-[400] leading-relaxed mb-[24px]">
             {splitWords("Fluid Financial developed MedToken technology, a patent-pending payment architecture designed to protect sensitive payment data while helping practices retain more revenue.")}
           </p>
 
@@ -110,7 +110,7 @@ export default function AboutGrid() {
           </button>
         </div>
 
-        <div className="reveal-card rounded-[16px] overflow-hidden row-span-3 relative min-h-[320px]">
+        <div className="reveal-card rounded-[16px] overflow-hidden relative min-h-[260px] md:min-h-[320px] md:row-span-3">
           <div className="image-inner absolute inset-0">
             <Image
               src="/about_grid1.png"
@@ -121,7 +121,7 @@ export default function AboutGrid() {
           </div>
         </div>
 
-        <div className="reveal-card rounded-[16px] overflow-hidden row-span-3 relative min-h-[320px]">
+        <div className="reveal-card rounded-[16px] overflow-hidden relative min-h-[260px] md:min-h-[320px] md:row-span-3">
           <div className="image-inner absolute inset-0">
             <Image
               src="/about_grid2.png"
@@ -132,12 +132,12 @@ export default function AboutGrid() {
           </div>
         </div>
 
-        <div className="reveal-card bg-[#f3f3f3] rounded-[16px] p-8 py-10 row-span-2 flex flex-col">
-          <h2 className="reveal-text text-[#1f3b5b] text-[32px] leading-tight font-[500] mb-[24px]">
+        <div className="reveal-card bg-[#f3f3f3] rounded-[16px] p-6 md:p-8 py-8 md:py-10 md:row-span-2 flex flex-col">
+          <h2 className="reveal-text text-[#1f3b5b] text-[26px] md:text-[32px] leading-tight font-[500] mb-[24px]">
             Our mission is simple
           </h2>
 
-          <p className="word-group text-[#73797B] text-[16px] font-[400] leading-relaxed">
+          <p className="word-group text-[#73797B] text-[15px] md:text-[16px] font-[400] leading-relaxed">
             {splitWords("Help healthcare providers modernize their payment systems, improve compliance posture, and strengthen financial performance.")}
           </p>
         </div>
