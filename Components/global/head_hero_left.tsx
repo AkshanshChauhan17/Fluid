@@ -12,7 +12,7 @@ type PageHeroProps = {
   btn?: string;
 };
 
-export default function HeadHero({
+export default function HeadHeroLeft({
   tab,
   heading,
   sub_heading,
@@ -66,8 +66,8 @@ export default function HeadHero({
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-[0px]">
-      <div className="max-w-5xl mx-auto text-center px-8 sm:px-4">
+    <section ref={sectionRef} className="bg-white py-[0px] sm:min-w-[460px]">
+      <div className="mx-auto text-center sm:text-left px-8 sm:px-4">
         <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
           {tab}
         </p>
@@ -80,7 +80,7 @@ export default function HeadHero({
         </h1>
 
         {sub_heading && (
-          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto text-[#73797B] leading-[1.7] sm:leading-normal">
+          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 sm:max-w-[460px] text-[#73797B] leading-[1.7] sm:leading-normal">
             {splitWords(sub_heading)}
           </p>
         )}
