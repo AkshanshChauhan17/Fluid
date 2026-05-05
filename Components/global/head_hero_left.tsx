@@ -10,6 +10,7 @@ type PageHeroProps = {
   sub_heading?: string;
   maxWidth?: string;
   btn?: string;
+  maxWidthSub?: string;
 };
 
 export default function HeadHeroLeft({
@@ -18,6 +19,7 @@ export default function HeadHeroLeft({
   sub_heading,
   maxWidth = "100%",
   btn,
+  maxWidthSub = "460px",
 }: PageHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -67,20 +69,21 @@ export default function HeadHeroLeft({
 
   return (
     <section ref={sectionRef} className="bg-white py-[0px] sm:min-w-[460px]">
-      <div className="mx-auto text-center sm:text-left px-8 sm:px-4">
+      <div className="mx-auto text-center sm:text-left px-8 sm:px-0">
         <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
           {tab}
         </p>
 
         <h1
-          className="reveal-text text-[30px] sm:text-[44px] leading-tight font-[500] text-[#1f3b5b] mx-auto"
+          className="reveal-text text-[30px] sm:text-[44px] leading-tight font-[500] text-[#1f3b5b] mx-auto sm:mx-0"
           style={{ maxWidth }}
         >
           {heading}
         </h1>
 
         {sub_heading && (
-          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 sm:max-w-[460px] text-[#73797B] leading-[1.7] sm:leading-normal">
+          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 text-[#73797B] leading-[1.7] sm:leading-normal" 
+          style={{ maxWidth: maxWidthSub }}>
             {splitWords(sub_heading)}
           </p>
         )}

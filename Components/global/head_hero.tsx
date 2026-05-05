@@ -9,7 +9,10 @@ type PageHeroProps = {
   heading: string;
   sub_heading?: string;
   maxWidth?: string;
+  maxWidthSub?: string;
   btn?: string;
+  bg?: string;
+  light?: boolean;
 };
 
 export default function HeadHero({
@@ -18,6 +21,9 @@ export default function HeadHero({
   sub_heading,
   maxWidth = "100%",
   btn,
+  bg = "white",
+  light = false,
+  maxWidthSub = "100%"
 }: PageHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -66,21 +72,22 @@ export default function HeadHero({
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-[0px]">
+    <section ref={sectionRef} className="py-[0px]" style={{backgroundColor: bg}}>
       <div className="max-w-5xl mx-auto text-center px-8 sm:px-4">
-        <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
+        <p className={`${light ? "#5DA7CF" : "text-[#5aa7d9]"} reveal-text text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4`}>
           {tab}
         </p>
 
         <h1
-          className="reveal-text text-[30px] sm:text-[44px] leading-tight font-[500] text-[#1f3b5b] mx-auto"
+          className={`${light ? "text-white" : "text-[#1f3b5b]"} reveal-text text-[30px] sm:text-[44px] leading-tight font-[500] mx-auto`}
           style={{ maxWidth }}
         >
           {heading}
         </h1>
 
         {sub_heading && (
-          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto text-[#73797B] leading-[1.7] sm:leading-normal">
+          <p className={`${light ? "text-[#D0D5DD]" : "text-[#73797B]"} word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto leading-[1.7] sm:leading-normal`} 
+          style={{minWidth: maxWidth}}>
             {splitWords(sub_heading)}
           </p>
         )}
