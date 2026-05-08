@@ -14,7 +14,7 @@ type PageHeroProps = {
   bg?: string;
 };
 
-export default function HeadHeroLeft({
+export default function HeadHeroRight({
   tab,
   heading,
   sub_heading,
@@ -71,7 +71,7 @@ export default function HeadHeroLeft({
 
   return (
     <section ref={sectionRef} className="py-[0px] sm:min-w-[460px]" style={{backgroundColor: bg}}>
-      <div className="mx-auto text-center sm:text-left px-8 sm:px-0">
+      <div className="mx-auto text-center sm:text-right px-8 sm:px-0">
         <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
           {tab}
         </p>

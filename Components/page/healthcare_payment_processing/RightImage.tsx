@@ -4,18 +4,20 @@ import { TrendingDown } from "lucide-react";
 interface Props {
   image: string;
   savings?: string;
+  show_card?: boolean;
 }
 
 export default function RightImage({
   image,
   savings = "22%",
+  show_card = true,
 }: Props) {
   return (
-    <section className="w-full px-8 md:px-0 py-0 bg-white">
+    <section className="w-full sm:w-[60%] px-8 md:px-0 py-0 bg-white">
       <div className="relative max-w-7xl mx-auto">
 
         {/* Main Image */}
-        <div className="relative w-full h-[420px] md:h-[450px] rounded-[28px] overflow-hidden">
+        <div className="relative w-full h-[400px] md:h-[400px] rounded-[28px] overflow-hidden">
           <Image
             src={image}
             alt="Healthcare"
@@ -26,7 +28,7 @@ export default function RightImage({
         </div>
 
         {/* Floating Card */}
-        <div className="absolute bottom-6 left-6 bg-white rounded-2xl shadow-lg px-5 py-4 flex items-center gap-4 border border-gray-200">
+        {show_card && <div className="absolute bottom-6 left-6 bg-white rounded-2xl shadow-lg px-5 py-4 flex items-center gap-4 border border-gray-200">
 
           {/* Icon */}
           <div className="w-[40px] h-[40px] rounded-full bg-[#D0FAE5CC] flex items-center justify-center">
@@ -42,7 +44,7 @@ export default function RightImage({
               {savings}
             </p>
           </div>
-        </div>
+        </div>}
 
       </div>
     </section>

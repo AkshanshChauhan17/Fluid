@@ -5,8 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type PageHeroProps = {
-  tab: string;
-  heading: string;
+  tab?: string;
+  heading?: string;
   sub_heading?: string;
   maxWidth?: string;
   maxWidthSub?: string;
@@ -87,7 +87,7 @@ export default function HeadHero({
 
         {sub_heading && (
           <p className={`${light ? "text-[#D0D5DD]" : "text-[#73797B]"} word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto leading-[1.7] sm:leading-normal`} 
-          style={{minWidth: maxWidth}}>
+          style={{maxWidth: maxWidthSub}}>
             {splitWords(sub_heading)}
           </p>
         )}
