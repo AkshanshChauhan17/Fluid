@@ -1,52 +1,104 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
+
 import {
   ChevronRight,
+  Eye,
   EyeOff,
 } from "lucide-react";
+
 import {
   FaApple,
   FaGoogle,
 } from "react-icons/fa";
 
+import {
+  motion,
+  Variants,
+} from "framer-motion";
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.06,
+    },
+  },
+};
+
+const fadeUpVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 28,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.85,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export default function CreateNewAccount() {
+  const [showPassword, setShowPassword] =
+    useState(false);
+
   return (
-    <section className="w-full min-h-screen bg-white px-8 sm:px-0 py-[50px] sm:py-[100px] flex items-center justify-center">
-      
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-[60px]">
-        
+    <section className="w-full min-h-screen bg-white px-5 sm:px-8 lg:px-0 py-[50px] sm:py-[100px] flex items-center justify-center overflow-hidden">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{
+          once: true,
+          amount: 0.08,
+        }}
+        className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-[40px] sm:gap-[60px]"
+      >
         {/* LEFT SIDE */}
-        <div className="w-full flex flex-col items-start gap-[32px]">
-          
+        <motion.div
+          variants={fadeUpVariants}
+          className="w-full flex flex-col items-start gap-[28px] sm:gap-[32px]"
+        >
           {/* HEADER */}
-          <div className="w-full flex flex-col items-start gap-[14px]">
-            
+          <motion.div
+            variants={fadeUpVariants}
+            className="w-full flex flex-col items-start gap-[14px]"
+          >
             <div className="w-full flex flex-col items-start gap-[8px]">
-              
-              <h1 className="text-[#0F2133] text-[32px] leading-[32px] tracking-[-0.03em] font-medium">
+              <h1 className="text-[#0F2133] text-[28px] sm:text-[32px] leading-[110%] sm:leading-[32px] tracking-[-0.03em] font-medium">
                 Create an Account
               </h1>
 
-              <p className="text-[#73797B] text-[16px] leading-[24px] tracking-[-0.03em] font-normal">
-                By creating an account, you may receive newsletters or promotions
+              <p className="text-[#73797B] text-[15px] sm:text-[16px] leading-[24px] tracking-[-0.03em] font-normal max-w-[540px]">
+                By creating an account, you may
+                receive newsletters or promotions
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* FORM AREA */}
-          <div className="w-full flex flex-col items-start gap-[20px]">
-            
+          <motion.div
+            variants={containerVariants}
+            className="w-full flex flex-col items-start gap-[20px]"
+          >
             <div className="w-full flex flex-col items-end gap-[24px]">
-              
               {/* INPUTS */}
               <div className="w-full flex flex-col items-center gap-[24px]">
-                
                 <div className="w-full flex flex-col items-start gap-[8px]">
-                  
                   {/* FULL NAME */}
-                  <div className="w-full flex flex-col items-start gap-[4px]">
-                    
+                  <motion.div
+                    variants={fadeUpVariants}
+                    className="w-full flex flex-col items-start gap-[4px]"
+                  >
                     <label className="text-[#0F2133] text-[14px] leading-[20px] tracking-[-0.03em] font-normal">
                       Full Name
                     </label>
@@ -54,13 +106,15 @@ export default function CreateNewAccount() {
                     <input
                       type="text"
                       placeholder="Enter your full name"
-                      className="w-full h-[48px] bg-white border border-[#D0D5DD] rounded-[8px] px-[16px] text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none focus:border-[#3B747F]"
+                      className="w-full h-[48px] bg-white border border-[#D0D5DD] rounded-[8px] px-[16px] text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none focus:border-[#3B747F] transition-all duration-300"
                     />
-                  </div>
+                  </motion.div>
 
                   {/* EMAIL */}
-                  <div className="w-full flex flex-col items-start gap-[4px]">
-                    
+                  <motion.div
+                    variants={fadeUpVariants}
+                    className="w-full flex flex-col items-start gap-[4px]"
+                  >
                     <label className="text-[#0F2133] text-[14px] leading-[20px] tracking-[-0.03em] font-normal">
                       Email
                     </label>
@@ -68,37 +122,60 @@ export default function CreateNewAccount() {
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full h-[48px] bg-white border border-[#D0D5DD] rounded-[8px] px-[16px] text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none focus:border-[#3B747F]"
+                      className="w-full h-[48px] bg-white border border-[#D0D5DD] rounded-[8px] px-[16px] text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none focus:border-[#3B747F] transition-all duration-300"
                     />
-                  </div>
+                  </motion.div>
 
                   {/* PASSWORD */}
-                  <div className="w-full flex flex-col items-start gap-[4px]">
-                    
+                  <motion.div
+                    variants={fadeUpVariants}
+                    className="w-full flex flex-col items-start gap-[4px]"
+                  >
                     <label className="text-[#0F2133] text-[14px] leading-[20px] tracking-[-0.03em] font-normal">
                       Password
                     </label>
 
-                    <div className="w-full h-[48px] border border-[#D0D5DD] rounded-[8px] px-[16px] flex items-center gap-[8px]">
-                      
+                    <div className="w-full h-[48px] border border-[#D0D5DD] rounded-[8px] px-[16px] flex items-center gap-[8px] transition-all duration-300 focus-within:border-[#3B747F]">
                       <input
-                        type="password"
+                        type={
+                          showPassword
+                            ? "text"
+                            : "password"
+                        }
                         placeholder="Enter your password"
                         className="flex-1 bg-transparent text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none"
                       />
 
-                      <EyeOff
-                        size={16}
-                        className="text-[#73797B]"
-                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowPassword(
+                            !showPassword
+                          )
+                        }
+                        className="shrink-0"
+                      >
+                        {showPassword ? (
+                          <Eye
+                            size={16}
+                            className="text-[#73797B]"
+                          />
+                        ) : (
+                          <EyeOff
+                            size={16}
+                            className="text-[#73797B]"
+                          />
+                        )}
+                      </button>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* REMEMBER */}
-                  <div className="w-full flex items-center justify-between">
-                    
+                  <motion.div
+                    variants={fadeUpVariants}
+                    className="w-full flex items-center justify-between"
+                  >
                     <label className="flex items-center gap-[8px] cursor-pointer">
-                      
                       <input
                         type="checkbox"
                         className="w-[16px] h-[16px] rounded-[4px] border border-[#D0D5DD]"
@@ -108,12 +185,21 @@ export default function CreateNewAccount() {
                         Remember me
                       </span>
                     </label>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* CREATE ACCOUNT BUTTON */}
-                <button className="w-full h-[48px] bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] hover:opacity-90 transition-opacity">
-                  
+                <motion.button
+                  variants={fadeUpVariants}
+                  whileHover={{
+                    opacity: 0.92,
+                    y: -2,
+                  }}
+                  whileTap={{
+                    scale: 0.995,
+                  }}
+                  className="w-full h-[48px] bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] transition-all duration-300"
+                >
                   <span className="text-white text-[16px] leading-[24px] font-semibold">
                     Create an Account
                   </span>
@@ -123,12 +209,14 @@ export default function CreateNewAccount() {
                     className="text-white"
                     strokeWidth={2}
                   />
-                </button>
+                </motion.button>
               </div>
 
               {/* DIVIDER */}
-              <div className="w-full flex items-center gap-[8px]">
-                
+              <motion.div
+                variants={fadeUpVariants}
+                className="w-full flex items-center gap-[8px]"
+              >
                 <div className="flex-1 h-[1px] bg-[#D0D5DD]" />
 
                 <span className="text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em] whitespace-nowrap">
@@ -136,13 +224,14 @@ export default function CreateNewAccount() {
                 </span>
 
                 <div className="flex-1 h-[1px] bg-[#D0D5DD]" />
-              </div>
+              </motion.div>
 
               {/* SOCIALS */}
-              <div className="w-full flex items-center gap-[8px]">
-                
-                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
-                  
+              <motion.div
+                variants={fadeUpVariants}
+                className="w-full flex items-center gap-[8px]"
+              >
+                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
                   <FaGoogle
                     size={16}
                     className="text-[#0F2133]"
@@ -153,8 +242,7 @@ export default function CreateNewAccount() {
                   </span>
                 </button>
 
-                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
-                  
+                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
                   <FaApple
                     size={18}
                     className="text-black"
@@ -164,20 +252,27 @@ export default function CreateNewAccount() {
                     Apple
                   </span>
                 </button>
-              </div>
+              </motion.div>
             </div>
 
             {/* SIGN IN */}
-            <p className="w-full text-center text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em]">
+            <motion.p
+              variants={fadeUpVariants}
+              className="w-full text-center text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em]"
+            >
               Already have an account?{" "}
               <button className="text-[#3B747F] underline">
                 Sign In
               </button>
-            </p>
+            </motion.p>
 
             {/* RECAPTCHA */}
-            <p className="w-full text-center text-[#73797B] text-[12px] leading-[20px] tracking-[-0.03em]">
-              This site is protected by reCAPTCHA and the Google{" "}
+            <motion.p
+              variants={fadeUpVariants}
+              className="w-full text-center text-[#73797B] text-[12px] leading-[20px] tracking-[-0.03em]"
+            >
+              This site is protected by reCAPTCHA
+              and the Google{" "}
               <span className="underline cursor-pointer">
                 Privacy Policy
               </span>{" "}
@@ -186,38 +281,62 @@ export default function CreateNewAccount() {
                 Terms of Service
               </span>{" "}
               apply.
-            </p>
-          </div>
-        </div>
+            </motion.p>
+          </motion.div>
+        </motion.div>
 
         {/* RIGHT SIDE */}
-        <div className="relative w-full max-w-[680px] h-[707px] rounded-[20px] overflow-hidden flex items-end p-[40px]">
-          
+        <motion.div
+          variants={fadeUpVariants}
+          className="relative w-full max-w-[680px] h-[420px] sm:h-[560px] lg:h-[707px] rounded-[20px] overflow-hidden flex items-end p-[24px] sm:p-[40px]"
+        >
           {/* IMAGE */}
-          <Image
-            src="/signin-banner.png"
-            alt="Partner Portal"
-            fill
-            className="object-cover"
-          />
+          <motion.div
+            animate={{
+              scale: [1, 1.03, 1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-0"
+          >
+            <Image
+              src="/signin-banner.png"
+              alt="Partner Portal"
+              fill
+              className="object-cover"
+            />
+          </motion.div>
 
           {/* OVERLAY */}
           <div className="absolute inset-0 bg-[linear-gradient(201.94deg,rgba(119,105,96,0)_46.07%,#79685C_85.4%)]" />
 
           {/* CONTENT */}
-          <div className="relative z-10 w-full max-w-[436px] flex flex-col items-start gap-[8px]">
-            
-            <h2 className="text-white text-[36px] leading-[44px] tracking-[-0.03em] font-medium">
+          <motion.div
+            variants={containerVariants}
+            className="relative z-10 w-full max-w-[436px] flex flex-col items-start gap-[8px]"
+          >
+            <motion.h2
+              variants={fadeUpVariants}
+              className="text-white text-[30px] sm:text-[36px] leading-[115%] sm:leading-[44px] tracking-[-0.03em] font-medium"
+            >
               Partner &amp; Client Portal
-            </h2>
+            </motion.h2>
 
-            <p className="text-[#D0D5DD] text-[16px] leading-[24px] tracking-[-0.03em] font-normal">
-              Access your Fluid Financial account dashboard to manage
-              payment services, review reports, and access partner tools.
-            </p>
-          </div>
-        </div>
-      </div>
+            <motion.p
+              variants={fadeUpVariants}
+              className="text-[#D0D5DD] text-[15px] sm:text-[16px] leading-[24px] tracking-[-0.03em] font-normal"
+            >
+              Access your Fluid Financial account
+              dashboard to manage payment
+              services, review reports, and access
+              partner tools.
+            </motion.p>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

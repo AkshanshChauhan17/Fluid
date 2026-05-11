@@ -1,7 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+
+import {
+  Plus,
+  Minus,
+} from "lucide-react";
+
+import {
+  motion,
+  AnimatePresence,
+  Variants,
+} from "framer-motion";
 
 const faqs = [
   {
@@ -20,7 +30,8 @@ const faqs = [
       "No, MedToken integrates seamlessly into existing workflows with minimal changes required.",
   },
   {
-    question: "Is the system designed for healthcare?",
+    question:
+      "Is the system designed for healthcare?",
     answer:
       "Yes, it is specifically built for healthcare compliance, security, and efficiency.",
   },
@@ -31,58 +42,198 @@ const faqs = [
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export default function QandA() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const [activeIndex, setActiveIndex] =
+    useState<number | null>(0);
 
   const toggle = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
+    setActiveIndex(
+      activeIndex === index ? null : index
+    );
   };
 
   return (
-    <section className="w-full bg-white py-0 px-8 md:px-0">
-      <div className="max-w-4xl mx-auto border border-gray-200 rounded-xl">
-
+    <section className="w-full bg-white py-0 px-5 sm:px-8 md:px-0 overflow-hidden">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{
+          once: true,
+          amount: 0.08,
+        }}
+        className="
+          max-w-4xl
+          mx-auto
+          border
+          border-gray-200
+          rounded-xl
+          overflow-hidden
+          bg-white
+        "
+      >
         {faqs.map((faq, index) => {
-          const isOpen = activeIndex === index;
+          const isOpen =
+            activeIndex === index;
 
           return (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
               className={`border-b border-gray-200 ${
-                index === faqs.length - 1 ? "border-b-0" : ""
+                index === faqs.length - 1
+                  ? "border-b-0"
+                  : ""
               }`}
             >
-              {/* Question */}
               <button
                 onClick={() => toggle(index)}
-                className="w-full flex items-center cursor-pointer justify-between text-left px-6 py-5"
+                className="
+                  w-full
+                  flex
+                  items-start
+                  sm:items-center
+                  justify-between
+                  gap-4
+                  text-left
+                  px-5
+                  sm:px-6
+                  py-5
+                  transition-colors
+                  duration-300
+                  hover:bg-[#fafcff]
+                "
               >
-                <span className="text-[18px] font-medium text-[#101828]">
+                <span
+                  className="
+                    text-[17px]
+                    sm:text-[18px]
+                    leading-[150%]
+                    font-medium
+                    text-[#101828]
+                    pr-2
+                  "
+                >
                   {faq.question}
                 </span>
 
-                <span className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 text-gray-600">
+                <motion.span
+                  animate={{
+                    rotate: isOpen ? 180 : 0,
+                    scale: isOpen
+                      ? 1.04
+                      : 1,
+                  }}
+                  transition={{
+                    duration: 0.35,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="
+                    flex
+                    items-center
+                    justify-center
+                    w-6
+                    h-6
+                    rounded-full
+                    border
+                    border-gray-300
+                    text-gray-600
+                    shrink-0
+                  "
+                >
                   {isOpen ? (
                     <Minus size={14} />
                   ) : (
                     <Plus size={14} />
                   )}
-                </span>
+                </motion.span>
               </button>
-              
-              <div
-                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                  isOpen ? "max-h-40 pb-5 opacity-100" : "max-h-0 opacity-0"
-                }`}
-              >
-                <p className="text-[16px] text-[#73797B] leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            </div>
+
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    initial={{
+                      height: 0,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      height: "auto",
+                      opacity: 1,
+                    }}
+                    exit={{
+                      height: 0,
+                      opacity: 0,
+                    }}
+                    transition={{
+                      duration: 0.38,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="overflow-hidden"
+                  >
+                    <motion.div
+                      initial={{
+                        y: 10,
+                        opacity: 0,
+                      }}
+                      animate={{
+                        y: 0,
+                        opacity: 1,
+                      }}
+                      exit={{
+                        y: -6,
+                        opacity: 0,
+                      }}
+                      transition={{
+                        duration: 0.3,
+                      }}
+                      className="px-5 sm:px-6 pb-5"
+                    >
+                      <p
+                        className="
+                          text-[15px]
+                          sm:text-[16px]
+                          text-[#73797B]
+                          leading-[180%]
+                          max-w-[90%]
+                        "
+                      >
+                        {faq.answer}
+                      </p>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }

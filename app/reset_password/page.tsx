@@ -4,7 +4,7 @@ import { ChevronRight, Lock } from "lucide-react";
 
 export default function ResetPassword() {
   return (
-    <section className="w-full bg-white px-6 lg:px-[100px] py-[100px] flex flex-col justify-end items-center">
+    <section className="w-full bg-white px-5 lg:px-[100px] py-[100px] flex flex-col justify-end items-center">
       
       <div className="w-full max-w-[500px] flex flex-col items-start gap-[32px]">
         

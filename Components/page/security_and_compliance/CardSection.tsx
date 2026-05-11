@@ -1,4 +1,16 @@
-import { Shield, Lock, Activity, Database } from "lucide-react";
+"use client";
+
+import {
+  Shield,
+  Lock,
+  Activity,
+  Database,
+} from "lucide-react";
+
+import {
+  motion,
+  Variants,
+} from "framer-motion";
 
 const features = [
   {
@@ -19,35 +31,159 @@ const features = [
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    filter: "blur(10px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.85,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export default function CardSection() {
   return (
-    <section className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[16px]">
+    <section className="w-full bg-white overflow-hidden">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{
+          once: true,
+          amount: 0.08,
+        }}
+        className="max-w-7xl mx-auto px-4 sm:px-0"
+      >
+        <div
+          className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            md:grid-cols-4
+            gap-[16px]
+          "
+        >
           {features.map((item, index) => {
             const Icon = item.icon;
 
             return (
-              <div
+              <motion.div
                 key={index}
-                className="bg-[#F0F7FF] rounded-[12px] p-5 flex flex-col gap-3"
+                variants={cardVariants}
+                whileHover={{
+                  y: -6,
+                }}
+                transition={{
+                  duration: 0.35,
+                }}
+                className="
+                  group
+                  bg-[#F0F7FF]
+                  rounded-[16px]
+                  p-5
+                  flex
+                  flex-col
+                  gap-4
+                  border
+                  border-[#E3EEF9]
+                  hover:shadow-[0px_18px_50px_rgba(0,71,141,0.08)]
+                  transition-all
+                  duration-300
+                "
               >
-                <Icon strokeWidth={1} className="text-[#5DA7CF] w-[36px] h-[36px]" />
-                <p className="text-[15px] text-[#1D3855] leading-snug">
+                <motion.div
+                  animate={{
+                    y: [0, -5, 0],
+                  }}
+                  transition={{
+                    duration: 4 + index,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="
+                    w-[52px]
+                    h-[52px]
+                    rounded-[14px]
+                    bg-white
+                    flex
+                    items-center
+                    justify-center
+                    shadow-sm
+                  "
+                >
+                  <Icon
+                    strokeWidth={1.4}
+                    className="text-[#5DA7CF] w-[28px] h-[28px]"
+                  />
+                </motion.div>
+
+                <p
+                  className="
+                    text-[15px]
+                    sm:text-[16px]
+                    text-[#1D3855]
+                    leading-[160%]
+                    tracking-[-0.2px]
+                    font-medium
+                  "
+                >
                   {item.text}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
-        <p className="text-center text-gray-400 text-[16px] mt-[40px] mx-auto">
+        <motion.p
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.2,
+          }}
+          className="
+            text-center
+            text-[#98A2B3]
+            text-[15px]
+            sm:text-[16px]
+            leading-[170%]
+            mt-[32px]
+            sm:mt-[40px]
+            max-w-[780px]
+            mx-auto
+          "
+        >
           Our platform is designed to help healthcare organizations strengthen
           their compliance posture while delivering a modern payment experience.
-        </p>
-
-      </div>
+        </motion.p>
+      </motion.div>
     </section>
   );
 }

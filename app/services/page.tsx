@@ -24,8 +24,6 @@ export default function Services() {
         maxWidthSub="740px"
       />
       <BR px={"100px"} color="white" />
-      <BlogDetailsPage />
-      <BR px={"100px"} color="white" />
       <BR px={"100px"} color="#F8FAFD" />
       <div className="bg-[#F8FAFD]">
         <HeadHero
