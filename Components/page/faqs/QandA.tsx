@@ -128,6 +128,7 @@ export default function QandA() {
                   py-5
                   transition-colors
                   duration-300
+                  cursor-pointer
                   hover:bg-[#fafcff]
                 "
               >

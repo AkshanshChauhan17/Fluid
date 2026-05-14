@@ -199,7 +199,7 @@ export default function FaqSection() {
                     onClick={() =>
                       toggleFAQ(index)
                     }
-                    className={`w-full text-left transition-all duration-500 ${
+                    className={`w-full cursor-pointer text-left transition-all duration-500 ${
                       isOpen
                         ? "py-0"
                         : "py-5 sm:py-6"

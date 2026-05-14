@@ -2,12 +2,8 @@
 
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import {
-  Shield,
-  Lock,
-  CheckCircle2,
-  Activity,
-} from "lucide-react";
+import { Shield, Lock, CheckCircle2, Activity } from "lucide-react";
+import Link from "next/link";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -183,9 +179,9 @@ export default function HeroSection() {
               variants={fadeUpVariants}
               className="max-w-[647px] text-[#101010] text-[15px] sm:text-[16px] leading-[170%] sm:leading-[160%] font-normal text-pretty"
             >
-              Fluid Financial provides HIPAA-aligned payment infrastructure
-              with MedToken, helping medical and wellness businesses secure
-              payments and reduce costs.
+              Fluid Financial provides HIPAA-aligned payment infrastructure with
+              MedToken, helping medical and wellness businesses secure payments
+              and reduce costs.
             </motion.p>
           </div>
 
@@ -193,37 +189,41 @@ export default function HeroSection() {
             variants={containerVariants}
             className="flex w-full flex-col sm:flex-row items-stretch sm:items-start gap-[12px]"
           >
-            <motion.button
-              variants={cardVariants}
-              whileHover={{
-                y: -2,
-                opacity: 0.95,
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
-              className="min-h-[52px] sm:h-[48px] px-[20px] rounded-[10px] bg-[#3B747F] flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
-            >
-              <span className="text-white text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
-                Calculate Your Savings
-              </span>
-            </motion.button>
+            <Link href={"/medical_payment_savings_calculator"}>
+              <motion.button
+                variants={cardVariants}
+                whileHover={{
+                  y: -2,
+                  opacity: 0.95,
+                }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] bg-[#3B747F] flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
+              >
+                <span className="text-white text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
+                  Calculate Your Savings
+                </span>
+              </motion.button>
+            </Link>
 
-            <motion.button
-              variants={cardVariants}
-              whileHover={{
-                y: -2,
-                backgroundColor: "#f8fafc",
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
-              className="min-h-[52px] sm:h-[48px] px-[20px] rounded-[10px] border border-[#D0D5DD] bg-white flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
-            >
-              <span className="text-[#101010] text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
-                Upload A Statement For A Free Analysis
-              </span>
-            </motion.button>
+            <Link href={"/medical_payment_savings_calculator"}>
+              <motion.button
+                variants={cardVariants}
+                whileHover={{
+                  y: -2,
+                  backgroundColor: "#f8fafc",
+                }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] border border-[#D0D5DD] bg-white flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
+              >
+                <span className="text-[#101010] text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
+                  Upload A Statement For A Free Analysis
+                </span>
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
 

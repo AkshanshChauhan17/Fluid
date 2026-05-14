@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, Lock } from "lucide-react";
+import Link from "next/link";
 
 export default function ResetPassword() {
   return (
@@ -52,7 +53,7 @@ export default function ResetPassword() {
             </div>
 
             {/* BUTTON */}
-            <button className="w-full h-[48px] bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] hover:opacity-90 transition-opacity duration-300">
+            <button className="w-full cursor-pointer h-[48px] bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] hover:opacity-90 transition-opacity duration-300">
               
               <span className="text-white text-[16px] leading-[24px] font-semibold">
                 Send Reset Link
@@ -69,9 +70,9 @@ export default function ResetPassword() {
           {/* FOOTER */}
           <p className="w-full text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em] font-normal">
             Don't need to reset your password?{" "}
-            <button className="text-[#3B747F] underline font-medium">
+            <Link href={"/signin"}><button className="text-[#3B747F] underline font-medium cursor-pointer">
               Sign In
-            </button>
+            </button></Link>
           </p>
         </div>
       </div>

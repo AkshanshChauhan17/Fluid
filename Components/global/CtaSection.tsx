@@ -55,6 +55,7 @@ export default function CtaSection() {
             bg=""
             light
             btn="Calculate Your Savings"
+            btn_link="/medical_payment_savings_calculator"
             maxWidth="100%"
           />
         </div>

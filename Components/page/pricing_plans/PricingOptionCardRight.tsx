@@ -368,6 +368,7 @@ export default function PricingOptionCardRight() {
             font-semibold
             tracking-[0%]
             sm:mt-auto
+            cursor-pointer
           "
         >
           Choose Traditional

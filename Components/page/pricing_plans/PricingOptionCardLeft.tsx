@@ -358,6 +358,7 @@ export default function PricingOptionCardLeft() {
             leading-[24px]
             font-semibold
             tracking-[0%]
+            cursor-pointer
           "
         >
           Get Started

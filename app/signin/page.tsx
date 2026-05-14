@@ -3,21 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import {
-  ChevronRight,
-  EyeOff,
-  Eye,
-} from "lucide-react";
+import { ChevronRight, EyeOff, Eye } from "lucide-react";
 
-import {
-  FaApple,
-  FaGoogle,
-} from "react-icons/fa";
+import { FaApple, FaGoogle } from "react-icons/fa";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -117,15 +108,9 @@ export default function SignIn() {
                         className="shrink-0"
                       >
                         {showPassword ? (
-                          <Eye
-                            size={16}
-                            className="text-[#73797B]"
-                          />
+                          <Eye size={16} className="text-[#73797B]" />
                         ) : (
-                          <EyeOff
-                            size={16}
-                            className="text-[#73797B]"
-                          />
+                          <EyeOff size={16} className="text-[#73797B]" />
                         )}
                       </button>
                     </div>
@@ -146,9 +131,9 @@ export default function SignIn() {
                       </span>
                     </label>
 
-                    <button className="text-[#3B747F] underline text-[14px] leading-[20px] tracking-[-0.03em]">
+                    <Link href={"/reset_password"}><button className="text-[#3B747F] underline text-[14px] cursor-pointer leading-[20px] tracking-[-0.03em]">
                       Forgot Password
-                    </button>
+                    </button></Link>
                   </motion.div>
                 </div>
 
@@ -160,7 +145,7 @@ export default function SignIn() {
                   whileTap={{
                     scale: 0.99,
                   }}
-                  className="w-full h-[48px] bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] hover:opacity-90 transition-opacity"
+                  className="w-full h-[48px] cursor-pointer bg-[#3B747F] rounded-[8px] flex items-center justify-center gap-[8px] hover:opacity-90 transition-opacity"
                 >
                   <span className="text-white text-[16px] leading-[24px] font-semibold">
                     Sign In
@@ -192,10 +177,7 @@ export default function SignIn() {
                 className="w-full flex items-center gap-[8px]"
               >
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
-                  <FaGoogle
-                    size={16}
-                    className="text-[#0F2133]"
-                  />
+                  <FaGoogle size={16} className="text-[#0F2133]" />
 
                   <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
                     Google
@@ -203,10 +185,7 @@ export default function SignIn() {
                 </button>
 
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
-                  <FaApple
-                    size={18}
-                    className="text-black"
-                  />
+                  <FaApple size={18} className="text-black" />
 
                   <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
                     Apple
@@ -220,9 +199,11 @@ export default function SignIn() {
               className="w-full text-center text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em]"
             >
               Don’t have an account?{" "}
-              <button className="text-[#3B747F] underline">
-                Create an Account
-              </button>
+              <Link href={"/create_new_account"}>
+                <button className="text-[#3B747F] underline cursor-pointer">
+                  Create an Account
+                </button>
+              </Link>
             </motion.p>
           </div>
         </motion.div>
@@ -287,8 +268,8 @@ export default function SignIn() {
             </h2>
 
             <p className="text-[#D0D5DD] text-[15px] sm:text-[16px] leading-[24px] tracking-[-0.03em] font-normal">
-              Access your Fluid Financial account dashboard to manage
-              payment services, review reports, and access partner tools.
+              Access your Fluid Financial account dashboard to manage payment
+              services, review reports, and access partner tools.
             </p>
           </div>
         </motion.div>

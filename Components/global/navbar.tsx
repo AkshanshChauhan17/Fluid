@@ -22,12 +22,12 @@ export default function Navbar() {
             <Link href="/about" className="text-[#3B747F] font-semibold">
               About Us
             </Link>
-            <Link href="/">Pricing</Link>
-            <Link href="/">Services</Link>
+            <Link href="/pricing_plans">Pricing</Link>
+            <Link href="/services">Services</Link>
             <Link href="/our_team">Our Team</Link>
-            <Link href="/">Resources</Link>
-            <Link href="/">Agent Portal</Link>
-            <Link href="/">Application Portal</Link>
+            <Link href="/resources_details">Resources</Link>
+            <Link href="/agent_partner_program">Agent Portal</Link>
+            <Link href="/agent_partner_program">Application Portal</Link>
           </nav>
 
           <button className="hidden lg:block border-2 border-[#D0D5DD] text-[#101010] px-5 py-3 rounded-lg text-[16px] font-[600] hover:bg-gray-50 transition">

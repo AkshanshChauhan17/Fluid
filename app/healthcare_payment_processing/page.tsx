@@ -19,6 +19,7 @@ export default function HealthcarePaymentProcessing() {
             heading="Healthcare Payment Processing Built for Compliance"
             sub_heading="Elevate your practice with secure medical credit card processing and merchant services designed exclusively for the modern healthcare ecosystem."
             btn="Calculate Your Savings"
+            btn_link="/medical_payment_savings_calculator"
             maxWidth="430px"
             maxWidthSub="430px"
           />

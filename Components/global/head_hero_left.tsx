@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 type PageHeroProps = {
   tab?: string;
@@ -10,6 +11,7 @@ type PageHeroProps = {
   sub_heading?: string;
   maxWidth?: string;
   btn?: string;
+  btn_link?: string;
   maxWidthSub?: string;
   bg?: string;
 };
@@ -20,6 +22,7 @@ export default function HeadHeroLeft({
   sub_heading,
   maxWidth = "100%",
   btn,
+  btn_link = "/",
   maxWidthSub = "460px",
   bg = "white"
 }: PageHeroProps) {
@@ -90,11 +93,13 @@ export default function HeadHeroLeft({
           </p>
         )}
 
-        {
-            btn && <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
-                {btn}
+        {btn && btn_link && (
+          <Link href={btn_link}>
+            <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
+              {btn}
             </button>
-        }
+          </Link>
+        )}
       </div>
     </section>
   );

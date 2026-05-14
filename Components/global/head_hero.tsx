@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 type PageHeroProps = {
   tab?: string;
@@ -11,6 +12,7 @@ type PageHeroProps = {
   maxWidth?: string;
   maxWidthSub?: string;
   btn?: string;
+  btn_link?: string;
   bg?: string;
   light?: boolean;
 };
@@ -21,9 +23,10 @@ export default function HeadHero({
   sub_heading,
   maxWidth = "100%",
   btn,
+  btn_link = "/",
   bg = "white",
   light = false,
-  maxWidthSub = "100%"
+  maxWidthSub = "100%",
 }: PageHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -72,9 +75,15 @@ export default function HeadHero({
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-[0px]" style={{backgroundColor: bg}}>
+    <section
+      ref={sectionRef}
+      className="py-[0px]"
+      style={{ backgroundColor: bg }}
+    >
       <div className="max-w-5xl mx-auto text-center px-8 sm:px-4">
-        <p className={`${light ? "#5DA7CF" : "text-[#5aa7d9]"} reveal-text text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4`}>
+        <p
+          className={`${light ? "#5DA7CF" : "text-[#5aa7d9]"} reveal-text text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4`}
+        >
           {tab}
         </p>
 
@@ -86,17 +95,21 @@ export default function HeadHero({
         </h1>
 
         {sub_heading && (
-          <p className={`${light ? "text-[#D0D5DD]" : "text-[#73797B]"} word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto leading-[1.7] sm:leading-normal`} 
-          style={{maxWidth: maxWidthSub}}>
+          <p
+            className={`${light ? "text-[#D0D5DD]" : "text-[#73797B]"} word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] sm:max-w-[500px] m-auto leading-[1.7] sm:leading-normal`}
+            style={{ maxWidth: maxWidthSub }}
+          >
             {splitWords(sub_heading)}
           </p>
         )}
 
-        {
-            btn && <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
-                {btn}
+        {btn && btn_link && (
+          <Link href={btn_link}>
+            <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
+              {btn}
             </button>
-        }
+          </Link>
+        )}
       </div>
     </section>
   );

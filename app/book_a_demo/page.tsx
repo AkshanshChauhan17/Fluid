@@ -14,6 +14,7 @@ export default function BookADemo() {
           sub_heading="Our specialists will walk you through the MedPay platform and provide a customer savings analysis for your practice."
           maxWidth="600px"
           btn="Receive a Free Analysis"
+          btn_link="/medical_payment_savings_calculator"
         />
         <div className="sm:hidden block">
             <BR px={"60px"} color="white" />

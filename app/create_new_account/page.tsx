@@ -4,21 +4,12 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-import {
-  ChevronRight,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { ChevronRight, Eye, EyeOff } from "lucide-react";
 
-import {
-  FaApple,
-  FaGoogle,
-} from "react-icons/fa";
+import { FaApple, FaGoogle } from "react-icons/fa";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -48,8 +39,7 @@ const fadeUpVariants: Variants = {
 };
 
 export default function CreateNewAccount() {
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <section className="w-full min-h-screen bg-white px-5 sm:px-8 lg:px-0 py-[50px] sm:py-[100px] flex items-center justify-center overflow-hidden">
@@ -79,8 +69,8 @@ export default function CreateNewAccount() {
               </h1>
 
               <p className="text-[#73797B] text-[15px] sm:text-[16px] leading-[24px] tracking-[-0.03em] font-normal max-w-[540px]">
-                By creating an account, you may
-                receive newsletters or promotions
+                By creating an account, you may receive newsletters or
+                promotions
               </p>
             </div>
           </motion.div>
@@ -137,34 +127,20 @@ export default function CreateNewAccount() {
 
                     <div className="w-full h-[48px] border border-[#D0D5DD] rounded-[8px] px-[16px] flex items-center gap-[8px] transition-all duration-300 focus-within:border-[#3B747F]">
                       <input
-                        type={
-                          showPassword
-                            ? "text"
-                            : "password"
-                        }
+                        type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         className="flex-1 bg-transparent text-[16px] text-[#0F2133] placeholder:text-[#73797B] outline-none"
                       />
 
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowPassword(
-                            !showPassword
-                          )
-                        }
+                        onClick={() => setShowPassword(!showPassword)}
                         className="shrink-0"
                       >
                         {showPassword ? (
-                          <Eye
-                            size={16}
-                            className="text-[#73797B]"
-                          />
+                          <Eye size={16} className="text-[#73797B]" />
                         ) : (
-                          <EyeOff
-                            size={16}
-                            className="text-[#73797B]"
-                          />
+                          <EyeOff size={16} className="text-[#73797B]" />
                         )}
                       </button>
                     </div>
@@ -232,10 +208,7 @@ export default function CreateNewAccount() {
                 className="w-full flex items-center gap-[8px]"
               >
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
-                  <FaGoogle
-                    size={16}
-                    className="text-[#0F2133]"
-                  />
+                  <FaGoogle size={16} className="text-[#0F2133]" />
 
                   <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
                     Google
@@ -243,10 +216,7 @@ export default function CreateNewAccount() {
                 </button>
 
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
-                  <FaApple
-                    size={18}
-                    className="text-black"
-                  />
+                  <FaApple size={18} className="text-black" />
 
                   <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
                     Apple
@@ -261,9 +231,9 @@ export default function CreateNewAccount() {
               className="w-full text-center text-[#73797B] text-[14px] leading-[20px] tracking-[-0.03em]"
             >
               Already have an account?{" "}
-              <button className="text-[#3B747F] underline">
-                Sign In
-              </button>
+              <Link href={"/signin"}>
+                <button className="text-[#3B747F] underline cursor-pointer">Sign In</button>
+              </Link>
             </motion.p>
 
             {/* RECAPTCHA */}
@@ -271,15 +241,10 @@ export default function CreateNewAccount() {
               variants={fadeUpVariants}
               className="w-full text-center text-[#73797B] text-[12px] leading-[20px] tracking-[-0.03em]"
             >
-              This site is protected by reCAPTCHA
-              and the Google{" "}
-              <span className="underline cursor-pointer">
-                Privacy Policy
-              </span>{" "}
+              This site is protected by reCAPTCHA and the Google{" "}
+              <Link href={"/privacy_policy"} className="underline cursor-pointer">Privacy Policy</Link>{" "}
               and{" "}
-              <span className="underline cursor-pointer">
-                Terms of Service
-              </span>{" "}
+              <Link href={"/terms_and_conditions"} className="underline cursor-pointer">Terms of Service</Link>{" "}
               apply.
             </motion.p>
           </motion.div>
@@ -329,10 +294,8 @@ export default function CreateNewAccount() {
               variants={fadeUpVariants}
               className="text-[#D0D5DD] text-[15px] sm:text-[16px] leading-[24px] tracking-[-0.03em] font-normal"
             >
-              Access your Fluid Financial account
-              dashboard to manage payment
-              services, review reports, and access
-              partner tools.
+              Access your Fluid Financial account dashboard to manage payment
+              services, review reports, and access partner tools.
             </motion.p>
           </motion.div>
         </motion.div>

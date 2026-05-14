@@ -104,6 +104,7 @@ export default function FeatureGrid() {
               hover:shadow-[0px_18px_50px_rgba(0,71,141,0.08)]
               transition-all
               duration-300
+              cursor-pointer
               ${card.span}
             `}
           >

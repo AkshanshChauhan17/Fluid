@@ -15,6 +15,7 @@ export default function AgentPartnerProgram() {
         heading="Build recurring revenue as a payment infrastructure"
         sub_heading="Experience the intersection of high-end editorial design and robust financial healthcare architecture. Manage wellness, claims, and portfolios in one seamless flow."
         btn="Start Partner Application"
+        btn_link="/medical_payment_savings_calculator"
         maxWidth="700px"
         maxWidthSub="700px"
       />

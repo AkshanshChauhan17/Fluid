@@ -178,6 +178,7 @@ export default function RelatedBlogsSection() {
                 border-[#EEEEEE]
                 rounded-[20px]
                 overflow-hidden
+                cursor-pointer
               "
             >
               <div className="relative w-full h-[240px] sm:h-[300px] overflow-hidden">
