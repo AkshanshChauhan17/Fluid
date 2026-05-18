@@ -5,10 +5,10 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "fluid";
+$host = "sql101.infinityfree.com";
+$username = "if0_41483941";
+$password = "6Yj8biX6gQ";
+$database = "if0_41483941_fluid";
 
 $conn = new mysqli(
     $host,
@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL USERS
 
-http://localhost:90/users.php
+http://fluid.free.nf/users.php
 
 GET SINGLE USER
 
-http://localhost:90/users.php?id=1
+http://fluid.free.nf/users.php?id=1
 
 */
 

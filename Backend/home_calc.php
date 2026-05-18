@@ -5,10 +5,10 @@ header("Access-Control-Allow-Methods: GET, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "fluid";
+$host = "sql101.infinityfree.com";
+$username = "if0_41483941";
+$password = "6Yj8biX6gQ";
+$database = "if0_41483941_fluid";
 
 $conn = new mysqli(
     $host,
@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL
 
-http://localhost:90/home_calc.php
+http://fluid.free.nf/home_calc.php
 
 DELETE
 
-http://localhost:90/home_calc.php?id=2
+http://fluid.free.nf/home_calc.php?id=2
 
 */
 

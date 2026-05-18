@@ -246,7 +246,7 @@ export default function BlogEditorSection() {
       );
 
       const response = await fetch(
-        "http://localhost:90/be.php",
+        "http://fluid.free.nf/be.php",
         {
           method: "POST",
           body: formData,
@@ -331,7 +331,7 @@ export default function BlogEditorSection() {
             : "Save Blog"}
         </motion.button>
       </div>
-
+            <br />
       <div
         className="
           w-full

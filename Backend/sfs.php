@@ -1,9 +1,9 @@
 <?php
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "fluid";
+$host = "sql101.infinityfree.com";
+$username = "if0_41483941";
+$password = "6Yj8biX6gQ";
+$database = "if0_41483941_fluid";
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");

@@ -63,7 +63,7 @@ export default function UsersTable() {
         setLoading(true);
 
         const response = await fetch(
-          "http://localhost:90/users.php"
+          "http://fluid.free.nf/users.php"
         );
 
         const data = await response.json();

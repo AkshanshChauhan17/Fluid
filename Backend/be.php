@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "fluid";
+$host = "sql101.infinityfree.com";
+$username = "if0_41483941";
+$password = "6Yj8biX6gQ";
+$database = "if0_41483941_fluid";
 
 $conn = new mysqli(
     $host,
