@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { CloudUpload, Check } from "lucide-react";
+import {
+  CloudUpload,
+  Check,
+} from "lucide-react";
 
 import {
   motion,
@@ -14,6 +17,7 @@ import {
   useRef,
   useState,
 } from "react";
+import SuccessMessage from "@/Components/global/success_message";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -66,20 +70,25 @@ const fields = [
 ];
 
 export default function ExampleCalculationSection() {
+
   const fileInputRef =
     useRef<HTMLInputElement>(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    practice: "",
-    email: "",
-    phone: "",
-  });
+  const [formData, setFormData] =
+    useState({
+      name: "",
+      practice: "",
+      email: "",
+      phone: "",
+    });
 
   const [fileName, setFileName] =
     useState("");
 
   const [isSubmitted, setIsSubmitted] =
+    useState(false);
+
+  const [isLoading, setIsLoading] =
     useState(false);
 
   const handleChange = (
@@ -102,20 +111,118 @@ export default function ExampleCalculationSection() {
     }
   };
 
-  const handleSubmit = (
+  // ============================================
+  // FORM SUBMIT
+  // ============================================
+
+  const handleSubmit = async (
     e: FormEvent<HTMLFormElement>
   ) => {
+
     e.preventDefault();
 
-    setIsSubmitted(true);
+    try {
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 3000);
+      setIsLoading(true);
+
+      // Create FormData
+      const form = new FormData();
+
+      form.append(
+        "name",
+        formData.name
+      );
+
+      form.append(
+        "practice",
+        formData.practice
+      );
+
+      form.append(
+        "email",
+        formData.email
+      );
+
+      form.append(
+        "phone",
+        formData.phone
+      );
+
+      // File
+      const file =
+        fileInputRef.current?.files?.[0];
+
+      if (file) {
+        form.append("file", file);
+      }
+
+      // API REQUEST
+      const response = await fetch(
+        "http://localhost:90/sfs.php",
+        {
+          method: "POST",
+          body: form,
+        }
+      );
+
+      const data =
+        await response.json();
+
+      // SUCCESS
+      if (data.success) {
+
+        setIsSubmitted(true);
+
+        // Reset form
+        setFormData({
+          name: "",
+          practice: "",
+          email: "",
+          phone: "",
+        });
+
+        setFileName("");
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+        setTimeout(() => {
+          setIsSubmitted(false);
+        }, 3000);
+
+      } else {
+
+        alert(
+          data.message ||
+          "Submission failed"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Something went wrong"
+      );
+
+    } finally {
+
+      setIsLoading(false);
+
+    }
+
   };
+
+  if(isSubmitted) {
+    return <SuccessMessage />
+  }
 
   return (
     <section className="w-full py-0 overflow-hidden">
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -137,6 +244,9 @@ export default function ExampleCalculationSection() {
           lg:gap-[32px]
         "
       >
+
+        {/* FORM */}
+
         <motion.form
           variants={fadeUpVariants}
           onSubmit={handleSubmit}
@@ -153,14 +263,32 @@ export default function ExampleCalculationSection() {
             min-h-[784px]
           "
         >
+
           <div className="w-full">
-            <h2 className="text-[#1D3855] text-[22px] sm:text-[24px] leading-[31px] tracking-[-0.3px] font-semibold">
+            <h2 className="
+              text-[#1D3855]
+              text-[22px]
+              sm:text-[24px]
+              leading-[31px]
+              tracking-[-0.3px]
+              font-semibold
+            ">
               Example Calculation
             </h2>
           </div>
 
-          <div className="w-full flex flex-col gap-[28px] sm:gap-[32px]">
+          {/* INPUTS */}
+
+          <div className="
+            w-full
+            flex
+            flex-col
+            gap-[28px]
+            sm:gap-[32px]
+          ">
+
             {fields.map((field, index) => {
+
               const fieldKeys = [
                 "name",
                 "practice",
@@ -169,12 +297,27 @@ export default function ExampleCalculationSection() {
               ];
 
               return (
+
                 <motion.div
                   key={index}
                   variants={fadeUpVariants}
-                  className="w-full flex flex-col items-start gap-[4px]"
+                  className="
+                    w-full
+                    flex
+                    flex-col
+                    items-start
+                    gap-[4px]
+                  "
                 >
-                  <label className="w-full text-[#0F2133] text-[14px] leading-[20px] tracking-[-0.03em] font-normal">
+
+                  <label className="
+                    w-full
+                    text-[#0F2133]
+                    text-[14px]
+                    leading-[20px]
+                    tracking-[-0.03em]
+                    font-normal
+                  ">
                     {field.label}
                   </label>
 
@@ -201,7 +344,9 @@ export default function ExampleCalculationSection() {
                         e.target.value
                       )
                     }
-                    placeholder={field.placeholder}
+                    placeholder={
+                      field.placeholder
+                    }
                     className="
                       w-full
                       h-[48px]
@@ -219,10 +364,16 @@ export default function ExampleCalculationSection() {
                       transition-all
                     "
                   />
+
                 </motion.div>
+
               );
+
             })}
+
           </div>
+
+          {/* FILE UPLOAD */}
 
           <motion.div
             variants={fadeUpVariants}
@@ -256,10 +407,16 @@ export default function ExampleCalculationSection() {
               hover:bg-[#f1f7fc]
             "
           >
+
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.jpg,.jpeg,.png"
+              accept="
+                .pdf,
+                .jpg,
+                .jpeg,
+                .png
+              "
               className="hidden"
               onChange={handleFileUpload}
             />
@@ -273,32 +430,72 @@ export default function ExampleCalculationSection() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="w-[33px] h-[24px] flex items-center justify-center"
+              className="
+                w-[33px]
+                h-[24px]
+                flex
+                items-center
+                justify-center
+              "
             >
+
               <CloudUpload
                 size={33}
-                className="text-[#73797B]"
+                className="
+                  text-[#73797B]
+                "
                 strokeWidth={1.8}
               />
+
             </motion.div>
 
-            <div className="flex flex-col items-center gap-[8px]">
-              <p className="text-[#1D3855] text-[14px] leading-[20px] tracking-[-0.3px] font-semibold text-center">
+            <div className="
+              flex
+              flex-col
+              items-center
+              gap-[8px]
+            ">
+
+              <p className="
+                text-[#1D3855]
+                text-[14px]
+                leading-[20px]
+                tracking-[-0.3px]
+                font-semibold
+                text-center
+              ">
+
                 {fileName
                   ? "File Uploaded Successfully"
                   : "Upload processing statement"}
+
               </p>
 
-              <p className="text-[#73797B] text-[12px] leading-[16px] tracking-[-0.3px] font-normal text-center break-all">
+              <p className="
+                text-[#73797B]
+                text-[12px]
+                leading-[16px]
+                tracking-[-0.3px]
+                font-normal
+                text-center
+                break-all
+              ">
+
                 {fileName
                   ? fileName
                   : "PDF, JPG or PNG (Max 10MB)"}
+
               </p>
+
             </div>
+
           </motion.div>
+
+          {/* BUTTON */}
 
           <motion.button
             type="submit"
+            disabled={isLoading}
             whileHover={{
               scale: 1.02,
             }}
@@ -324,9 +521,13 @@ export default function ExampleCalculationSection() {
               hover:bg-[#477f8a]
               transition-colors
               duration-300
+              disabled:opacity-60
             "
           >
-            {isSubmitted ? (
+
+            {isLoading ? (
+              "Submitting..."
+            ) : isSubmitted ? (
               <>
                 <Check size={18} />
                 Request Submitted
@@ -334,8 +535,12 @@ export default function ExampleCalculationSection() {
             ) : (
               "Request Custom Savings Analysis"
             )}
+
           </motion.button>
+
         </motion.form>
+
+        {/* RIGHT IMAGE */}
 
         <motion.div
           variants={fadeUpVariants}
@@ -348,6 +553,7 @@ export default function ExampleCalculationSection() {
             overflow-hidden
           "
         >
+
           <motion.div
             animate={{
               scale: [1, 1.03, 1],
@@ -359,15 +565,24 @@ export default function ExampleCalculationSection() {
             }}
             className="absolute inset-0"
           >
+
             <Image
               src="/ExampleCalculation.png"
               alt="Example Calculation"
               fill
               className="object-cover"
             />
+
           </motion.div>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f213380] via-transparent to-transparent" />
+          <div className="
+            absolute
+            inset-0
+            bg-gradient-to-t
+            from-[#0f213380]
+            via-transparent
+            to-transparent
+          " />
 
           <motion.div
             initial={{
@@ -402,20 +617,49 @@ export default function ExampleCalculationSection() {
               sm:p-6
             "
           >
-            <p className="text-white text-[14px] uppercase tracking-[0.18em]">
+
+            <p className="
+              text-white
+              text-[14px]
+              uppercase
+              tracking-[0.18em]
+            ">
               Financial Insight
             </p>
 
-            <h3 className="mt-2 text-white text-[24px] sm:text-[32px] leading-[120%] tracking-[-0.03em] font-medium">
-              Discover hidden payment savings opportunities
+            <h3 className="
+              mt-2
+              text-white
+              text-[24px]
+              sm:text-[32px]
+              leading-[120%]
+              tracking-[-0.03em]
+              font-medium
+            ">
+              Discover hidden payment
+              savings opportunities
             </h3>
 
-            <p className="mt-3 text-[#D0D5DD] text-[14px] sm:text-[16px] leading-[170%]">
-              Upload your current processing statement and receive a tailored healthcare payment analysis.
+            <p className="
+              mt-3
+              text-[#D0D5DD]
+              text-[14px]
+              sm:text-[16px]
+              leading-[170%]
+            ">
+              Upload your current
+              processing statement and
+              receive a tailored
+              healthcare payment
+              analysis.
             </p>
+
           </motion.div>
+
         </motion.div>
+
       </motion.div>
+
     </section>
   );
 }

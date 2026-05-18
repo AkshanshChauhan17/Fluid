@@ -14,7 +14,7 @@ export default function ResourcesDetails() {
   return (
     <div className="bg-white">
       <BR px={"100px"} color="white" />
-      <BlogDetailsPage />
+      <BlogDetailsPage id={1} />
       <BR px={"100px"} color="white" />
       <BR px={"100px"} color="#F8FAFD" />
       <div className="bg-[#F8FAFD]">
