@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL
 
-http://fluid.free.nf/home_calc.php
+https://fluid.free.nf/home_calc.php
 
 DELETE
 
-http://fluid.free.nf/home_calc.php?id=2
+https://fluid.free.nf/home_calc.php?id=2
 
 */
 

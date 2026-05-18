@@ -246,7 +246,7 @@ export default function BlogEditorSection() {
       );
 
       const response = await fetch(
-        "http://fluid.free.nf/be.php",
+        "https://fluid.free.nf/be.php",
         {
           method: "POST",
           body: formData,

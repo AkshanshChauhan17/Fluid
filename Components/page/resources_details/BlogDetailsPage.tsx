@@ -77,7 +77,7 @@ export default function BlogDetailsPage({
 
         const response =
           await fetch(
-            `http://fluid.free.nf/rb.php?id=${id}`
+            `https://fluid.free.nf/rb.php?id=${id}`
           );
 
         const data =
@@ -191,7 +191,7 @@ export default function BlogDetailsPage({
                 <Image
                   src={
                     blog.thumbnail
-                      ? `http://fluid.free.nf/${blog.thumbnail}`
+                      ? `https://fluid.free.nf/${blog.thumbnail}`
                       : "/blog1.png"
                   }
                   alt={blog.blog_title}

@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL USERS
 
-http://fluid.free.nf/users.php
+https://fluid.free.nf/users.php
 
 GET SINGLE USER
 
-http://fluid.free.nf/users.php?id=1
+https://fluid.free.nf/users.php?id=1
 
 */
 

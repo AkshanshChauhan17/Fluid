@@ -57,7 +57,7 @@ export default function HomeCalculatorTable() {
       setLoading(true);
 
       const response = await fetch(
-        `http://fluid.free.nf/home_calc.php?search=${search}&sort=${sort}`
+        `https://fluid.free.nf/home_calc.php?search=${search}&sort=${sort}`
       );
 
       const result = await response.json();
@@ -88,7 +88,7 @@ export default function HomeCalculatorTable() {
 
     try {
       const response = await fetch(
-        `http://fluid.free.nf/home_calc.php?id=${id}`,
+        `https://fluid.free.nf/home_calc.php?id=${id}`,
         {
           method: "DELETE",
         }
@@ -558,7 +558,7 @@ export default function HomeCalculatorTable() {
               {/* FILE */}
 
               <a
-                href={`http://fluid.free.nf/${selectedItem.uploaded_file}`}
+                href={`https://fluid.free.nf/${selectedItem.uploaded_file}`}
                 target="_blank"
                 className="
                   h-[50px]

@@ -206,7 +206,7 @@ export default function SavingsCalculator() {
       );
 
       const response = await fetch(
-        "http://fluid.free.nf/hc.php",
+        "https://fluid.free.nf/hc.php",
         {
           method: "POST",
           body: form,
@@ -296,7 +296,7 @@ export default function SavingsCalculator() {
       }
 
       const response = await fetch(
-        "http://fluid.free.nf/hc.php",
+        "https://fluid.free.nf/hc.php",
         {
           method: "POST",
           body: form,

@@ -158,7 +158,7 @@ export default function ExampleCalculationSection() {
 
       // API REQUEST
       const response = await fetch(
-        "http://fluid.free.nf/sfs.php",
+        "https://fluid.free.nf/sfs.php",
         {
           method: "POST",
           body: form,
