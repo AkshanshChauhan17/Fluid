@@ -13,7 +13,7 @@ export default function MedicalPaymentSavingsCalculator() {
     <div className="bg-white">
       <BR px={"100px"} color="white" />
       <HeadHero
-        tab="Pricing/Plans"
+        tab="Saving Calculator"
         heading="How much revenue is your practice losing to payment processing?"
         sub_heading="Discover hidden inefficiencies in your billing cycle. Our precision calculator identifies exactly where capital leaks from your workflow."
         maxWidth="700px"

@@ -782,65 +782,6 @@ export default function SavingsCalculator() {
             >
 
               <div className="w-full flex flex-col items-center px-5 sm:px-[32px] py-[40px] sm:py-[48px]">
-
-                {/* RESULT */}
-
-                {result && (
-
-                  <div className="w-full max-w-[506px] bg-[#F0F7FF] border border-[#D9EAF7] rounded-[18px] p-[24px] mb-[24px]">
-
-                    <h3 className="text-[#1D3855] text-[24px] font-semibold">
-                      Estimated Savings Report
-                    </h3>
-
-                    <div className="mt-[18px] flex flex-col gap-[12px]">
-
-                      <div className="flex justify-between">
-                        <span className="text-[#73797B]">
-                          Effective Rate
-                        </span>
-
-                        <strong className="text-[#1D3855]">
-                          {result.effective_rate}%
-                        </strong>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <span className="text-[#73797B]">
-                          Monthly Savings
-                        </span>
-
-                        <strong className="text-[#1D3855]">
-                          ${result.monthly_savings}
-                        </strong>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <span className="text-[#73797B]">
-                          Yearly Savings
-                        </span>
-
-                        <strong className="text-[#1D3855]">
-                          ${result.yearly_savings}
-                        </strong>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <span className="text-[#73797B]">
-                          Risk Score
-                        </span>
-
-                        <strong className="text-[#1D3855]">
-                          {result.risk_score}%
-                        </strong>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                )}
-
                 {/* HEADING */}
                 {!lastRes ? <div>
                 <div className="w-full max-w-[506px] flex flex-col gap-[10px]">
@@ -1076,7 +1017,57 @@ export default function SavingsCalculator() {
                   </div>
 
                 </div>
-                </div> : <SuccessMessage/>}
+                </div> : <SuccessMessage data={result && <div className="w-full max-w-[506px] bg-[#F0F7FF] border border-[#D9EAF7] rounded-[18px] p-[24px] mb-[24px]">
+
+                    <h3 className="text-[#1D3855] text-[24px] font-semibold">
+                      Estimated Savings Report
+                    </h3>
+
+                    <div className="mt-[18px] flex flex-col gap-[12px]">
+
+                      <div className="flex justify-between">
+                        <span className="text-[#73797B]">
+                          Effective Rate
+                        </span>
+
+                        <strong className="text-[#1D3855]">
+                          {result.effective_rate}%
+                        </strong>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#73797B]">
+                          Monthly Savings
+                        </span>
+
+                        <strong className="text-[#1D3855]">
+                          ${result.monthly_savings}
+                        </strong>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#73797B]">
+                          Yearly Savings
+                        </span>
+
+                        <strong className="text-[#1D3855]">
+                          ${result.yearly_savings}
+                        </strong>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-[#73797B]">
+                          Risk Score
+                        </span>
+
+                        <strong className="text-[#1D3855]">
+                          {result.risk_score}%
+                        </strong>
+                      </div>
+
+                    </div>
+
+                  </div>}/>}
 
               </div>
 

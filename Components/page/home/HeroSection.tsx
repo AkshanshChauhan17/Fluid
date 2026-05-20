@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { Shield, Lock, CheckCircle2, Activity } from "lucide-react";
+import { Shield, Lock, CheckCircle2, Activity, X } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import AnalysisImpactSection from "../medical_payment_savings_calculator/AnalysisImpactSection";
+import ExampleCalculationSection from "../medical_payment_savings_calculator/ExampleCalculationSection";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -123,8 +126,44 @@ const trustItems = [
 ];
 
 export default function HeroSection() {
+  const [openOne, setOpen] = useState(false);
+  const [openTwo, setOpenTwo] = useState(false);
   return (
     <section className="relative overflow-hidden bg-[#F8FAFD] px-5 sm:px-8 lg:px-0 py-[72px] sm:py-[90px] lg:py-[100px]">
+      {openOne && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-7xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+            <button
+              onClick={() => setOpen(false)}
+              className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="m-1 sm:m-4">
+              <AnalysisImpactSection />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openTwo && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-7xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+            <button
+              onClick={() => setOpenTwo(false)}
+              className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="m-1 sm:m-4">
+              <ExampleCalculationSection />
+            </div>
+          </div>
+        </div>
+      )}
+
       <motion.div
         variants={imageVariants}
         initial="hidden"
@@ -189,41 +228,38 @@ export default function HeroSection() {
             variants={containerVariants}
             className="flex w-full flex-col sm:flex-row items-stretch sm:items-start gap-[12px]"
           >
-            <Link href={"/medical_payment_savings_calculator"}>
-              <motion.button
-                variants={cardVariants}
-                whileHover={{
-                  y: -2,
-                  opacity: 0.95,
-                }}
-                whileTap={{
-                  scale: 0.98,
-                }}
-                className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] bg-[#3B747F] flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
-              >
-                <span className="text-white text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
-                  Calculate Your Savings
-                </span>
-              </motion.button>
-            </Link>
-
-            <Link href={"/medical_payment_savings_calculator"}>
-              <motion.button
-                variants={cardVariants}
-                whileHover={{
-                  y: -2,
-                  backgroundColor: "#f8fafc",
-                }}
-                whileTap={{
-                  scale: 0.98,
-                }}
-                className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] border border-[#D0D5DD] bg-white flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
-              >
-                <span className="text-[#101010] text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
-                  Upload A Statement For A Free Analysis
-                </span>
-              </motion.button>
-            </Link>
+            <motion.button
+              variants={cardVariants}
+              onClick={() => setOpen(true)}
+              whileHover={{
+                y: -2,
+                opacity: 0.95,
+              }}
+              whileTap={{
+                scale: 0.98,
+              }}
+              className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] bg-[#3B747F] flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
+            >
+              <span className="text-white text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
+                Calculate Your Savings
+              </span>
+            </motion.button>
+            <motion.button
+              variants={cardVariants}
+              onClick={() => setOpenTwo(true)}
+              whileHover={{
+                y: -2,
+                backgroundColor: "#f8fafc",
+              }}
+              whileTap={{
+                scale: 0.98,
+              }}
+              className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] border border-[#D0D5DD] bg-white flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
+            >
+              <span className="text-[#101010] text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
+                Upload A Statement For A Free Analysis
+              </span>
+            </motion.button>
           </motion.div>
         </div>
 

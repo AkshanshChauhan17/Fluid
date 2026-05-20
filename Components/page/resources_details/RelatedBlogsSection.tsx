@@ -140,7 +140,7 @@ export default function RelatedBlogsSection() {
 
               <Link
                 key={index}
-                href={`/resources_details/${item.id}`}
+                href={`/resources_details#${item.id}`}
                 className="w-full lg:w-1/2"
               >
                 <motion.div
@@ -280,7 +280,7 @@ export default function RelatedBlogsSection() {
 
               <Link
                 key={index}
-                href={`/blog/${item.id}`}
+                href={`/resources_details#${item.id}`}
                 className="w-full lg:w-1/2"
               >
                 <motion.div

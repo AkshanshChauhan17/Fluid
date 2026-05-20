@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
+  output: "export",
+
+  trailingSlash: true,
+
   images: {
     unoptimized: true,
   },
-   allowedDevOrigins: ['192.168.31.187'],
+
 };
 
 module.exports = nextConfig;

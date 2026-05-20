@@ -145,7 +145,7 @@ export default function AgentApplication() {
               data-deactivation-type="neverDeactivate"
               data-deactivation-value=""
               data-form-name="Agent Application Form"
-              data-height="852"
+              data-height="1000"
               data-layout-iframe-id="inline-OGhbbNaSKCiVHS5FzkRG"
               data-form-id="OGhbbNaSKCiVHS5FzkRG"
               title="Agent Application Form"

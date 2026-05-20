@@ -14,7 +14,7 @@ export default function Footer() {
       <div className="grid grid-cols-2 md:grid-cols-6 max-w-7xl mx-auto gap-10 pb-10 border-b border-white/10">
 
         <div className="col-span-1">
-          <div className="flex w-[150px] h-[55px] items-center bg-contain bg-no-repeat gap-2 mb-6" style={{backgroundImage: "url(./logo.png)"}}>
+          <div className="flex w-[150px] h-[55px] items-center bg-contain bg-no-repeat gap-2 mb-6" style={{backgroundImage: "url(/logo.png)"}}>
             
           </div>
 

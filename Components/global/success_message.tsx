@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 
-export default function SuccessMessage() {
+interface SuccessMessageProps {
+  data?: React.ReactNode;
+}
+
+export default function SuccessMessage({ data }: SuccessMessageProps) {
   const handleClick = ()=> {
     window.location.reload();
   }
@@ -143,7 +147,7 @@ export default function SuccessMessage() {
 
         {/* INFO BOX */}
 
-        <div
+        {data ? data : <div
           className="
             mt-[24px]
             sm:mt-[28px]
@@ -172,7 +176,7 @@ export default function SuccessMessage() {
               {" "}24 business hours.
             </span>
           </p>
-        </div>
+        </div>}
 
         {/* BUTTON */}
 

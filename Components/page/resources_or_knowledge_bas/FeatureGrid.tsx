@@ -203,7 +203,7 @@ export default function FeatureGrid() {
 
               <Link
                 key={card.id}
-                href={`/resources/${card.id}`}
+                href={`/resources_details#${card.id}`}
                 className={`
                   group
                   ${spans[index % spans.length]}
