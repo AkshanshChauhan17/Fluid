@@ -62,6 +62,7 @@ export default function HIPPA() {
         />
         <HeadHeroRight
           btn="Request Compliance and Payment Audit"
+          btnLink="/agent_application"
         />
       </div>
       <BR px={"60px"} color="white" />

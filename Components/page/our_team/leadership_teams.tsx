@@ -12,24 +12,28 @@ const leaders = [
     role: "President & Chief Executive Office",
     desc: "Jon has 20 years in fintech, helped i3 Vertical's IPO, and led Exactouch and Terminal Exchange managing POS until exit.",
     image: "/leader1.jpg",
+    link: "https://www.linkedin.com/in/jonathan-lee-2660683a/",
   },
   {
     name: "Aonghus O'heocha",
     role: "Chief Technology Officer",
     desc: "Aonghus is CEO of Fluid Fintec and lead developer of ICE with 30 years' experience in technology.",
     image: "/leader2.jpg",
+    link: "https://www.linkedin.com/in/aonghus-o-heocha-a9971310/",
   },
   {
     name: "Ronald Prupis",
     role: "Chief Revenue Officer",
     desc: "Ron has 15 years in sales, marketing, and merchant processing, creating affiliate programs for brands like Hilton Hotels.",
     image: "/leader3.jpg",
+    link: "https://www.linkedin.com/in/ronald-prupis-aa309433/",
   },
   {
     name: "Michael Harris",
     role: "Chief Financial Officer",
     desc: "Michael has 15 years in telecom and payments. He manages Fluid's financial systems for compliance.",
     image: "/leader4.jpg",
+    link: "https://www.linkedin.com/in/michael-harris-uk-uae/",
   },
 ];
 

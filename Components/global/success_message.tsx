@@ -45,14 +45,14 @@ export default function SuccessMessage({ data }: SuccessMessageProps) {
           w-full
           max-w-[620px]
           bg-white
-          border
+          sm:border
           border-[#E8EEF3]
           rounded-[22px]
           sm:rounded-[28px]
-          p-[28px]
+          p-[0px]
           sm:p-[40px]
           lg:p-[48px]
-          shadow-[0px_10px_40px_rgba(0,0,0,0.04)]
+          sm:shadow-[0px_10px_40px_rgba(0,0,0,0.04)]
           flex
           flex-col
           items-center

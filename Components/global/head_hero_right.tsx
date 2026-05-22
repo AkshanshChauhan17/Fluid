@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 type PageHeroProps = {
   tab?: string;
@@ -10,6 +11,7 @@ type PageHeroProps = {
   sub_heading?: string;
   maxWidth?: string;
   btn?: string;
+  btnLink?: string;
   maxWidthSub?: string;
   bg?: string;
 };
@@ -21,7 +23,8 @@ export default function HeadHeroRight({
   maxWidth = "100%",
   btn,
   maxWidthSub = "460px",
-  bg = "white"
+  bg = "white",
+  btnLink = "#",
 }: PageHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +73,11 @@ export default function HeadHeroRight({
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-[0px] sm:min-w-[460px]" style={{backgroundColor: bg}}>
+    <section
+      ref={sectionRef}
+      className="py-[0px] sm:min-w-[460px]"
+      style={{ backgroundColor: bg }}
+    >
       <div className="mx-auto text-center sm:text-right px-8 sm:px-0">
         <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
           {tab}
@@ -84,17 +91,27 @@ export default function HeadHeroRight({
         </h1>
 
         {sub_heading && (
-          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 text-[#73797B] leading-[1.7] sm:leading-normal" 
-          style={{ maxWidth: maxWidthSub }}>
+          <p
+            className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 text-[#73797B] leading-[1.7] sm:leading-normal"
+            style={{ maxWidth: maxWidthSub }}
+          >
             {splitWords(sub_heading)}
           </p>
         )}
 
-        {
-            btn && <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
-                {btn}
+        {btn && btnLink && (
+          <Link href={btnLink} target="_blank" rel="noopener noreferrer">
+            <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
+              {btn}
             </button>
-        }
+          </Link>
+        )}
+
+        {btn && !btnLink && (
+          <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
+            {btn}
+          </button>
+        )}
       </div>
     </section>
   );

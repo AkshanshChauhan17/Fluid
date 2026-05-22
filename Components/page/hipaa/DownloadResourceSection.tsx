@@ -229,6 +229,7 @@ export default function DownloadResourceSection() {
                   leading-[24px]
                   font-medium
                 "
+                onClick={()=>window.open("https://docs.google.com/document/d/1vqBQ2TuCFZDqKRTL4wMcxwtszWBn_cPCsTozablTT_E/export?format=pdf")}
               >
                 <motion.div
                   animate={{

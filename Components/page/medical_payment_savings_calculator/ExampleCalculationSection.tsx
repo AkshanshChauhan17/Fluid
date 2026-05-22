@@ -19,6 +19,10 @@ import {
 } from "react";
 import SuccessMessage from "@/Components/global/success_message";
 
+interface ExampleCalculationSectionProps {
+  oneSec?: boolean;
+}
+
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -69,7 +73,7 @@ const fields = [
   },
 ];
 
-export default function ExampleCalculationSection() {
+export default function ExampleCalculationSection({ oneSec }: ExampleCalculationSectionProps) {
 
   const fileInputRef =
     useRef<HTMLInputElement>(null);
@@ -542,7 +546,7 @@ export default function ExampleCalculationSection() {
 
         {/* RIGHT IMAGE */}
 
-        <motion.div
+        {!oneSec && <motion.div
           variants={fadeUpVariants}
           className="
             relative
@@ -656,7 +660,7 @@ export default function ExampleCalculationSection() {
 
           </motion.div>
 
-        </motion.div>
+        </motion.div>}
 
       </motion.div>
 

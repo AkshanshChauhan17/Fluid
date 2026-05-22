@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import BookDemoCalendar from "./bookademocalender";
 
 type PageHeroProps = {
   tab?: string;
@@ -14,6 +15,7 @@ type PageHeroProps = {
   btn_link?: string;
   maxWidthSub?: string;
   bg?: string;
+  openCalendar?: boolean;
 };
 
 export default function HeadHeroLeft({
@@ -22,11 +24,13 @@ export default function HeadHeroLeft({
   sub_heading,
   maxWidth = "100%",
   btn,
-  btn_link = "/",
+  btn_link,
   maxWidthSub = "460px",
-  bg = "white"
+  bg = "white",
+  openCalendar = false,
 }: PageHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [openCd, setOpenCd] = useState(false);
 
   const splitWords = (text: string) =>
     text.split(" ").map((word, i) => (
@@ -72,8 +76,16 @@ export default function HeadHeroLeft({
     return () => ctx.revert();
   }, []);
 
+  const handleButtonClick = () => {
+    setOpenCd(true);
+  };
+
   return (
-    <section ref={sectionRef} className="py-[0px] sm:min-w-[460px]" style={{backgroundColor: bg}}>
+    <section
+      ref={sectionRef}
+      className="py-[0px] sm:min-w-[460px]"
+      style={{ backgroundColor: bg }}
+    >
       <div className="mx-auto text-center sm:text-left px-8 sm:px-0">
         <p className="reveal-text text-[#5aa7d9] text-[14px] sm:text-[16px] font-[400] tracking-[2px] uppercase mb-4">
           {tab}
@@ -87,18 +99,33 @@ export default function HeadHeroLeft({
         </h1>
 
         {sub_heading && (
-          <p className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 text-[#73797B] leading-[1.7] sm:leading-normal" 
-          style={{ maxWidth: maxWidthSub }}>
+          <p
+            className="word-group text-[14px] sm:text-[16px] font-[400] mt-4 max-w-[90%] mx-auto sm:mx-0 text-[#73797B] leading-[1.7] sm:leading-normal"
+            style={{ maxWidth: maxWidthSub }}
+          >
             {splitWords(sub_heading)}
           </p>
         )}
 
         {btn && btn_link && (
           <Link href={btn_link}>
-            <button className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer">
+            <button
+              className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer"
+            >
               {btn}
             </button>
           </Link>
+        )}
+
+        <BookDemoCalendar open={openCd} onClose={()=>setOpenCd(!openCd)} />
+
+        {btn && !btn_link && openCalendar && (
+            <button
+              onClick={handleButtonClick}
+              className="mt-8 px-6 py-3 bg-[#3B747F] text-white rounded-lg text-[14px] sm:text-[16px] font-[500] hover:bg-[#4f97b6] transition cursor-pointer"
+            >
+              {btn}
+            </button>
         )}
       </div>
     </section>

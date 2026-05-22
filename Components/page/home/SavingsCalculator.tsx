@@ -1017,7 +1017,7 @@ export default function SavingsCalculator() {
                   </div>
 
                 </div>
-                </div> : <SuccessMessage data={result && <div className="w-full max-w-[506px] bg-[#F0F7FF] border border-[#D9EAF7] rounded-[18px] p-[24px] mb-[24px]">
+                </div> : <SuccessMessage data={result && <div className="w-full my-4 bg-[#F0F7FF] border border-[#D9EAF7] rounded-[18px] p-2 sm:p-[24px] mb-[24px]">
 
                     <h3 className="text-[#1D3855] text-[24px] font-semibold">
                       Estimated Savings Report

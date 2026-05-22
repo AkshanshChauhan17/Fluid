@@ -131,8 +131,8 @@ export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-[#F8FAFD] px-5 sm:px-8 lg:px-0 py-[72px] sm:py-[90px] lg:py-[100px]">
       {openOne && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-7xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+          <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <button
               onClick={() => setOpen(false)}
               className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
@@ -148,8 +148,8 @@ export default function HeroSection() {
       )}
 
       {openTwo && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-7xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+          <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <button
               onClick={() => setOpenTwo(false)}
               className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
@@ -158,7 +158,7 @@ export default function HeroSection() {
             </button>
 
             <div className="m-1 sm:m-4">
-              <ExampleCalculationSection />
+              <ExampleCalculationSection oneSec={true} />
             </div>
           </div>
         </div>
