@@ -99,9 +99,10 @@ const headingWords = [
   { text: "to" },
   { text: "payment" },
   { text: "processing." },
-  { text: "We", highlight: true },
-  { text: "help", highlight: true },
-  { text: "you", highlight: true },
+  { text: "It's", highlight: true },
+  { text: "our", highlight: true },
+  { text: "Job", highlight: true },
+  { text: "to", highlight: true },
   { text: "recover", highlight: true },
   { text: "it.", highlight: true },
 ];
@@ -131,7 +132,24 @@ export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-[#F8FAFD] px-5 sm:px-8 lg:px-0 py-[72px] sm:py-[90px] lg:py-[100px]">
       {openOne && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+        <div className="fixed sm:hidden inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+          <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+            <button
+              onClick={() => setOpen(false)}
+              className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="m-1 sm:m-4">
+              <AnalysisImpactSection oneSec={true} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openOne && (
+        <div className="fixed hidden sm:flex inset-0 z-[9999] items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
           <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <button
               onClick={() => setOpen(false)}
@@ -148,7 +166,7 @@ export default function HeroSection() {
       )}
 
       {openTwo && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+        <div className="fixed sm:hidden inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
           <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <button
               onClick={() => setOpenTwo(false)}
@@ -159,6 +177,23 @@ export default function HeroSection() {
 
             <div className="m-1 sm:m-4">
               <ExampleCalculationSection oneSec={true} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openTwo && (
+        <div className="fixed hidden sm:flex inset-0 z-[9999] items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+          <div className="relative w-full max-w-7xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
+            <button
+              onClick={() => setOpenTwo(false)}
+              className="sticky top-4 ml-auto mr-4 mt-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="m-1 sm:m-4">
+              <ExampleCalculationSection />
             </div>
           </div>
         </div>
@@ -175,7 +210,7 @@ export default function HeroSection() {
         className="absolute inset-y-0 right-0 w-full lg:w-[86%] z-0"
       >
         <Image
-          src="/hero-doctor.png"
+          src="/hero_image.webp"
           alt="Healthcare Payment"
           fill
           priority
@@ -257,7 +292,7 @@ export default function HeroSection() {
               className="min-h-[52px] sm:h-[48px] px-[20px] cursor-pointer rounded-[10px] border border-[#D0D5DD] bg-white flex items-center justify-center transition-all duration-300 w-full sm:w-auto will-change-transform"
             >
               <span className="text-[#101010] text-[15px] sm:text-[16px] leading-[24px] font-semibold text-center">
-                Upload A Statement For A Free Analysis
+                Upload your most recent statement
               </span>
             </motion.button>
           </motion.div>

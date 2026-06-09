@@ -8,10 +8,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 
 const benefits = [
   {
@@ -187,10 +185,7 @@ export default function PricingOptionCardLeft() {
           Merchant receives the full invoice amount for every transaction.
         </motion.p>
 
-        <motion.div
-          variants={fadeUpVariants}
-          className="mt-[32px]"
-        >
+        <motion.div variants={fadeUpVariants} className="mt-[32px]">
           <h3 className="text-[#1D3855] text-[18px] font-medium leading-[27px] tracking-[0px]">
             How it works
           </h3>
@@ -234,10 +229,7 @@ export default function PricingOptionCardLeft() {
           </div>
         </motion.div>
 
-        <motion.div
-          variants={fadeUpVariants}
-          className="mt-[32px]"
-        >
+        <motion.div variants={fadeUpVariants} className="mt-[32px]">
           <h3 className="text-[#1D3855] text-[18px] font-medium leading-[27px] tracking-[0px]">
             Benefits
           </h3>
@@ -336,15 +328,16 @@ export default function PricingOptionCardLeft() {
           </div>
         </motion.div>
 
-        <motion.button
-          variants={fadeUpVariants}
-          whileHover={{
-            scale: 1.01,
-          }}
-          whileTap={{
-            scale: 0.98,
-          }}
-          className="
+        <Link href="/agent_application/">
+          <motion.button
+            variants={fadeUpVariants}
+            whileHover={{
+              scale: 1.01,
+            }}
+            whileTap={{
+              scale: 0.98,
+            }}
+            className="
             mt-auto
             w-full
             h-[48px]
@@ -360,9 +353,10 @@ export default function PricingOptionCardLeft() {
             tracking-[0%]
             cursor-pointer
           "
-        >
-          Get Started
-        </motion.button>
+          >
+            Get Started
+          </motion.button>
+        </Link>
       </motion.div>
     </section>
   );

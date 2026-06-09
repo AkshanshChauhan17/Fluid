@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import Link from "next/link";
+import Script from "next/script";
 import {
   FaFacebookF,
   FaTwitter,
@@ -30,61 +31,39 @@ export default function Footer() {
         <div className="col-span-1 hidden sm:block"></div>
 
         <div>
-          <h3 className="font-[500] text-lg mb-4">Product</h3>
+          <h3 className="font-[500] text-lg mb-4">Company</h3>
           <ul className="space-y-2 text-white/70">
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Features</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Pricing</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Case studies</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Reviews</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Updates</li>
+            <Link href="/about"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">About Us</li></Link>
+            <Link href="/our_team"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Our Team</li></Link>
+            <Link href="/agent_partner_program"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Agent Partner Program</li></Link>
           </ul>
         </div>
         
         <div>
-          <h3 className="font-[500] text-lg mb-4">Company</h3>
+          <h3 className="font-[500] text-lg mb-4">Resources</h3>
           <ul className="space-y-2 text-white/70">
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">About</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Contact us</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Careers</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Culture</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Blog</li>
+            <Link href="/faqs"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">FAQs</li></Link>
+            <Link href="/resources_or_knowledge_bas"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Knowledge Base</li></Link>
+            <Link href="/healthcare_payment_processing"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Healthcare Payment Processing</li></Link>
           </ul>
         </div>
 
         <div>
-          <h3 className="font-[500] text-lg mb-4">Support</h3>
+          <h3 className="font-[500] text-lg mb-4">Compliance</h3>
           <ul className="space-y-2 text-white/70">
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Getting started</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Help center</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Server status</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Report a bug</li>
-            <li className="hover:text-white cursor-pointer text-[14px] font-[300]">Chat support</li>
+            <Link href="/hipaa"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">HIPAA</li></Link>
+            <Link href="/security_and_compliance"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Security & Compliance</li></Link>
+            <Link href="/compliance_disclosures"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Compliance Disclosure</li></Link>
           </ul>
         </div>
 
-        <div>
-          <h3 className="font-[500] text-lg mb-4 col-span-2">Contacts us</h3>
-
-          <div className="space-y-4 text-white/70">
-            <div className="flex gap-3">
-              <Mail size={18} className="mt-1 min-w-5" />
-              <span className="text-[14px]">complianceteam@fluid.financial</span>
-            </div>
-
-            <div className="flex gap-3">
-              <Phone size={18} className="mt-1 min-w-5" />
-              <span className="text-[14px]">8883236967</span>
-            </div>
-
-            <div className="flex gap-3">
-              <MapPin size={18} className="mt-1 min-w-5" />
-              <span className="text-[14px]">
-                7 Giralda Farms <br />
-                Suite 100 <br />
-                Madison NJ 07940
-              </span>
-            </div>
-          </div>
+         <div>
+          <h3 className="font-[500] text-lg mb-4">Account</h3>
+          <ul className="space-y-2 text-white/70">
+            <Link href="/signin"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Sign In</li></Link>
+            <Link href="/create_new_account"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Create Account</li></Link>
+            <Link href="/reset_password"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Reset Password</li></Link>
+          </ul>
         </div>
       </div>
 
@@ -103,6 +82,12 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+      <Script
+        src="https://widgets.leadconnectorhq.com/loader.js"
+        data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+        data-widget-id="6a1342d7c10b3bb0034c4466"
+        strategy="afterInteractive"
+      />
     </footer>
   );
 }

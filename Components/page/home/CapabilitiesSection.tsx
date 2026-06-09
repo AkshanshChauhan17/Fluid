@@ -9,9 +9,14 @@ import {
 import { useRef } from "react";
 
 const features = [
+  // {
+  //   title: "Secure tokenized transactions",
+  //   desc: "Tokenization replaces card data with secure tokens, reducing fraud.",
+  //   image: "/cdf1.png",
+  // },
   {
     title: "Secure tokenized transactions",
-    desc: "Tokenization replaces card data with secure tokens, reducing fraud.",
+    desc: "removes ePHI that may have infected the data being transferred to the bank with the MED Token thereby making sure you are adhering to the HIPAA security rule and avoiding serious HIPAA violations that can be very costly.",
     image: "/cdf1.png",
   },
   {

@@ -3,7 +3,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
-
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
@@ -24,20 +23,12 @@ $conn = new mysqli(
 );
 
 if ($conn->connect_error) {
-
     echo json_encode([
         "success" => false,
         "message" => "Database connection failed"
     ]);
-
     exit;
 }
-
-/*
-|--------------------------------------------------------------------------
-| CREATE TABLE
-|--------------------------------------------------------------------------
-*/
 
 $createTable = "
 
@@ -47,6 +38,12 @@ CREATE TABLE IF NOT EXISTS blogs (
 
     blog_title TEXT NOT NULL,
 
+    seo_title VARCHAR(255) DEFAULT NULL,
+
+    slug VARCHAR(255) DEFAULT NULL,
+
+    meta_description TEXT DEFAULT NULL,
+
     author_name VARCHAR(255) NOT NULL,
 
     publish_date DATE NOT NULL,
@@ -55,7 +52,9 @@ CREATE TABLE IF NOT EXISTS blogs (
 
     sections LONGTEXT NOT NULL,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY slug_unique (slug)
 
 )
 
@@ -63,11 +62,20 @@ CREATE TABLE IF NOT EXISTS blogs (
 
 $conn->query($createTable);
 
-/*
-|--------------------------------------------------------------------------
-| GET BLOGS
-|--------------------------------------------------------------------------
-*/
+$columnCheck = $conn->query("SHOW COLUMNS FROM blogs LIKE 'seo_title'");
+if ($columnCheck->num_rows === 0) {
+    $conn->query("ALTER TABLE blogs ADD COLUMN seo_title VARCHAR(255) NULL AFTER blog_title");
+}
+
+$columnCheck = $conn->query("SHOW COLUMNS FROM blogs LIKE 'slug'");
+if ($columnCheck->num_rows === 0) {
+    $conn->query("ALTER TABLE blogs ADD COLUMN slug VARCHAR(255) NULL AFTER seo_title");
+}
+
+$columnCheck = $conn->query("SHOW COLUMNS FROM blogs LIKE 'meta_description'");
+if ($columnCheck->num_rows === 0) {
+    $conn->query("ALTER TABLE blogs ADD COLUMN meta_description TEXT NULL AFTER slug");
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
@@ -76,25 +84,58 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         $id = intval($_GET["id"]);
 
         $stmt = $conn->prepare("
-        
             SELECT * FROM blogs
             WHERE id = ?
-        
         ");
 
         $stmt->bind_param("i", $id);
-
         $stmt->execute();
 
         $result = $stmt->get_result();
 
         if ($result->num_rows === 0) {
-
             echo json_encode([
                 "success" => false,
                 "message" => "Blog not found"
             ]);
+            exit;
+        }
 
+        $blog = $result->fetch_assoc();
+
+        $blog["sections"] = json_decode(
+            $blog["sections"],
+            true
+        );
+
+        echo json_encode([
+            "success" => true,
+            "blog" => $blog
+        ]);
+
+        exit;
+    }
+
+    if (isset($_GET["slug"])) {
+
+        $slug = trim($_GET["slug"]);
+
+        $stmt = $conn->prepare("
+            SELECT * FROM blogs
+            WHERE slug = ?
+            LIMIT 1
+        ");
+
+        $stmt->bind_param("s", $slug);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            echo json_encode([
+                "success" => false,
+                "message" => "Blog not found"
+            ]);
             exit;
         }
 
@@ -114,10 +155,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     }
 
     $result = $conn->query("
-    
-        SELECT * FROM blogs
+        SELECT *
+        FROM blogs
         ORDER BY id DESC
-    
     ");
 
     $blogs = [];
@@ -140,12 +180,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| ONLY POST ALLOWED
-|--------------------------------------------------------------------------
-*/
-
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
     echo json_encode([
@@ -156,14 +190,20 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| FORM DATA
-|--------------------------------------------------------------------------
-*/
-
 $blog_title = trim(
     $_POST["blog_title"] ?? ""
+);
+
+$seo_title = trim(
+    $_POST["seo_title"] ?? $blog_title
+);
+
+$slug = trim(
+    $_POST["slug"] ?? ""
+);
+
+$meta_description = trim(
+    $_POST["meta_description"] ?? ""
 );
 
 $author_name = trim(
@@ -176,30 +216,89 @@ $publish_date = trim(
 
 $sections = $_POST["sections"] ?? "";
 
-/*
-|--------------------------------------------------------------------------
-| VALIDATION
-|--------------------------------------------------------------------------
-*/
-
 if (
     empty($blog_title) ||
     empty($sections)
 ) {
-
     echo json_encode([
         "success" => false,
         "message" => "Required fields missing"
     ]);
-
     exit;
 }
 
-/*
-|--------------------------------------------------------------------------
-| IMAGE UPLOAD
-|--------------------------------------------------------------------------
-*/
+if (empty($slug)) {
+
+    $slug = strtolower($blog_title);
+
+    $slug = preg_replace(
+        "/[^a-z0-9\s-]/",
+        "",
+        $slug
+    );
+
+    $slug = preg_replace(
+        "/\s+/",
+        "-",
+        $slug
+    );
+
+    $slug = preg_replace(
+        "/-+/",
+        "-",
+        $slug
+    );
+
+    $slug = trim($slug, "-");
+}
+
+if (empty($meta_description)) {
+
+    $decodedSections = json_decode(
+        $sections,
+        true
+    );
+
+    if (is_array($decodedSections)) {
+
+        foreach ($decodedSections as $section) {
+
+            if (
+                isset($section["type"]) &&
+                $section["type"] === "paragraph" &&
+                !empty($section["content"])
+            ) {
+
+                $meta_description = substr(
+                    strip_tags($section["content"]),
+                    0,
+                    160
+                );
+
+                break;
+            }
+        }
+    }
+}
+
+$checkSlug = $conn->prepare("
+    SELECT id
+    FROM blogs
+    WHERE slug = ?
+");
+
+$checkSlug->bind_param(
+    "s",
+    $slug
+);
+
+$checkSlug->execute();
+
+$slugResult = $checkSlug->get_result();
+
+if ($slugResult->num_rows > 0) {
+    $slug .= "-" . time();
+}
 
 $thumbnailPath = "";
 
@@ -232,27 +331,17 @@ if (
                 $allowedExtensions
             )
         ) {
-
             echo json_encode([
                 "success" => false,
                 "message" => "Invalid image format"
             ]);
-
             exit;
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | CREATE UPLOAD FOLDER
-        |--------------------------------------------------------------------------
-        */
 
         $uploadDir =
             __DIR__ . "/uploads/blogs/";
 
-        if (
-            !file_exists($uploadDir)
-        ) {
+        if (!file_exists($uploadDir)) {
 
             mkdir(
                 $uploadDir,
@@ -260,12 +349,6 @@ if (
                 true
             );
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | GENERATE FILE NAME
-        |--------------------------------------------------------------------------
-        */
 
         $newFileName =
             time() .
@@ -278,21 +361,9 @@ if (
             $uploadDir .
             $newFileName;
 
-        /*
-        |--------------------------------------------------------------------------
-        | SAVE DB PATH
-        |--------------------------------------------------------------------------
-        */
-
         $thumbnailPath =
             "/uploads/blogs/" .
             $newFileName;
-
-        /*
-        |--------------------------------------------------------------------------
-        | MOVE FILE
-        |--------------------------------------------------------------------------
-        */
 
         $moved = move_uploaded_file(
             $file["tmp_name"],
@@ -322,17 +393,14 @@ if (
     }
 }
 
-/*
-|--------------------------------------------------------------------------
-| INSERT BLOG
-|--------------------------------------------------------------------------
-*/
-
 $stmt = $conn->prepare("
 
 INSERT INTO blogs (
 
     blog_title,
+    seo_title,
+    slug,
+    meta_description,
     author_name,
     publish_date,
     thumbnail,
@@ -340,15 +408,18 @@ INSERT INTO blogs (
 
 )
 
-VALUES (?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 
 ");
 
 $stmt->bind_param(
 
-    "sssss",
+    "ssssssss",
 
     $blog_title,
+    $seo_title,
+    $slug,
+    $meta_description,
     $author_name,
     $publish_date,
     $thumbnailPath,
@@ -366,6 +437,8 @@ if ($stmt->execute()) {
 
         "blog_id" => $stmt->insert_id,
 
+        "slug" => $slug,
+
         "thumbnail" => $thumbnailPath
 
     ]);
@@ -376,13 +449,12 @@ if ($stmt->execute()) {
 
         "success" => false,
 
-        "message" => "Failed to save blog"
+        "message" => $stmt->error
 
     ]);
 }
 
 $stmt->close();
-
 $conn->close();
 
 ?>

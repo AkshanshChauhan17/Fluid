@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image";
 
@@ -50,6 +50,37 @@ export default function BlogEditorSection() {
 
   const [loading, setLoading] =
     useState(false);
+
+    const [seoTitle, setSeoTitle] = useState("");
+const [slug, setSlug] = useState("");
+const [metaDescription, setMetaDescription] = useState("");
+
+useEffect(() => {
+  if (blogTitle.trim()) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSeoTitle(blogTitle);
+
+    setSlug(
+      blogTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
+    );
+
+    if (!metaDescription) {
+      const firstParagraph = sections.find(
+        (item) => item.type === "paragraph"
+      );
+
+      if (firstParagraph?.content) {
+        setMetaDescription(
+          firstParagraph.content.slice(0, 160)
+        );
+      }
+    }
+  }
+}, [blogTitle, sections]);
 
   const moveSectionUp = (index: number) => {
     if (index === 0) return;
@@ -231,6 +262,13 @@ export default function BlogEditorSection() {
         "sections",
         JSON.stringify(sections)
       );
+
+      formData.append("seo_title", seoTitle);
+formData.append("slug", slug);
+formData.append(
+  "meta_description",
+  metaDescription
+);
 
       if (thumbnail) {
         formData.append(
@@ -885,7 +923,106 @@ export default function BlogEditorSection() {
             <Plus size={16} />
             Add List
           </button>
+          <div
+  className="
+    mt-[8px]
+    border
+    border-[#E7EDF3]
+    rounded-[16px]
+    p-[14px]
+    flex
+    flex-col
+    gap-[12px]
+  "
+>
+  <h3 className="text-[15px] font-semibold text-black">
+    SEO Settings
+  </h3>
+
+  <div className="flex flex-col gap-[6px]">
+    <label className="text-[13px] font-medium text-black">
+      SEO Title
+    </label>
+
+    <input
+      type="text"
+      value={seoTitle}
+      onChange={(e) =>
+        setSeoTitle(e.target.value)
+      }
+      className="
+        h-[44px]
+        border
+        border-[#D0D5DD]
+        rounded-[12px]
+        px-[12px]
+        outline-none
+        text-[14px]
+        text-black
+      "
+      placeholder="SEO Title"
+    />
+  </div>
+
+  <div className="flex flex-col gap-[6px]">
+    <label className="text-[13px] font-medium text-black">
+      Slug
+    </label>
+
+    <input
+      type="text"
+      value={slug}
+      onChange={(e) =>
+        setSlug(e.target.value)
+      }
+      className="
+        h-[44px]
+        border
+        border-[#D0D5DD]
+        rounded-[12px]
+        px-[12px]
+        outline-none
+        text-[14px]
+        text-black
+      "
+      placeholder="blog-slug"
+    />
+  </div>
+
+  <div className="flex flex-col gap-[6px]">
+    <label className="text-[13px] font-medium text-black">
+      Meta Description
+    </label>
+
+    <textarea
+      rows={4}
+      value={metaDescription}
+      onChange={(e) =>
+        setMetaDescription(
+          e.target.value
+        )
+      }
+      className="
+        border
+        border-[#D0D5DD]
+        rounded-[12px]
+        px-[12px]
+        py-[10px]
+        outline-none
+        resize-none
+        text-[14px]
+        text-black
+      "
+      placeholder="Meta Description..."
+    />
+
+    <span className="text-[11px] text-gray-500">
+      {metaDescription.length}/160
+    </span>
+  </div>
+</div>
         </div>
+        
       </div>
     </section>
   );

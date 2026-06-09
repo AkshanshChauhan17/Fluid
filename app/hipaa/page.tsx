@@ -62,7 +62,7 @@ export default function HIPPA() {
         />
         <HeadHeroRight
           btn="Request Compliance and Payment Audit"
-          btnLink="/agent_application"
+          btnLink="/medical_payment_savings_calculator/"
         />
       </div>
       <BR px={"60px"} color="white" />

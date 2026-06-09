@@ -1,5 +1,9 @@
 "use client";
 
+interface AnalysisImpactSectionProps {
+  oneSec?: boolean;
+}
+
 import {
   Shield,
   GaugeCircle,
@@ -42,7 +46,7 @@ const fadeUpVariants: Variants = {
   },
 };
 
-export default function AnalysisImpactSection() {
+export default function AnalysisImpactSection({ oneSec }: AnalysisImpactSectionProps) {
   const [volume, setVolume] = useState(1500000);
   const [rate, setRate] = useState(3.2);
 
@@ -314,7 +318,7 @@ export default function AnalysisImpactSection() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">
+        {!oneSec && <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">
           <motion.div
             variants={fadeUpVariants}
             whileHover={{
@@ -388,7 +392,7 @@ export default function AnalysisImpactSection() {
               </p>
             </div>
           </motion.div>
-        </div>
+        </div>}
       </motion.div>
     </section>
   );

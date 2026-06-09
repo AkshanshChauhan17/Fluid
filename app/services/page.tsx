@@ -22,6 +22,7 @@ export default function Services() {
         btn="Start Partner Application"
         bg="white"
         maxWidthSub="740px"
+        btn_link="https://copilot.cardconnect.com/copilot"
       />
       <BR px={"100px"} color="white" />
       <BR px={"100px"} color="#F8FAFD" />

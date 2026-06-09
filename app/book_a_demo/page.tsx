@@ -14,7 +14,7 @@ export default function BookADemo() {
           sub_heading="Our specialists will walk you through the MedPay platform and provide a customer savings analysis for your practice."
           maxWidth="600px"
           btn="Book a Demo"
-          openCalendar={true}
+          btn_link="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3rxDps9Nx_xdzB2LnAioUNWDlv1Oqpfv_HLOVYLUaDwafau7KZhskSvLsuCAk1vvPxLiGcKtYj"
         />
         <div className="sm:hidden block">
             <BR px={"60px"} color="white" />

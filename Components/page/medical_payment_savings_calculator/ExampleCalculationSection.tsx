@@ -277,7 +277,7 @@ export default function ExampleCalculationSection({ oneSec }: ExampleCalculation
               tracking-[-0.3px]
               font-semibold
             ">
-              Example Calculation
+              Check Your Free Analysis
             </h2>
           </div>
 

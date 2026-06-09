@@ -77,7 +77,7 @@ const wordVariants: Variants = {
 
 const titleWords = [
   "Fluid",
-  "Financials",
+  "Financial",
   "Endorsed",
   "by",
 ];

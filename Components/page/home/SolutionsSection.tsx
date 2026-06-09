@@ -141,8 +141,8 @@ export default function SolutionsSection() {
             variants={fadeUpVariants}
             className="max-w-[588px] lg:text-right text-[#D0D5DD] text-[15px] sm:text-[16px] leading-[170%] text-pretty"
           >
-            A healthcare payment system uses tokenization to replace
-            sensitive data with tokens, protecting patient information and
+            A healthcare payment system that uses tokenization to replace
+            sensitive data with unique tokens, protecting patient information and
             reducing breach risks.
           </motion.p>
         </div>
@@ -477,7 +477,7 @@ export default function SolutionsSection() {
               </h3>
 
               <p className="text-[#D0D5DD] text-[14px] leading-6">
-                Recover up to 3% or more of annual revenue by eliminating
+                Recover 3% or more of annual revenue by eliminating
                 unnecessary credit card processing costs.
               </p>
             </motion.div>

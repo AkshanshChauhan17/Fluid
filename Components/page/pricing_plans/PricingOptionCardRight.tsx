@@ -2,17 +2,10 @@
 
 import BR from "@/Components/global/br";
 
-import {
-  SquarePen,
-  Clock3,
-  Users,
-  CheckCircle2,
-} from "lucide-react";
+import { SquarePen, Clock3, Users, CheckCircle2 } from "lucide-react";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 
 const benefits = [
   {
@@ -25,8 +18,7 @@ const benefits = [
   },
   {
     icon: Users,
-    title:
-      "Familiar structure (no pricing adjustments to customers)",
+    title: "Familiar structure (no pricing adjustments to customers)",
     full: true,
   },
 ];
@@ -191,10 +183,7 @@ export default function PricingOptionCardRight() {
           </span>
         </motion.div>
 
-        <motion.div
-          variants={fadeUpVariants}
-          className="mt-[32px]"
-        >
+        <motion.div variants={fadeUpVariants} className="mt-[32px]">
           <h3 className="text-[#1D3855] text-[18px] font-medium leading-[27px] tracking-[0px]">
             How it works
           </h3>
@@ -237,10 +226,7 @@ export default function PricingOptionCardRight() {
           </div>
         </motion.div>
 
-        <motion.div
-          variants={fadeUpVariants}
-          className="mt-[32px]"
-        >
+        <motion.div variants={fadeUpVariants} className="mt-[32px]">
           <h3 className="text-[#1D3855] text-[18px] font-medium leading-[27px] tracking-[0px]">
             Benefits
           </h3>
@@ -263,11 +249,7 @@ export default function PricingOptionCardRight() {
                     p-[14px]
                     border
                     border-[#e6edf5]
-                    ${
-                      item.full
-                        ? "sm:col-span-2 min-h-[64px]"
-                        : "min-h-[76px]"
-                    }
+                    ${item.full ? "sm:col-span-2 min-h-[64px]" : "min-h-[76px]"}
                   `}
                 >
                   <motion.div
@@ -343,15 +325,16 @@ export default function PricingOptionCardRight() {
           </div>
         </motion.div>
 
-        <motion.button
-          variants={fadeUpVariants}
-          whileHover={{
-            scale: 1.01,
-          }}
-          whileTap={{
-            scale: 0.98,
-          }}
-          className="
+        <Link href="/agent_application/">
+          <motion.button
+            variants={fadeUpVariants}
+            whileHover={{
+              scale: 1.01,
+            }}
+            whileTap={{
+              scale: 0.98,
+            }}
+            className="
             mt-[32px]
             w-full
             h-[48px]
@@ -370,9 +353,10 @@ export default function PricingOptionCardRight() {
             sm:mt-auto
             cursor-pointer
           "
-        >
-          Choose Traditional
-        </motion.button>
+          >
+            Choose Traditional
+          </motion.button>
+        </Link>
       </motion.div>
     </section>
   );

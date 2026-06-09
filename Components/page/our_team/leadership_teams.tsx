@@ -5,6 +5,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 const leaders = [
   {
@@ -115,8 +116,7 @@ export default function LeadershipTeams() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[12px]">
 
         {leaders.map((leader, index) => (
-          <div key={index} className="reveal-card overflow-hidden">
-
+          <Link href={leader.link} key={index} className="reveal-card overflow-hidden">
             <div className="relative h-[280px] sm:h-[340px] rounded-[16px] overflow-hidden">
               <div className="image-inner absolute inset-0">
                 <Image
@@ -144,8 +144,7 @@ export default function LeadershipTeams() {
                 {splitWords(leader.desc)}
               </p>
             </div>
-
-          </div>
+          </Link>
         ))}
       </div>
     </section>
