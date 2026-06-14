@@ -162,7 +162,7 @@ export default function ExampleCalculationSection({ oneSec }: ExampleCalculation
 
       // API REQUEST
       const response = await fetch(
-        "https://fluid.free.nf/sfs.php",
+        "/Backend/sfs.php",
         {
           method: "POST",
           body: form,

@@ -82,7 +82,7 @@ export default function CreateNewAccount() {
 
         const response =
           await fetch(
-            "https://fluid.free.nf/ca.php",
+            "/Backend/ca.php",
             {
               method: "POST",
 

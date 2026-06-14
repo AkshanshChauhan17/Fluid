@@ -64,7 +64,7 @@ export default function RelatedBlogsSection() {
 
         const response =
           await fetch(
-            `https://fluid.free.nf/rb.php`
+            `/Backend/rb.php`
           );
 
         const data =
@@ -182,7 +182,7 @@ export default function RelatedBlogsSection() {
                       <Image
                         src={
                           item.thumbnail
-                            ? `https://fluid.free.nf/${item.thumbnail}`
+                            ? `/Backend/${item.thumbnail}`
                             : "/blog-sec-1.png"
                         }
                         alt={
@@ -322,7 +322,7 @@ export default function RelatedBlogsSection() {
                       <Image
                         src={
                           item.thumbnail
-                            ? `https://fluid.free.nf/${item.thumbnail}`
+                            ? `/Backend/${item.thumbnail}`
                             : "/blog-sec-1.png"
                         }
                         alt={

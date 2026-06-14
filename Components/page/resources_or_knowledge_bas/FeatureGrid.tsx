@@ -78,7 +78,7 @@ export default function FeatureGrid() {
 
         const response =
           await fetch(
-            "https://fluid.free.nf/rb.php"
+            "/Backend/rb.php"
           );
 
         const data =
@@ -262,7 +262,7 @@ export default function FeatureGrid() {
                       <Image
                         src={
                           card.thumbnail
-                            ? `https://fluid.free.nf/${card.thumbnail}`
+                            ? `/Backend/${card.thumbnail}`
                             : "/feature_grid_1.png"
                         }
                         alt={

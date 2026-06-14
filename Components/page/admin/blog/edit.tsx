@@ -284,7 +284,7 @@ formData.append(
       );
 
       const response = await fetch(
-        "https://fluid.free.nf/be.php",
+        "/Backend/be.php",
         {
           method: "POST",
           body: formData,
