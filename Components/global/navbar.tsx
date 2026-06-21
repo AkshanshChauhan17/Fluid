@@ -65,7 +65,7 @@ export default function Navbar() {
               { name: "About Us", href: "/about" },
               { name: "Services", href: "/services" },
               { name: "Pricing", href: "/pricing_plans" },
-              { name: "Saving Calculator", href: "/security_and_compliance" },
+              { name: "Saving Calculator", href: "/medical_payment_savings_calculator" },
               { name: "Agent Portal", href: "/agent_partner_program" },
               { name: "Application Portal", href: "/agent_application" },
             ].map((item, index) => (
@@ -136,7 +136,7 @@ export default function Navbar() {
               { name: "About Us", href: "/about" },
               { name: "Services", href: "/services" },
               { name: "Pricing", href: "/pricing_plans" },
-              { name: "Saving Calculator", href: "/security_and_compliance" },
+              { name: "Saving Calculator", href: "/medical_payment_savings_calculator" },
               { name: "Agent Portal", href: "/agent_partner_program" },
               { name: "Application Portal", href: "/agent_application" },
             ].map((item, index) => (

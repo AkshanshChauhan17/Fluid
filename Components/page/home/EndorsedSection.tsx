@@ -4,12 +4,20 @@ import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 
 const logos = [
-  "/logo1.png",
+  "/logo1.webp",
   "/logo2.png",
-  "/logo3.png",
-  "/logo4.png",
+  "/logo3.avif",
+  "/logo4.webp",
   "/logo5.png",
   "/logo6.png",
+  "/logo7.png",
+  "/logo8.png",
+  "/logo9.png",
+  "/logo10.webp",
+  "/logo11.png",
+  "/logo12.png",
+  "/logo13.webp",
+  "/logo14.png",
 ];
 
 const containerVariants: Variants = {
@@ -75,12 +83,7 @@ const wordVariants: Variants = {
   },
 };
 
-const titleWords = [
-  "Fluid",
-  "Financial",
-  "Endorsed",
-  "by",
-];
+const titleWords = ["Fluid", "Financial", "Endorsed", "by"];
 
 export default function EndorsedSection() {
   return (
@@ -113,11 +116,14 @@ export default function EndorsedSection() {
         variants={fadeUpVariants}
         className="relative w-full overflow-hidden"
       >
+        {/* Left Fade */}
         <div className="absolute left-0 top-0 z-10 h-full w-[60px] sm:w-[90px] lg:w-[120px] bg-[linear-gradient(90deg,#FFFFFF_0%,rgba(255,255,255,0)_100%)] pointer-events-none" />
 
+        {/* Right Fade */}
         <div className="absolute right-0 top-0 z-10 h-full w-[60px] sm:w-[90px] lg:w-[120px] bg-[linear-gradient(270deg,#FFFFFF_0%,rgba(255,255,255,0)_100%)] pointer-events-none" />
 
-        <div className="flex items-center gap-[28px] sm:gap-[40px] min-w-max animate-[premiumScroll_24s_linear_infinite] will-change-transform">
+        {/* Logo Marquee */}
+        <div className="flex items-center gap-[28px] sm:gap-[40px] min-w-max animate-[premiumScroll_50s_linear_infinite] will-change-transform">
           {[...logos, ...logos].map((logo, index) => (
             <motion.div
               key={index}
@@ -131,8 +137,9 @@ export default function EndorsedSection() {
               <Image
                 src={logo}
                 alt={`Logo ${index + 1}`}
-                width={180}
-                height={50}
+                width={200}
+                height={60}
+                unoptimized
                 className="h-[34px] sm:h-[42px] lg:h-[50px] w-auto object-contain select-none"
               />
             </motion.div>
