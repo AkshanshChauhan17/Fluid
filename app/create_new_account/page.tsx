@@ -12,7 +12,17 @@ import { motion, Variants } from "framer-motion";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import GoogleLoginButton from "@/Components/global/GoogleLoginButton";
+import dynamic from "next/dynamic";
+
+const GoogleLoginButton = dynamic(
+  () =>
+    import(
+      "@/Components/global/GoogleLoginButton"
+    ),
+  {
+    ssr: false,
+  }
+);
 
 const containerVariants: Variants = {
   hidden: {},
