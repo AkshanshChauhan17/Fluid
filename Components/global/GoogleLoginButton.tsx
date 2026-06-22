@@ -1,9 +1,11 @@
 "use client";
 
 import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 
 export default function GoogleLoginButton() {
+  const router = useRouter();
   const login = useGoogleLogin({
     flow: "implicit",
 
@@ -27,7 +29,8 @@ export default function GoogleLoginButton() {
 
           localStorage.setItem("fluid_user", JSON.stringify(data.user));
 
-          window.location.href = "/";
+          router.push("/");
+router.refresh();
         }
       } catch (error) {
         console.error(error);
