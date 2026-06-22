@@ -1,5 +1,3 @@
-"use client";
-
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
@@ -11,16 +9,13 @@ export default function GoogleLoginButton() {
 
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch(
-          "/Backend/google-login.php",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(tokenResponse),
+        const res = await fetch("/Backend/google-login.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify(tokenResponse),
+        });
 
         const data = await res.json();
 
@@ -29,8 +24,7 @@ export default function GoogleLoginButton() {
 
           localStorage.setItem("fluid_user", JSON.stringify(data.user));
 
-          router.push("/");
-router.refresh();
+          router.refresh();
         }
       } catch (error) {
         console.error(error);
