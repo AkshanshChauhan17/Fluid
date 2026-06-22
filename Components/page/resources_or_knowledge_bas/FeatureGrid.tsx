@@ -6,13 +6,11 @@ import Image from "next/image";
 
 import Link from "next/link";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 type BlogType = {
   id: number;
+  slug: string;
   blog_title: string;
   thumbnail: string;
   publish_date: string;
@@ -54,114 +52,66 @@ const spans = [
 ];
 
 export default function FeatureGrid() {
+  const [blogs, setBlogs] = useState<BlogType[]>([]);
 
-  const [blogs, setBlogs] = useState<
-    BlogType[]
-  >([]);
+  const [visibleBlogs, setVisibleBlogs] = useState(5);
 
-  const [visibleBlogs, setVisibleBlogs] =
-    useState(5);
+  const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] =
-    useState(true);
-
-  const loaderRef =
-    useRef<HTMLDivElement | null>(
-      null
-    );
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     const fetchBlogs = async () => {
-
       try {
+        const response = await fetch("/Backend/rb.php");
 
-        const response =
-          await fetch(
-            "/Backend/rb.php"
-          );
-
-        const data =
-          await response.json();
+        const data = await response.json();
 
         if (data.success) {
-
-          const sortedBlogs =
-            data.blogs.sort(
-              (
-                a: BlogType,
-                b: BlogType
-              ) =>
-                new Date(
-                  b.publish_date
-                ).getTime() -
-                new Date(
-                  a.publish_date
-                ).getTime()
-            );
+          const sortedBlogs = data.blogs.sort(
+            (a: BlogType, b: BlogType) =>
+              new Date(b.publish_date).getTime() -
+              new Date(a.publish_date).getTime(),
+          );
 
           setBlogs(sortedBlogs);
         }
-
       } catch (error) {
-
         console.log(error);
-
       } finally {
-
         setLoading(false);
-
       }
     };
 
     fetchBlogs();
-
   }, []);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
 
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-
-          const target =
-            entries[0];
-
-          if (
-            target.isIntersecting
-          ) {
-
-            setVisibleBlogs(
-              (prev) => prev + 4
-            );
-          }
-        },
-        {
-          threshold: 0.2,
+        if (target.isIntersecting) {
+          setVisibleBlogs((prev) => prev + 4);
         }
-      );
+      },
+      {
+        threshold: 0.2,
+      },
+    );
 
     if (loaderRef.current) {
-
-      observer.observe(
-        loaderRef.current
-      );
+      observer.observe(loaderRef.current);
     }
 
     return () => {
-
       if (loaderRef.current) {
-
-        observer.unobserve(
-          loaderRef.current
-        );
+        observer.unobserve(loaderRef.current);
       }
     };
-
   }, []);
 
   if (loading) {
-
     return (
       <section className="w-full py-[100px] flex items-center justify-center">
         <p className="text-[#1D3855] text-[18px] font-medium">
@@ -173,7 +123,6 @@ export default function FeatureGrid() {
 
   return (
     <section className="w-full py-0 px-5 sm:px-0 overflow-hidden">
-
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -192,32 +141,24 @@ export default function FeatureGrid() {
           sm:gap-6
         "
       >
-
-        {blogs
-          .slice(0, visibleBlogs)
-          .map(
-            (
-              card,
-              index
-            ) => (
-
-              <Link
-                key={card.id}
-                href={`/resources_details#${card.id}`}
-                className={`
-                  group
-                  ${spans[index % spans.length]}
-                `}
-              >
-                <motion.div
-                  variants={cardVariants}
-                  whileHover={{
-                    y: -6,
-                  }}
-                  transition={{
-                    duration: 0.35,
-                  }}
-                  className="
+        {blogs.slice(0, visibleBlogs).map((card, index) => (
+          <Link
+            key={card.id}
+            href={`/resources_details?slug=${encodeURIComponent(card.slug)}`}
+            className={`
+    group
+    ${spans[index % spans.length]}
+  `}
+          >
+            <motion.div
+              variants={cardVariants}
+              whileHover={{
+                y: -6,
+              }}
+              transition={{
+                duration: 0.35,
+              }}
+              className="
                     h-full
                     bg-white
                     rounded-[18px]
@@ -230,10 +171,9 @@ export default function FeatureGrid() {
                     duration-300
                     cursor-pointer
                   "
-                >
-
-                  <div
-                    className="
+            >
+              <div
+                className="
                       relative
                       w-full
                       h-[220px]
@@ -241,45 +181,34 @@ export default function FeatureGrid() {
                       md:h-[260px]
                       overflow-hidden
                     "
-                  >
+              >
+                <motion.div
+                  whileHover={{
+                    scale: 1.06,
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={
+                      card.thumbnail
+                        ? `/Backend/${card.thumbnail}`
+                        : "/feature_grid_1.png"
+                    }
+                    alt={card.blog_title}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
 
-                    <motion.div
-                      whileHover={{
-                        scale: 1.06,
-                      }}
-                      transition={{
-                        duration: 0.7,
-                        ease: [
-                          0.22,
-                          1,
-                          0.36,
-                          1,
-                        ],
-                      }}
-                      className="absolute inset-0"
-                    >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+              </div>
 
-                      <Image
-                        src={
-                          card.thumbnail
-                            ? `/Backend/${card.thumbnail}`
-                            : "/feature_grid_1.png"
-                        }
-                        alt={
-                          card.blog_title
-                        }
-                        fill
-                        className="object-cover"
-                      />
-
-                    </motion.div>
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-
-                  </div>
-
-                  <div
-                    className="
+              <div
+                className="
                       flex
                       items-center
                       justify-between
@@ -289,30 +218,23 @@ export default function FeatureGrid() {
                       py-4
                       bg-white
                     "
-                  >
-
-                    <div className="flex flex-col gap-[4px]">
-
-                      <p
-                        className="
+              >
+                <div className="flex flex-col gap-[4px]">
+                  <p
+                    className="
                           text-[13px]
                           text-[#73797B]
                         "
-                      >
-                        {new Date(
-                          card.publish_date
-                        ).toLocaleDateString(
-                          "en-US",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
-                      </p>
+                  >
+                    {new Date(card.publish_date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
 
-                      <p
-                        className="
+                  <p
+                    className="
                           text-[15px]
                           sm:text-[16px]
                           leading-[150%]
@@ -321,36 +243,30 @@ export default function FeatureGrid() {
                           font-medium
                           line-clamp-2
                         "
-                      >
-                        {
-                          card.blog_title
-                        }
-                      </p>
+                  >
+                    {card.blog_title}
+                  </p>
+                </div>
 
-                    </div>
-
-                    <motion.span
-                      whileHover={{
-                        x: 3,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
-                      className="
+                <motion.span
+                  whileHover={{
+                    x: 3,
+                  }}
+                  transition={{
+                    duration: 0.25,
+                  }}
+                  className="
                         text-[18px]
                         text-[#1D3855]
                         shrink-0
                       "
-                    >
-                      ›
-                    </motion.span>
-
-                  </div>
-                </motion.div>
-              </Link>
-            )
-          )}
-
+                >
+                  ›
+                </motion.span>
+              </div>
+            </motion.div>
+          </Link>
+        ))}
       </motion.div>
 
       {/* LOAD MORE TRIGGER */}
@@ -365,16 +281,10 @@ export default function FeatureGrid() {
           justify-center
         "
       >
-
-        {visibleBlogs <
-          blogs.length && (
-          <p className="text-[#73797B] text-[14px]">
-            Loading more blogs...
-          </p>
+        {visibleBlogs < blogs.length && (
+          <p className="text-[#73797B] text-[14px]">Loading more blogs...</p>
         )}
-
       </div>
-
     </section>
   );
 }

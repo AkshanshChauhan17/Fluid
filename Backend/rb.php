@@ -27,46 +27,27 @@ if ($conn->connect_error) {
     exit;
 }
 
-/*
-
-TABLE EXPECTED FROM be.php
-
-CREATE TABLE blogs (
-
-    id INT AUTO_INCREMENT PRIMARY KEY,
-
-    blog_title TEXT NOT NULL,
-    author_name VARCHAR(255) NOT NULL,
-    publish_date DATE NOT NULL,
-
-    thumbnail VARCHAR(500),
-
-    sections LONGTEXT NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-)
-
-*/
-
-$id = $_GET["id"] ?? null;
-
 /* =========================================
-   SINGLE BLOG
+   SINGLE BLOG BY SLUG
 ========================================= */
 
-if ($id) {
+$slug = $_GET["slug"] ?? null;
+
+if ($slug) {
 
     $stmt = $conn->prepare("
 
-        SELECT * FROM blogs
-        WHERE id = ?
+        SELECT *
+        FROM blogs
+        WHERE slug = ?
+
+        LIMIT 1
 
     ");
 
     $stmt->bind_param(
-        "i",
-        $id
+        "s",
+        $slug
     );
 
     $stmt->execute();
@@ -109,6 +90,7 @@ $query = "
 
 SELECT
     id,
+    slug,
     blog_title,
     author_name,
     publish_date,

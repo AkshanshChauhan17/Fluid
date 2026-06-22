@@ -4,15 +4,9 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 type BlogSection = {
   id: number;
@@ -23,6 +17,7 @@ type BlogSection = {
 
 type BlogData = {
   id: number;
+  slug?: string;
   blog_title: string;
   author_name: string;
   publish_date: string;
@@ -57,69 +52,86 @@ const fadeUpVariants: Variants = {
   },
 };
 
-export default function BlogDetailsPage({
-  id,
-}: {
-  id: number;
-}) {
+export default function BlogDetailsPage() {
 
-  const [blog, setBlog] =
-    useState<BlogData | null>(null);
-
-  const [loading, setLoading] =
-    useState(true);
+  const [blog, setBlog] = useState<BlogData | null>(null);
+  const [slug, setSlug] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+  const updateSlug = () => {
+    const currentSlug =
+      new URLSearchParams(
+        window.location.search
+      ).get("slug") || "";
 
-    const fetchBlog = async () => {
+    setSlug((prev) =>
+      prev !== currentSlug
+        ? currentSlug
+        : prev
+    );
+  };
 
-      try {
+  updateSlug();
 
-        const response =
-          await fetch(
-            `/Backend/rb.php?id=${id}`
-          );
+  const interval = setInterval(
+    updateSlug,
+    200
+  );
 
-        const data =
-          await response.json();
+  return () =>
+    clearInterval(interval);
+}, []);
 
-        if (data.success) {
-          setBlog(data.blog);
-        }
+useEffect(() => {
+  if (!slug) {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBlog(null);
+    setLoading(false);
+    return;
+  }
 
-      } catch (error) {
+  const fetchBlog = async () => {
+    setLoading(true);
 
-        console.log(error);
+    try {
+      const response = await fetch(
+        `/Backend/rb.php?slug=${encodeURIComponent(
+          slug
+        )}`
+      );
 
-      } finally {
+      const data =
+        await response.json();
 
-        setLoading(false);
-
+      if (data.success) {
+        setBlog(data.blog);
+      } else {
+        setBlog(null);
       }
-    };
+    } catch (error) {
+      console.log(error);
+      setBlog(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBlog();
-
-  }, [id]);
+  fetchBlog();
+}, [slug]);
 
   if (loading) {
-
     return (
       <section className="w-full py-[120px] flex items-center justify-center">
-        <p className="text-[#1D3855] text-[18px]">
-          Loading blog...
-        </p>
+        <p className="text-[#1D3855] text-[18px]">Loading blog...</p>
       </section>
     );
   }
 
   if (!blog) {
-
     return (
       <section className="w-full py-[120px] flex items-center justify-center">
-        <p className="text-red-500 text-[18px]">
-          Blog not found
-        </p>
+        <p className="text-red-500 text-[18px]">Blog not found</p>
       </section>
     );
   }
@@ -152,7 +164,6 @@ export default function BlogDetailsPage({
         </motion.div>
 
         <div className="w-full max-w-7xl flex flex-col items-start gap-[32px] sm:gap-[40px]">
-
           {/* HERO */}
 
           <motion.div
@@ -190,9 +201,7 @@ export default function BlogDetailsPage({
               >
                 <Image
                   src={
-                    blog.thumbnail
-                      ? `/Backend/${blog.thumbnail}`
-                      : "/blog1.png"
+                    blog.thumbnail ? `/Backend/${blog.thumbnail}` : "/blog1.png"
                   }
                   alt={blog.blog_title}
                   fill
@@ -227,21 +236,13 @@ export default function BlogDetailsPage({
                   font-normal
                 "
               >
-                By{" "}
-                <b className="text-black font-medium">
-                  {blog.author_name}
-                </b>{" "}
+                By <b className="text-black font-medium">{blog.author_name}</b>{" "}
                 &nbsp;|&nbsp;{" "}
-                {new Date(
-                  blog.publish_date
-                ).toLocaleDateString(
-                  "en-US",
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }
-                )}
+                {new Date(blog.publish_date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
               </motion.p>
 
               <motion.h1
@@ -274,23 +275,13 @@ export default function BlogDetailsPage({
               gap-[24px]
             "
           >
-            {blog.sections?.map(
-              (section, index) => {
-
-                /* PARAGRAPH */
-
-                if (
-                  section.type ===
-                  "paragraph"
-                ) {
-
-                  return (
-                    <motion.p
-                      key={index}
-                      variants={
-                        fadeUpVariants
-                      }
-                      className="
+            {blog.sections?.map((section, index) => {
+              if (section.type === "paragraph") {
+                return (
+                  <motion.p
+                    key={index}
+                    variants={fadeUpVariants}
+                    className="
                         text-[#73797B]
                         text-[16px]
                         sm:text-[18px]
@@ -298,26 +289,18 @@ export default function BlogDetailsPage({
                         tracking-[-0.3px]
                         font-normal
                       "
-                    >
-                      {section.content}
-                    </motion.p>
-                  );
-                }
+                  >
+                    {section.content}
+                  </motion.p>
+                );
+              }
 
-                /* HEADING */
-
-                if (
-                  section.type ===
-                  "heading"
-                ) {
-
-                  return (
-                    <motion.h2
-                      key={index}
-                      variants={
-                        fadeUpVariants
-                      }
-                      className="
+              if (section.type === "heading") {
+                return (
+                  <motion.h2
+                    key={index}
+                    variants={fadeUpVariants}
+                    className="
                         text-[#1D3855]
                         text-[20px]
                         sm:text-[24px]
@@ -325,56 +308,43 @@ export default function BlogDetailsPage({
                         tracking-[-0.3px]
                         font-medium
                       "
-                    >
-                      {section.content}
-                    </motion.h2>
-                  );
-                }
+                  >
+                    {section.content}
+                  </motion.h2>
+                );
+              }
 
-                /* LIST */
-
-                if (
-                  section.type ===
-                  "list"
-                ) {
-
-                  return (
-                    <motion.div
-                      key={index}
-                      variants={
-                        containerVariants
-                      }
-                      className="
+              if (section.type === "list") {
+                return (
+                  <motion.div
+                    key={index}
+                    variants={containerVariants}
+                    className="
                         w-full
                         flex
                         flex-col
                         items-start
                         gap-[16px]
                       "
-                    >
-
-                      {section.content && (
-                        <motion.p
-                          variants={
-                            fadeUpVariants
-                          }
-                          className="
+                  >
+                    {section.content && (
+                      <motion.p
+                        variants={fadeUpVariants}
+                        className="
                             text-[#73797B]
                             text-[16px]
                             sm:text-[18px]
                             leading-[170%]
                             tracking-[-0.3px]
                           "
-                        >
-                          {section.content}
-                        </motion.p>
-                      )}
+                      >
+                        {section.content}
+                      </motion.p>
+                    )}
 
-                      <motion.ul
-                        variants={
-                          containerVariants
-                        }
-                        className="
+                    <motion.ul
+                      variants={containerVariants}
+                      className="
                           list-disc
                           pl-[24px]
                           sm:pl-[28px]
@@ -382,37 +352,29 @@ export default function BlogDetailsPage({
                           flex-col
                           gap-[6px]
                         "
-                      >
-                        {section.items?.map(
-                          (
-                            item,
-                            itemIndex
-                          ) => (
-                            <motion.li
-                              key={itemIndex}
-                              variants={
-                                fadeUpVariants
-                              }
-                              className="
+                    >
+                      {section.items?.map((item, itemIndex) => (
+                        <motion.li
+                          key={itemIndex}
+                          variants={fadeUpVariants}
+                          className="
                                 text-[#73797B]
                                 text-[16px]
                                 sm:text-[18px]
                                 leading-[170%]
                                 tracking-[-0.3px]
                               "
-                            >
-                              {item}
-                            </motion.li>
-                          )
-                        )}
-                      </motion.ul>
-                    </motion.div>
-                  );
-                }
-
-                return null;
+                        >
+                          {item}
+                        </motion.li>
+                      ))}
+                    </motion.ul>
+                  </motion.div>
+                );
               }
-            )}
+
+              return null;
+            })}
           </motion.div>
 
           {/* FOOTER */}
@@ -427,7 +389,6 @@ export default function BlogDetailsPage({
               sm:pt-[40px]
               flex
               flex-row
-              sm:flex-row
               items-start
               sm:items-center
               justify-between
