@@ -9,7 +9,7 @@ export default function GoogleLoginButton() {
 
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch("/Backend/google-login.php", {
+        const res = await fetch("http://fluid.financial/Backend/google-login.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
