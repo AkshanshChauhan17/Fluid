@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "@/Components/global/footer";
 import Navbar from "@/Components/global/navbar";
+import GoogleProvider from "@/Components/global/GoogleProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Fluid Financial | Merchant Services Powered by CardConnect & Fiserv",
-  description: "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
+  description:
+    "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
   icons: [
     {
       rel: "icon",
@@ -19,8 +21,10 @@ export const metadata: Metadata = {
     },
   ],
   openGraph: {
-    title: "Fluid Financial | Merchant Services Powered by CardConnect & Fiserv",
-    description: "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
+    title:
+      "Fluid Financial | Merchant Services Powered by CardConnect & Fiserv",
+    description:
+      "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
     images: [
       {
         url: "/share_image.jpeg",
@@ -33,8 +37,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Fluid Financial | Merchant Services Powered by CardConnect & Fiserv",
-    description: "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
+    title:
+      "Fluid Financial | Merchant Services Powered by CardConnect & Fiserv",
+    description:
+      "Fluid Financial delivers secure payment processing, merchant services, healthcare payments, and integrated commerce solutions as a proud CardConnect partner, powered by Fiserv, a Fortune 500 company.",
     images: ["/share_image.jpeg"],
   },
 };
@@ -47,9 +53,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <GoogleProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </GoogleProvider>
       </body>
     </html>
   );

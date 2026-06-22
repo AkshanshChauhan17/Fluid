@@ -21,6 +21,7 @@ import {
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import GoogleLoginButton from "@/Components/global/GoogleLoginButton";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -49,7 +50,7 @@ const fadeUpVariants: Variants = {
   },
 };
 
-export default function SignIn() {
+export default function Signin() {
 
   const router = useRouter();
 
@@ -105,7 +106,8 @@ export default function SignIn() {
           )
         );
 
-        router.push("/");
+        // router.push("/");
+        window.location.href = "/";
 
       } else {
 
@@ -363,18 +365,7 @@ export default function SignIn() {
                 className="w-full flex items-center gap-[8px]"
               >
 
-                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
-
-                  <FaGoogle
-                    size={16}
-                    className="text-[#0F2133]"
-                  />
-
-                  <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
-                    Google
-                  </span>
-
-                </button>
+                <GoogleLoginButton />
 
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
 

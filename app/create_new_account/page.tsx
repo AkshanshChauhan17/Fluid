@@ -22,6 +22,7 @@ import {
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import GoogleLoginButton from "@/Components/global/GoogleLoginButton";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -111,9 +112,7 @@ export default function CreateNewAccount() {
             )
           );
 
-          router.push(
-            "/signin"
-          );
+          window.location.href = "/";
 
         } else {
 
@@ -406,18 +405,7 @@ export default function CreateNewAccount() {
                 className="w-full flex items-center gap-[8px]"
               >
 
-                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
-
-                  <FaGoogle
-                    size={16}
-                    className="text-[#0F2133]"
-                  />
-
-                  <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
-                    Google
-                  </span>
-
-                </button>
+                <GoogleLoginButton />
 
                 <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-all duration-300 hover:-translate-y-[1px]">
 

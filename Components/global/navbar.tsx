@@ -6,39 +6,52 @@ import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string; email?: string } | null>(() => {
-    if (typeof window === "undefined") return null;
+  const [user, setUser] = useState<{
+    name: string;
+    email?: string;
+  } | null>(null);
 
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) return null;
+  useEffect(() => {
+    const loadUser = () => {
+      const storedUser = localStorage.getItem("fluid_user");
 
-    try {
-      const parsed = JSON.parse(storedUser);
-      if (
-        parsed &&
-        typeof parsed === "object" &&
-        Object.keys(parsed).length > 0
-      ) {
-        return parsed;
+      if (!storedUser) {
+        setUser(null);
+        return;
       }
-    } catch {
-      return null;
-    }
 
-    return null;
-  });
+      try {
+        const parsed = JSON.parse(storedUser);
+
+        if (
+          parsed &&
+          typeof parsed === "object" &&
+          Object.keys(parsed).length > 0
+        ) {
+          setUser(parsed);
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
+      }
+    };
+
+    loadUser();
+
+    window.addEventListener("storage", loadUser);
+
+    return () => {
+      window.removeEventListener("storage", loadUser);
+    };
+  }, []);
 
   const closeMenu = () => setOpen(false);
 
-  const colors = useMemo(
-    () => [
-      "bg-[#1D3855]",
-    ],
-    []
-  );
+  const colors = useMemo(() => ["bg-[#1D3855]"], []);
 
   const [avatarColor] = useState<string>(
-    () => colors[Math.floor(Math.random() * colors.length)]
+    () => colors[Math.floor(Math.random() * colors.length)],
   );
 
   const initials = user?.name
@@ -65,14 +78,14 @@ export default function Navbar() {
               { name: "About Us", href: "/about" },
               { name: "Services", href: "/services" },
               { name: "Pricing", href: "/pricing_plans" },
-              { name: "Saving Calculator", href: "/medical_payment_savings_calculator" },
+              {
+                name: "Saving Calculator",
+                href: "/medical_payment_savings_calculator",
+              },
               { name: "Agent Portal", href: "/agent_partner_program" },
               { name: "Application Portal", href: "/agent_application" },
             ].map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-              >
+              <Link key={index} href={item.href}>
                 {item.name}
               </Link>
             ))}
@@ -136,7 +149,10 @@ export default function Navbar() {
               { name: "About Us", href: "/about" },
               { name: "Services", href: "/services" },
               { name: "Pricing", href: "/pricing_plans" },
-              { name: "Saving Calculator", href: "/medical_payment_savings_calculator" },
+              {
+                name: "Saving Calculator",
+                href: "/medical_payment_savings_calculator",
+              },
               { name: "Agent Portal", href: "/agent_partner_program" },
               { name: "Application Portal", href: "/agent_application" },
             ].map((item, index) => (
@@ -145,9 +161,7 @@ export default function Navbar() {
                 href={item.href}
                 onClick={closeMenu}
                 className={`py-4 text-[18px] font-[500] border-b border-[#F1F3F5] ${
-                  item.name === "About Us"
-                    ? "text-[#3B747F]"
-                    : "text-[#1F2937]"
+                  item.name === "About Us" ? "text-[#3B747F]" : "text-[#1F2937]"
                 }`}
               >
                 {item.name}
@@ -185,9 +199,7 @@ export default function Navbar() {
                     {user.name}
                   </p>
 
-                  <p className="text-[13px] text-gray-500">
-                    {user.email}
-                  </p>
+                  <p className="text-[13px] text-gray-500">{user.email}</p>
                 </div>
               </div>
             )}
