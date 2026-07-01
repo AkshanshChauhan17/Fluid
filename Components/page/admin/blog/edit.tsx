@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
-
 import {
   Plus,
   Trash2,
@@ -15,7 +13,6 @@ import {
   ArrowDown,
   Loader2,
 } from "lucide-react";
-
 import { motion } from "framer-motion";
 
 type BlogSection = {
@@ -25,203 +22,179 @@ type BlogSection = {
   items?: string[];
 };
 
-export default function BlogEditorSection() {
-  const todayDate = new Date()
-    .toISOString()
-    .split("T")[0];
+export default function BlogEditorSection({
+  slug: initialSlug,
+}: {
+  slug?: string | null;
+}) {
+  const todayDate = new Date().toISOString().split("T")[0];
 
-  const [sections, setSections] =
-    useState<BlogSection[]>([]);
+  const [blogId, setBlogId] = useState<number | null>(null);
+  const [sections, setSections] = useState<BlogSection[]>([]);
+  const [authorName, setAuthorName] = useState("Admin");
+  const [publishDate, setPublishDate] = useState(todayDate);
+  const [blogTitle, setBlogTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState("/blog1.png");
+  const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(false);
 
-  const [authorName, setAuthorName] =
-    useState("Admin");
+  const [seoTitle, setSeoTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [isEditingMode, setIsEditingMode] = useState(false);
 
-  const [publishDate, setPublishDate] =
-    useState(todayDate);
+  useEffect(() => {
+    if (initialSlug) {
+      const fetchBlogData = async () => {
+        setFetchingData(true);
+        setIsEditingMode(true);
+        try {
+          const res = await fetch(
+            `/Backend/rb.php?slug=${encodeURIComponent(initialSlug)}`,
+          );
+          if (!res.ok) throw new Error("Failed to fetch");
 
-  const [blogTitle, setBlogTitle] =
-    useState("");
+          const { blog: data } = await res.json();
 
-  const [thumbnail, setThumbnail] =
-    useState<File | null>(null);
+          if (data) {
+            setBlogId(data.id);
+            setBlogTitle(data.blog_title || "");
+            setAuthorName(data.author_name || "Admin");
+            setPublishDate(data.publish_date || todayDate);
+            setSeoTitle(data.seo_title || data.blog_title || "");
+            setSlug(data.slug || "");
+            setMetaDescription(data.meta_description || "");
 
-  const [thumbnailPreview, setThumbnailPreview] =
-    useState("/blog1.png");
+            if (data.thumbnail) {
+              setThumbnailPreview(`https://fluid.financial${data.thumbnail}`);
+            }
 
-  const [loading, setLoading] =
-    useState(false);
+            if (data.sections) {
+              try {
+                const parsedSections =
+                  typeof data.sections === "string"
+                    ? JSON.parse(data.sections)
+                    : data.sections;
+                setSections(parsedSections);
+              } catch (e) {
+                console.error("Failed to parse sections");
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching blog data:", error);
+          alert("Failed to load blog data.");
+        } finally {
+          setFetchingData(false);
+        }
+      };
 
-    const [seoTitle, setSeoTitle] = useState("");
-const [slug, setSlug] = useState("");
-const [metaDescription, setMetaDescription] = useState("");
+      fetchBlogData();
+    } else {
+      setIsEditingMode(false);
+      setBlogId(null);
+      setBlogTitle("");
+      setAuthorName("Admin");
+      setPublishDate(todayDate);
+      setSections([]);
+      setThumbnail(null);
+      setThumbnailPreview("/blog1.png");
+      setSeoTitle("");
+      setSlug("");
+      setMetaDescription("");
+    }
+  }, [initialSlug, todayDate]);
 
-useEffect(() => {
-  if (blogTitle.trim()) {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSeoTitle(blogTitle);
-
-    setSlug(
-      blogTitle
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-    );
-
-    if (!metaDescription) {
-      const firstParagraph = sections.find(
-        (item) => item.type === "paragraph"
+  useEffect(() => {
+    if (blogTitle.trim() && !isEditingMode) {
+      setSeoTitle(blogTitle);
+      setSlug(
+        blogTitle
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-"),
       );
 
-      if (firstParagraph?.content) {
-        setMetaDescription(
-          firstParagraph.content.slice(0, 160)
+      if (!metaDescription) {
+        const firstParagraph = sections.find(
+          (item) => item.type === "paragraph",
         );
+        if (firstParagraph?.content) {
+          setMetaDescription(firstParagraph.content.slice(0, 160));
+        }
       }
     }
-  }
-}, [blogTitle, sections]);
+  }, [blogTitle, sections, isEditingMode, metaDescription]);
 
   const moveSectionUp = (index: number) => {
     if (index === 0) return;
-
     const updated = [...sections];
-
-    [
-      updated[index - 1],
-      updated[index],
-    ] = [
-      updated[index],
-      updated[index - 1],
-    ];
-
+    [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
     setSections(updated);
   };
 
-  const moveSectionDown = (
-    index: number
-  ) => {
-    if (
-      index === sections.length - 1
-    )
-      return;
-
+  const moveSectionDown = (index: number) => {
+    if (index === sections.length - 1) return;
     const updated = [...sections];
-
-    [
-      updated[index],
-      updated[index + 1],
-    ] = [
-      updated[index + 1],
-      updated[index],
-    ];
-
+    [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
     setSections(updated);
   };
 
-  const addSection = (
-    type: "paragraph" | "heading" | "list"
-  ) => {
+  const addSection = (type: "paragraph" | "heading" | "list") => {
     setSections([
       ...sections,
       {
         id: Date.now(),
         type,
         content: "",
-        items:
-          type === "list"
-            ? [""]
-            : undefined,
+        items: type === "list" ? [""] : undefined,
       },
     ]);
   };
 
-  const updateSection = (
-    id: number,
-    value: string
-  ) => {
+  const updateSection = (id: number, value: string) => {
     setSections((prev) =>
       prev.map((section) =>
-        section.id === id
-          ? {
-              ...section,
-              content: value,
-            }
-          : section
-      )
+        section.id === id ? { ...section, content: value } : section,
+      ),
     );
   };
 
-  const updateListItem = (
-    sectionId: number,
-    index: number,
-    value: string
-  ) => {
+  const updateListItem = (sectionId: number, index: number, value: string) => {
     setSections((prev) =>
       prev.map((section) => {
-        if (
-          section.id === sectionId &&
-          section.items
-        ) {
-          const updatedItems = [
-            ...section.items,
-          ];
-
+        if (section.id === sectionId && section.items) {
+          const updatedItems = [...section.items];
           updatedItems[index] = value;
-
-          return {
-            ...section,
-            items: updatedItems,
-          };
+          return { ...section, items: updatedItems };
         }
-
         return section;
-      })
+      }),
     );
   };
 
-  const addListItem = (
-    sectionId: number
-  ) => {
+  const addListItem = (sectionId: number) => {
     setSections((prev) =>
       prev.map((section) => {
-        if (
-          section.id === sectionId &&
-          section.items
-        ) {
-          return {
-            ...section,
-            items: [...section.items, ""],
-          };
+        if (section.id === sectionId && section.items) {
+          return { ...section, items: [...section.items, ""] };
         }
-
         return section;
-      })
+      }),
     );
   };
 
-  const removeSection = (
-    id: number
-  ) => {
-    setSections((prev) =>
-      prev.filter(
-        (section) => section.id !== id
-      )
-    );
+  const removeSection = (id: number) => {
+    setSections((prev) => prev.filter((section) => section.id !== id));
   };
 
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (!file) return;
-
     setThumbnail(file);
-
-    const imageUrl =
-      URL.createObjectURL(file);
-
+    const imageUrl = URL.createObjectURL(file);
     setThumbnailPreview(imageUrl);
   };
 
@@ -233,193 +206,118 @@ useEffect(() => {
         alert("Blog title required");
         return;
       }
-
       if (sections.length === 0) {
-        alert(
-          "Please add at least one section"
-        );
+        alert("Please add at least one section");
         return;
       }
 
       const formData = new FormData();
-
-      formData.append(
-        "blog_title",
-        blogTitle
-      );
-
-      formData.append(
-        "author_name",
-        authorName
-      );
-
-      formData.append(
-        "publish_date",
-        publishDate
-      );
-
-      formData.append(
-        "sections",
-        JSON.stringify(sections)
-      );
-
+      formData.append("blog_title", blogTitle);
+      formData.append("author_name", authorName);
+      formData.append("publish_date", publishDate);
+      formData.append("sections", JSON.stringify(sections));
       formData.append("seo_title", seoTitle);
-formData.append("slug", slug);
-formData.append(
-  "meta_description",
-  metaDescription
-);
+      formData.append("slug", slug);
+      formData.append("meta_description", metaDescription);
 
       if (thumbnail) {
-        formData.append(
-          "thumbnail",
-          thumbnail,
-          thumbnail.name
-        );
+        formData.append("thumbnail", thumbnail, thumbnail.name);
       }
 
-      console.log(
-        "Thumbnail Sending:",
-        thumbnail
-      );
+      let response;
 
-      const response = await fetch(
-        "/Backend/be.php",
-        {
+      if (isEditingMode && blogId) {
+        formData.append("id", String(blogId));
+        
+        response = await fetch("/Backend/be.php", {
           method: "POST",
           body: formData,
-        }
-      );
+        });
+      } else {
+        response = await fetch("/Backend/be.php", {
+          method: "POST",
+          body: formData,
+        });
+      }
 
-      const data =
-        await response.json();
-
-      console.log(data);
+      const data = await response.json();
 
       if (data.success) {
         alert(
-          "Blog saved successfully"
+          isEditingMode
+            ? "Blog updated successfully"
+            : "Blog saved successfully",
         );
-
-        setBlogTitle("");
-
-        setSections([]);
-
-        setThumbnail(null);
-
-        setThumbnailPreview(
-          "/blog1.png"
-        );
-
-        setAuthorName("Admin");
-
-        setPublishDate(todayDate);
+        if (!isEditingMode) {
+          setBlogTitle("");
+          setSections([]);
+          setThumbnail(null);
+          setThumbnailPreview("/blog1.png");
+          setAuthorName("Admin");
+          setPublishDate(todayDate);
+          setSeoTitle("");
+          setSlug("");
+          setMetaDescription("");
+        }
       } else {
-        alert(
-          data.message ||
-            "Failed to save blog"
-        );
+        alert(data.message || "Failed to save blog");
       }
     } catch (error) {
       console.log(error);
-
       alert("Server error");
     } finally {
       setLoading(false);
     }
   };
 
+  if (fetchingData) {
+    return (
+      <div className="w-full flex items-center justify-center py-20 text-[#3B747F]">
+        <Loader2 size={30} className="animate-spin" />
+        <span className="ml-3 font-semibold text-[15px]">
+          Loading Blog Data...
+        </span>
+      </div>
+    );
+  }
+
   return (
     <section className="w-full flex flex-col gap-[18px]">
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-end items-center">
+        {isEditingMode && (
+          <span className="mr-4 text-[#3B747F] font-semibold text-[14px]">
+            Editing: {initialSlug}
+          </span>
+        )}
         <motion.button
-          whileHover={{
-            y: -2,
-          }}
-          whileTap={{
-            scale: 0.98,
-          }}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
           onClick={handleSaveBlog}
           disabled={loading}
-          className="
-            h-[48px]
-            px-[18px]
-            rounded-[12px]
-            bg-[#3B747F]
-            flex
-            items-center
-            justify-center
-            gap-[8px]
-            text-white
-            text-[14px]
-            font-semibold
-          "
+          className="h-[48px] px-[18px] rounded-[12px] bg-[#3B747F] flex items-center justify-center gap-[8px] text-white text-[14px] font-semibold"
         >
           {loading ? (
-            <Loader2
-              size={17}
-              className="animate-spin"
-            />
+            <Loader2 size={17} className="animate-spin" />
           ) : (
             <Save size={17} />
           )}
-
-          {loading
-            ? "Saving..."
-            : "Save Blog"}
+          {loading ? "Saving..." : isEditingMode ? "Update Blog" : "Save Blog"}
         </motion.button>
       </div>
-            <br />
-      <div
-        className="
-          w-full
-          grid
-          grid-cols-1
-          xl:grid-cols-[1fr_320px]
-          gap-[18px]
-        "
-      >
-        <div
-          className="
-            bg-white
-            border
-            border-[#E7EDF3]
-            rounded-[22px]
-            p-[16px]
-            sm:p-[20px]
-            flex
-            flex-col
-            gap-[20px]
-          "
-        >
+      <br />
+      <div className="w-full grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-[18px]">
+        <div className="bg-white border border-[#E7EDF3] rounded-[22px] p-[16px] sm:p-[20px] flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
             <label className="text-[14px] font-semibold text-black">
               Blog Thumbnail
             </label>
-
-            <label
-              className="
-                relative
-                w-full
-                h-[220px]
-                sm:h-[280px]
-                rounded-[18px]
-                border-2
-                border-dashed
-                border-[#D6E1EA]
-                overflow-hidden
-                cursor-pointer
-              "
-            >
+            <label className="relative w-full h-[220px] sm:h-[280px] rounded-[18px] border-2 border-dashed border-[#D6E1EA] overflow-hidden cursor-pointer">
               <input
                 type="file"
                 accept="image/*"
-                onChange={
-                  handleImageChange
-                }
+                onChange={handleImageChange}
                 className="hidden"
               />
-
               <Image
                 src={thumbnailPreview}
                 alt="Blog"
@@ -427,26 +325,10 @@ formData.append(
                 unoptimized
                 className="object-cover"
               />
-
-              <div
-                className="
-                  absolute
-                  inset-0
-                  bg-black/35
-                  flex
-                  flex-col
-                  items-center
-                  justify-center
-                  gap-[8px]
-                "
-              >
-                <ImageIcon
-                  size={28}
-                  className="text-white"
-                />
-
+              <div className="absolute inset-0 bg-black/35 flex flex-col items-center justify-center gap-[8px]">
+                <ImageIcon size={28} className="text-white" />
                 <span className="text-white text-[14px] font-medium">
-                  Upload Image
+                  {isEditingMode ? "Change Image" : "Upload Image"}
                 </span>
               </div>
             </label>
@@ -457,39 +339,13 @@ formData.append(
               <label className="text-[13px] font-medium text-black">
                 Author Name
               </label>
-
-              <div
-                className="
-                  h-[46px]
-                  border
-                  border-[#D0D5DD]
-                  rounded-[12px]
-                  px-[14px]
-                  flex
-                  items-center
-                  gap-[8px]
-                "
-              >
-                <User2
-                  size={16}
-                  className="text-black"
-                />
-
+              <div className="h-[46px] border border-[#D0D5DD] rounded-[12px] px-[14px] flex items-center gap-[8px]">
+                <User2 size={16} className="text-black" />
                 <input
                   type="text"
                   value={authorName}
-                  onChange={(e) =>
-                    setAuthorName(
-                      e.target.value
-                    )
-                  }
-                  className="
-                    flex-1
-                    outline-none
-                    bg-transparent
-                    text-black
-                    text-[14px]
-                  "
+                  onChange={(e) => setAuthorName(e.target.value)}
+                  className="flex-1 outline-none bg-transparent text-black text-[14px]"
                 />
               </div>
             </div>
@@ -498,39 +354,13 @@ formData.append(
               <label className="text-[13px] font-medium text-black">
                 Publish Date
               </label>
-
-              <div
-                className="
-                  h-[46px]
-                  border
-                  border-[#D0D5DD]
-                  rounded-[12px]
-                  px-[14px]
-                  flex
-                  items-center
-                  gap-[8px]
-                "
-              >
-                <Calendar
-                  size={16}
-                  className="text-black"
-                />
-
+              <div className="h-[46px] border border-[#D0D5DD] rounded-[12px] px-[14px] flex items-center gap-[8px]">
+                <Calendar size={16} className="text-black" />
                 <input
                   type="date"
                   value={publishDate}
-                  onChange={(e) =>
-                    setPublishDate(
-                      e.target.value
-                    )
-                  }
-                  className="
-                    flex-1
-                    outline-none
-                    bg-transparent
-                    text-black
-                    text-[14px]
-                  "
+                  onChange={(e) => setPublishDate(e.target.value)}
+                  className="flex-1 outline-none bg-transparent text-black text-[14px]"
                 />
               </div>
             </div>
@@ -540,489 +370,180 @@ formData.append(
             <label className="text-[14px] font-semibold text-black">
               Blog Heading
             </label>
-
             <textarea
               rows={2}
               value={blogTitle}
-              onChange={(e) =>
-                setBlogTitle(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setBlogTitle(e.target.value)}
               placeholder="Enter blog heading..."
-              className="
-                w-full
-                border
-                border-[#D0D5DD]
-                rounded-[14px]
-                px-[14px]
-                py-[12px]
-                outline-none
-                resize-none
-                text-[20px]
-                font-semibold
-                text-black
-              "
+              className="w-full border border-[#D0D5DD] rounded-[14px] px-[14px] py-[12px] outline-none resize-none text-[20px] font-semibold text-black"
             />
           </div>
 
           <div className="flex flex-col gap-[14px]">
-            {sections.map(
-              (section, index) => (
-                <motion.div
-                  key={section.id}
-                  initial={{
-                    opacity: 0,
-                    y: 10,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  className="
-                    border
-                    border-[#E7EDF3]
-                    rounded-[18px]
-                    p-[14px]
-                    flex
-                    flex-col
-                    gap-[12px]
-                  "
-                >
-                  <div className="flex items-center justify-between">
-                    <div
-                      className="
-                        px-[10px]
-                        py-[5px]
-                        rounded-full
-                        bg-[#EAF4F5]
-                        text-[#3B747F]
-                        text-[11px]
-                        font-semibold
-                        uppercase
-                      "
-                    >
-                      {section.type}
-                    </div>
-
-                    <div className="flex items-center gap-[6px]">
-                      <button
-                        onClick={() =>
-                          moveSectionUp(
-                            index
-                          )
-                        }
-                        className="
-                          w-[34px]
-                          h-[34px]
-                          rounded-full
-                          border
-                          border-[#E5E7EB]
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        <ArrowUp
-                          size={15}
-                          className="text-black"
-                        />
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          moveSectionDown(
-                            index
-                          )
-                        }
-                        className="
-                          w-[34px]
-                          h-[34px]
-                          rounded-full
-                          border
-                          border-[#E5E7EB]
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        <ArrowDown
-                          size={15}
-                          className="text-black"
-                        />
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          removeSection(
-                            section.id
-                          )
-                        }
-                        className="
-                          w-[34px]
-                          h-[34px]
-                          rounded-full
-                          bg-[#FFF1F1]
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        <Trash2
-                          size={15}
-                          className="text-red-600"
-                        />
-                      </button>
-                    </div>
+            {sections.map((section, index) => (
+              <motion.div
+                key={section.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="border border-[#E7EDF3] rounded-[18px] p-[14px] flex flex-col gap-[12px]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="px-[10px] py-[5px] rounded-full bg-[#EAF4F5] text-[#3B747F] text-[11px] font-semibold uppercase">
+                    {section.type}
                   </div>
+                  <div className="flex items-center gap-[6px]">
+                    <button
+                      onClick={() => moveSectionUp(index)}
+                      className="w-[34px] h-[34px] rounded-full border border-[#E5E7EB] flex items-center justify-center"
+                    >
+                      <ArrowUp size={15} className="text-black" />
+                    </button>
+                    <button
+                      onClick={() => moveSectionDown(index)}
+                      className="w-[34px] h-[34px] rounded-full border border-[#E5E7EB] flex items-center justify-center"
+                    >
+                      <ArrowDown size={15} className="text-black" />
+                    </button>
+                    <button
+                      onClick={() => removeSection(section.id)}
+                      className="w-[34px] h-[34px] rounded-full bg-[#FFF1F1] flex items-center justify-center"
+                    >
+                      <Trash2 size={15} className="text-red-600" />
+                    </button>
+                  </div>
+                </div>
 
-                  {section.type ===
-                    "heading" && (
+                {section.type === "heading" && (
+                  <textarea
+                    rows={2}
+                    value={section.content}
+                    onChange={(e) => updateSection(section.id, e.target.value)}
+                    placeholder="Sub heading..."
+                    className="w-full border border-[#D0D5DD] rounded-[12px] px-[14px] py-[12px] outline-none resize-none text-[20px] font-semibold text-black"
+                  />
+                )}
+
+                {section.type === "paragraph" && (
+                  <textarea
+                    rows={5}
+                    value={section.content}
+                    onChange={(e) => updateSection(section.id, e.target.value)}
+                    placeholder="Paragraph..."
+                    className="w-full border border-[#D0D5DD] rounded-[12px] px-[14px] py-[12px] outline-none resize-none text-[15px] leading-[180%] text-black"
+                  />
+                )}
+
+                {section.type === "list" && (
+                  <div className="flex flex-col gap-[10px]">
                     <textarea
                       rows={2}
-                      value={
-                        section.content
-                      }
+                      value={section.content}
                       onChange={(e) =>
-                        updateSection(
-                          section.id,
-                          e.target.value
-                        )
+                        updateSection(section.id, e.target.value)
                       }
-                      placeholder="Sub heading..."
-                      className="
-                        w-full
-                        border
-                        border-[#D0D5DD]
-                        rounded-[12px]
-                        px-[14px]
-                        py-[12px]
-                        outline-none
-                        resize-none
-                        text-[20px]
-                        font-semibold
-                        text-black
-                      "
+                      placeholder="List heading..."
+                      className="w-full border border-[#D0D5DD] rounded-[12px] px-[14px] py-[12px] outline-none resize-none text-[17px] font-semibold text-black"
                     />
-                  )}
-
-                  {section.type ===
-                    "paragraph" && (
-                    <textarea
-                      rows={5}
-                      value={
-                        section.content
-                      }
-                      onChange={(e) =>
-                        updateSection(
-                          section.id,
-                          e.target.value
-                        )
-                      }
-                      placeholder="Paragraph..."
-                      className="
-                        w-full
-                        border
-                        border-[#D0D5DD]
-                        rounded-[12px]
-                        px-[14px]
-                        py-[12px]
-                        outline-none
-                        resize-none
-                        text-[15px]
-                        leading-[180%]
-                        text-black
-                      "
-                    />
-                  )}
-
-                  {section.type ===
-                    "list" && (
-                    <div className="flex flex-col gap-[10px]">
-                      <textarea
-                        rows={2}
-                        value={
-                          section.content
-                        }
-                        onChange={(e) =>
-                          updateSection(
-                            section.id,
-                            e.target.value
-                          )
-                        }
-                        placeholder="List heading..."
-                        className="
-                          w-full
-                          border
-                          border-[#D0D5DD]
-                          rounded-[12px]
-                          px-[14px]
-                          py-[12px]
-                          outline-none
-                          resize-none
-                          text-[17px]
-                          font-semibold
-                          text-black
-                        "
-                      />
-
-                      {section.items?.map(
-                        (
-                          item,
-                          itemIndex
-                        ) => (
-                          <div
-                            key={itemIndex}
-                            className="flex items-center gap-[8px]"
-                          >
-                            <div
-                              className="
-                                w-[7px]
-                                h-[7px]
-                                rounded-full
-                                bg-[#3B747F]
-                              "
-                            />
-
-                            <input
-                              type="text"
-                              value={item}
-                              onChange={(
-                                e
-                              ) =>
-                                updateListItem(
-                                  section.id,
-                                  itemIndex,
-                                  e
-                                    .target
-                                    .value
-                                )
-                              }
-                              placeholder="Pointer..."
-                              className="
-                                flex-1
-                                h-[44px]
-                                border
-                                border-[#D0D5DD]
-                                rounded-[12px]
-                                px-[14px]
-                                outline-none
-                                text-black
-                                text-[14px]
-                              "
-                            />
-                          </div>
-                        )
-                      )}
-
-                      <button
-                        onClick={() =>
-                          addListItem(
-                            section.id
-                          )
-                        }
-                        className="
-                          h-[40px]
-                          rounded-[12px]
-                          bg-[#EAF4F5]
-                          text-[#3B747F]
-                          text-[13px]
-                          font-medium
-                        "
+                    {section.items?.map((item, itemIndex) => (
+                      <div
+                        key={itemIndex}
+                        className="flex items-center gap-[8px]"
                       >
-                        + Add Pointer
-                      </button>
-                    </div>
-                  )}
-                </motion.div>
-              )
-            )}
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#3B747F]" />
+                        <input
+                          type="text"
+                          value={item}
+                          onChange={(e) =>
+                            updateListItem(
+                              section.id,
+                              itemIndex,
+                              e.target.value,
+                            )
+                          }
+                          placeholder="Pointer..."
+                          className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[12px] px-[14px] outline-none text-black text-[14px]"
+                        />
+                      </div>
+                    ))}
+                    <button
+                      onClick={() => addListItem(section.id)}
+                      className="h-[40px] rounded-[12px] bg-[#EAF4F5] text-[#3B747F] text-[13px] font-medium"
+                    >
+                      + Add Pointer
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        <div
-          className="
-            bg-white
-            border
-            border-[#E7EDF3]
-            rounded-[22px]
-            p-[16px]
-            h-fit
-            sticky
-            top-[20px]
-            flex
-            flex-col
-            gap-[12px]
-          "
-        >
+        <div className="bg-white border border-[#E7EDF3] rounded-[22px] p-[16px] h-fit sticky top-[20px] flex flex-col gap-[12px]">
           <button
-            onClick={() =>
-              addSection("heading")
-            }
-            className="
-              h-[48px]
-              rounded-[14px]
-              bg-[#F4F8FB]
-              border
-              border-[#E4EDF3]
-              flex
-              items-center
-              justify-center
-              gap-[8px]
-              text-black
-              text-[14px]
-              font-medium
-            "
+            onClick={() => addSection("heading")}
+            className="h-[48px] rounded-[14px] bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center gap-[8px] text-black text-[14px] font-medium"
           >
             <Plus size={16} />
             Add Heading
           </button>
-
           <button
-            onClick={() =>
-              addSection("paragraph")
-            }
-            className="
-              h-[48px]
-              rounded-[14px]
-              bg-[#F4F8FB]
-              border
-              border-[#E4EDF3]
-              flex
-              items-center
-              justify-center
-              gap-[8px]
-              text-black
-              text-[14px]
-              font-medium
-            "
+            onClick={() => addSection("paragraph")}
+            className="h-[48px] rounded-[14px] bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center gap-[8px] text-black text-[14px] font-medium"
           >
             <Plus size={16} />
             Add Paragraph
           </button>
-
           <button
-            onClick={() =>
-              addSection("list")
-            }
-            className="
-              h-[48px]
-              rounded-[14px]
-              bg-[#F4F8FB]
-              border
-              border-[#E4EDF3]
-              flex
-              items-center
-              justify-center
-              gap-[8px]
-              text-black
-              text-[14px]
-              font-medium
-            "
+            onClick={() => addSection("list")}
+            className="h-[48px] rounded-[14px] bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center gap-[8px] text-black text-[14px] font-medium"
           >
             <Plus size={16} />
             Add List
           </button>
-          <div
-  className="
-    mt-[8px]
-    border
-    border-[#E7EDF3]
-    rounded-[16px]
-    p-[14px]
-    flex
-    flex-col
-    gap-[12px]
-  "
->
-  <h3 className="text-[15px] font-semibold text-black">
-    SEO Settings
-  </h3>
 
-  <div className="flex flex-col gap-[6px]">
-    <label className="text-[13px] font-medium text-black">
-      SEO Title
-    </label>
-
-    <input
-      type="text"
-      value={seoTitle}
-      onChange={(e) =>
-        setSeoTitle(e.target.value)
-      }
-      className="
-        h-[44px]
-        border
-        border-[#D0D5DD]
-        rounded-[12px]
-        px-[12px]
-        outline-none
-        text-[14px]
-        text-black
-      "
-      placeholder="SEO Title"
-    />
-  </div>
-
-  <div className="flex flex-col gap-[6px]">
-    <label className="text-[13px] font-medium text-black">
-      Slug
-    </label>
-
-    <input
-      type="text"
-      value={slug}
-      onChange={(e) =>
-        setSlug(e.target.value)
-      }
-      className="
-        h-[44px]
-        border
-        border-[#D0D5DD]
-        rounded-[12px]
-        px-[12px]
-        outline-none
-        text-[14px]
-        text-black
-      "
-      placeholder="blog-slug"
-    />
-  </div>
-
-  <div className="flex flex-col gap-[6px]">
-    <label className="text-[13px] font-medium text-black">
-      Meta Description
-    </label>
-
-    <textarea
-      rows={4}
-      value={metaDescription}
-      onChange={(e) =>
-        setMetaDescription(
-          e.target.value
-        )
-      }
-      className="
-        border
-        border-[#D0D5DD]
-        rounded-[12px]
-        px-[12px]
-        py-[10px]
-        outline-none
-        resize-none
-        text-[14px]
-        text-black
-      "
-      placeholder="Meta Description..."
-    />
-
-    <span className="text-[11px] text-gray-500">
-      {metaDescription.length}/160
-    </span>
-  </div>
-</div>
+          <div className="mt-[8px] border border-[#E7EDF3] rounded-[16px] p-[14px] flex flex-col gap-[12px]">
+            <h3 className="text-[15px] font-semibold text-black">
+              SEO Settings
+            </h3>
+            <div className="flex flex-col gap-[6px]">
+              <label className="text-[13px] font-medium text-black">
+                SEO Title
+              </label>
+              <input
+                type="text"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                className="h-[44px] border border-[#D0D5DD] rounded-[12px] px-[12px] outline-none text-[14px] text-black"
+                placeholder="SEO Title"
+              />
+            </div>
+            <div className="flex flex-col gap-[6px]">
+              <label className="text-[13px] font-medium text-black">Slug</label>
+              <input
+                type="text"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                className="h-[44px] border border-[#D0D5DD] rounded-[12px] px-[12px] outline-none text-[14px] text-black"
+                placeholder="blog-slug"
+              />
+            </div>
+            <div className="flex flex-col gap-[6px]">
+              <label className="text-[13px] font-medium text-black">
+                Meta Description
+              </label>
+              <textarea
+                rows={4}
+                value={metaDescription}
+                onChange={(e) => setMetaDescription(e.target.value)}
+                className="border border-[#D0D5DD] rounded-[12px] px-[12px] py-[10px] outline-none resize-none text-[14px] text-black"
+                placeholder="Meta Description..."
+              />
+              <span className="text-[11px] text-gray-500">
+                {metaDescription.length}/160
+              </span>
+            </div>
+          </div>
         </div>
-        
       </div>
     </section>
   );

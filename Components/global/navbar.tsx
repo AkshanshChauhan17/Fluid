@@ -13,7 +13,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const loadUser = () => {
-      const storedUser = localStorage.getItem("fluid_user");
+      const storedUser = localStorage.getItem("user");
 
       if (!storedUser) {
         setUser(null);
@@ -37,12 +37,18 @@ export default function Navbar() {
       }
     };
 
+    // Load initially
     loadUser();
 
+    // Listen for changes from OTHER tabs
     window.addEventListener("storage", loadUser);
+    
+    // Listen for changes from the SAME tab (Custom Event)
+    window.addEventListener("userAuthChange", loadUser);
 
     return () => {
       window.removeEventListener("storage", loadUser);
+      window.removeEventListener("userAuthChange", loadUser);
     };
   }, []);
 

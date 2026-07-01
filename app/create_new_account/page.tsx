@@ -90,7 +90,7 @@ export default function CreateNewAccount() {
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        router.refresh();
+        router.push("/");
       } else {
         setError(data.message);
       }

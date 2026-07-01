@@ -24,7 +24,7 @@ export default function GoogleLoginButton() {
     ) => {
       try {
         const res = await fetch(
-          "http://fluid.financial/Backend/google-login.php",
+          "/Backend/google-login.php",
           {
             method: "POST",
 
@@ -41,8 +41,6 @@ export default function GoogleLoginButton() {
 
         const data =
           await res.json();
-
-        console.log(data);
 
         if (data.success) {
           localStorage.setItem(
@@ -64,7 +62,6 @@ export default function GoogleLoginButton() {
           );
 
           router.push("/");
-          router.refresh();
         }
       } catch (error) {
         console.error(
