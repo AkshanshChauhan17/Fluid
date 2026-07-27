@@ -129,7 +129,7 @@ export default function SuccessSection() {
               flex-col
               items-start
               gap-[32px]
-              sm:gap-[60px]
+              sm:gap-[32px]
             "
           >
             <div className="flex flex-col items-start gap-[8px]">

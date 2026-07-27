@@ -59,7 +59,7 @@ const fadeUpVariants: Variants = {
 
 export default function PricingOptionCardRight() {
   return (
-    <section className="w-full py-0 px-5 sm:px-0 flex-1 flex justify-center overflow-hidden">
+    <section className="py-0 px-5 sm:px-0 flex-1 flex justify-center overflow-hidden">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -325,7 +325,7 @@ export default function PricingOptionCardRight() {
           </div>
         </motion.div>
 
-        <Link href="/agent_application/">
+        <Link className="mt-auto" href="/agent_application/">
           <motion.button
             variants={fadeUpVariants}
             whileHover={{
@@ -335,7 +335,7 @@ export default function PricingOptionCardRight() {
               scale: 0.98,
             }}
             className="
-            mt-[32px]
+            mt-auto
             w-full
             h-[48px]
             rounded-[8px]

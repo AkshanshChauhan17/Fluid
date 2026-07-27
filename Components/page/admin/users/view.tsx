@@ -63,7 +63,7 @@ export default function UsersTable() {
         setLoading(true);
 
         const response = await fetch(
-          "/Backend/users.php"
+          "https://api.fluid.financial/users.php"
         );
 
         const data = await response.json();

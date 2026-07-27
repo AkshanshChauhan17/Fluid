@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL USERS
 
-/Backend/users.php
+https://api.fluid.financial/users.php
 
 GET SINGLE USER
 
-/Backend/users.php?id=1
+https://api.fluid.financial/users.php?id=1
 
 */
 

@@ -1,15 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import {
   FileText,
   Download,
+  ChevronRight,
+  ArrowLeft,
+  Mail,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 
-import {
-  motion,
-  Variants,
-} from "framer-motion";
+import { motion, Variants, AnimatePresence } from "framer-motion";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -36,9 +39,93 @@ const fadeUpVariants: Variants = {
       ease: [0.22, 1, 0.36, 1],
     },
   },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: { duration: 0.3 },
+  },
 };
 
 export default function DownloadResourceSection() {
+  const [step, setStep] = useState(1);
+
+  const [name, setName] = useState("");
+  const [practiceName, setPracticeName] = useState("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // ============================================
+  // STEP 1: REQUEST DOWNLOAD (SEND OTP)
+  // ============================================
+  const handleRequestDownload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch("https://api.fluid.financial/download.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "request_download",
+          name,
+          email,
+          practice_name: practiceName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStep(2);
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server connection failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ============================================
+  // STEP 2: VERIFY OTP & GET CHECKLIST
+  // ============================================
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch("https://api.fluid.financial/download.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "verify_otp",
+          email,
+          otp,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStep(3);
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server connection failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="w-full bg-white py-0 px-5 sm:px-8 lg:px-0 overflow-hidden">
       <motion.div
@@ -88,27 +175,24 @@ export default function DownloadResourceSection() {
             "
           />
 
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
+            {/* LEFT SIDE: IMAGE */}
             <motion.div
               variants={fadeUpVariants}
-              whileHover={{
-                y: -4,
-              }}
+              whileHover={{ y: -4 }}
               className="
                 relative
                 w-full
-                max-w-[500px]
-                h-[240px]
-                sm:h-[280px]
+                max-w-[450px]
+                h-[280px]
+                sm:h-[340px]
                 rounded-[18px]
                 overflow-hidden
                 shrink-0
               "
             >
               <motion.div
-                animate={{
-                  scale: [1, 1.03, 1],
-                }}
+                animate={{ scale: [1, 1.03, 1] }}
                 transition={{
                   duration: 8,
                   repeat: Infinity,
@@ -127,9 +211,7 @@ export default function DownloadResourceSection() {
               <div className="absolute inset-0 bg-[#0E213450]" />
 
               <motion.div
-                animate={{
-                  y: [0, -4, 0],
-                }}
+                animate={{ y: [0, -4, 0] }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
@@ -151,104 +233,168 @@ export default function DownloadResourceSection() {
                   border-white/10
                 "
               >
-                <FileText
-                  size={18}
-                  className="text-white"
-                  strokeWidth={1.8}
-                />
+                <FileText size={18} className="text-white" strokeWidth={1.8} />
               </motion.div>
 
               <div className="absolute bottom-5 left-5 pr-5">
-                <p className="text-white text-[18px] sm:text-[20px] leading-[130%] tracking-[-1px] font-normal">
+                <p className="text-white text-[18px] sm:text-[20px] leading-[130%] tracking-[-1px] font-medium">
                   Healthcare Payment Compliance Checklist
                 </p>
               </div>
             </motion.div>
 
-            <motion.div
-              variants={containerVariants}
-              className="flex-1 w-full"
-            >
-              <motion.h2
-                variants={fadeUpVariants}
-                className="
-                  text-white
-                  text-[34px]
-                  sm:text-[44px]
-                  leading-[115%]
-                  sm:leading-[56px]
-                  tracking-[-0.04em]
-                  font-normal
-                "
-              >
-                Downloadable Resource
-              </motion.h2>
+            {/* RIGHT SIDE: FORM */}
+            <motion.div variants={containerVariants} className="flex-1 w-full max-w-[500px]">
+              <AnimatePresence mode="wait">
+                {/* STEP 1: FORM */}
+                {step === 1 && (
+                  <motion.form
+                    key="step-1"
+                    variants={fadeUpVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    onSubmit={handleRequestDownload}
+                    className="flex flex-col w-full"
+                  >
+                    <h2 className="text-white text-[28px] sm:text-[36px] leading-[115%] tracking-[-0.03em] font-medium mb-2">
+                      Get Your Free Checklist
+                    </h2>
+                    <p className="text-[#d0d5dd] text-[15px] sm:text-[16px] leading-[160%] font-light mb-8">
+                      Complete the form below to receive the definitive compliance audit PDF directly to your inbox.
+                    </p>
 
-              <motion.p
-                variants={fadeUpVariants}
-                className="
-                  mt-[16px]
-                  text-[#d0d5dd]
-                  text-[15px]
-                  sm:text-[16px]
-                  max-w-[480px]
-                  font-light
-                  tracking-[-0.3px]
-                  leading-[170%]
-                "
-              >
-                Get the definitive 'Healthcare Payment Compliance Checklist'
-                to audit your current vendor today.
-              </motion.p>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[13px] font-medium text-[#d0d5dd]">Full Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="John Doe"
+                          className="w-full h-[30px] bg-white/5 border border-white/10 rounded-[10px] px-4 text-[15px] text-white placeholder:text-white/30 outline-none focus:border-[#5DA7CF] focus:bg-white/10 transition-colors"
+                        />
+                      </div>
 
-              <motion.button
-                variants={fadeUpVariants}
-                whileHover={{
-                  y: -2,
-                  scale: 1.02,
-                }}
-                whileTap={{
-                  scale: 0.98,
-                }}
-                className="
-                  mt-[28px]
-                  sm:mt-[32px]
-                  px-[20px]
-                  py-[12px]
-                  rounded-[8px]
-                  bg-[#3b747f]
-                  hover:bg-[#5a9ca4]
-                  transition-colors
-                  duration-300
-                  flex
-                  items-center
-                  gap-3
-                  text-white
-                  text-[16px]
-                  tracking-[0%]
-                  leading-[24px]
-                  font-medium
-                "
-                onClick={()=>window.open("https://docs.google.com/document/d/1vqBQ2TuCFZDqKRTL4wMcxwtszWBn_cPCsTozablTT_E/export?format=pdf")}
-              >
-                <motion.div
-                  animate={{
-                    y: [0, 2, 0],
-                  }}
-                  transition={{
-                    duration: 1.8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Download
-                    size={16}
-                    strokeWidth={2}
-                  />
-                </motion.div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[13px] font-medium text-[#d0d5dd]">Practice Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={practiceName}
+                          onChange={(e) => setPracticeName(e.target.value)}
+                          placeholder="Fluid Healthcare LLC"
+                          className="w-full h-[30px] bg-white/5 border border-white/10 rounded-[10px] px-4 text-[15px] text-white placeholder:text-white/30 outline-none focus:border-[#5DA7CF] focus:bg-white/10 transition-colors"
+                        />
+                      </div>
 
-                Download Checklist
-              </motion.button>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[13px] font-medium text-[#d0d5dd]">Work Email</label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="john@example.com"
+                          className="w-full h-[30px] bg-white/5 border border-white/10 rounded-[10px] px-4 text-[15px] text-white placeholder:text-white/30 outline-none focus:border-[#5DA7CF] focus:bg-white/10 transition-colors"
+                        />
+                      </div>
+
+                      {error && <p className="text-red-400 text-[13px] font-medium">{error}</p>}
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full h-[48px] bg-[#3b747f] hover:bg-[#5a9ca4] text-white rounded-[10px] font-semibold mt-2 flex items-center justify-center gap-2 transition-colors disabled:opacity-70"
+                      >
+                        {loading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}
+                        {loading ? "Processing..." : "Send Me The Checklist"}
+                      </button>
+                    </div>
+                  </motion.form>
+                )}
+
+                {/* STEP 2: OTP VERIFICATION */}
+                {step === 2 && (
+                  <motion.form
+                    key="step-2"
+                    variants={fadeUpVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    onSubmit={handleVerifyOTP}
+                    className="flex flex-col w-full"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => { setStep(1); setError(""); setOtp(""); }}
+                      className="flex items-center gap-2 text-[#d0d5dd] hover:text-white transition-colors text-[13px] font-medium mb-6 w-fit"
+                    >
+                      <ArrowLeft size={14} /> Change Email
+                    </button>
+
+                    <h2 className="text-white text-[28px] sm:text-[36px] leading-[115%] tracking-[-0.03em] font-medium mb-2">
+                      Verify Your Email
+                    </h2>
+                    
+                    <div className="bg-white/5 border border-white/10 rounded-[12px] p-5 mb-6 mt-4">
+                      <Mail size={24} className="text-[#5DA7CF] mb-3" />
+                      <p className="text-[#d0d5dd] text-[15px] leading-relaxed">
+                        We sent a 6-digit code to <strong className="text-white">{email}</strong>. Enter it below to receive your checklist.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[13px] font-medium text-[#d0d5dd]">Verification Code</label>
+                        <input
+                          type="text"
+                          required
+                          maxLength={6}
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                          placeholder="000000"
+                          className="w-full h-[52px] bg-white/5 border border-white/10 rounded-[10px] px-4 text-[24px] tracking-[0.3em] text-center text-white placeholder:text-white/20 placeholder:tracking-normal outline-none focus:border-[#5DA7CF] focus:bg-white/10 transition-colors"
+                        />
+                      </div>
+
+                      {error && <p className="text-red-400 text-[13px] font-medium text-center">{error}</p>}
+
+                      <button
+                        type="submit"
+                        disabled={loading || otp.length < 6}
+                        className="w-full h-[48px] bg-[#3b747f] hover:bg-[#5a9ca4] text-white rounded-[10px] font-semibold mt-2 flex items-center justify-center transition-colors disabled:opacity-70"
+                      >
+                        {loading ? <Loader2 size={18} className="animate-spin" /> : "Verify & Download"}
+                      </button>
+                    </div>
+                  </motion.form>
+                )}
+
+                {/* STEP 3: SUCCESS */}
+                {step === 3 && (
+                  <motion.div
+                    key="step-3"
+                    variants={fadeUpVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="flex flex-col items-start w-full py-6"
+                  >
+                    <div className="w-16 h-16 bg-[#3b747f]/20 border border-[#3b747f]/30 rounded-full flex items-center justify-center text-[#5DA7CF] mb-6">
+                      <CheckCircle2 size={32} />
+                    </div>
+                    <h2 className="text-white text-[28px] sm:text-[36px] leading-[115%] tracking-[-0.03em] font-medium mb-3">
+                      You're All Set!
+                    </h2>
+                    <p className="text-[#d0d5dd] text-[16px] leading-[170%]">
+                      Thank you, {name}. The checklist has been successfully sent to <strong className="text-white">{email}</strong>. 
+                      <br /><br />
+                      Please check your inbox (and spam folder) to download your document.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </motion.div>

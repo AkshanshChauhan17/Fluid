@@ -31,11 +31,11 @@ if ($conn->connect_error) {
 
 GET ALL
 
-/Backend/home_calc.php
+https://api.fluid.financial/home_calc.php
 
 DELETE
 
-/Backend/home_calc.php?id=2
+https://api.fluid.financial/home_calc.php?id=2
 
 */
 

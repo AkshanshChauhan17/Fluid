@@ -51,7 +51,7 @@ export default function BlogEditorSection({
         setIsEditingMode(true);
         try {
           const res = await fetch(
-            `/Backend/rb.php?slug=${encodeURIComponent(initialSlug)}`,
+            `https://api.fluid.financial/rb.php?slug=${encodeURIComponent(initialSlug)}`,
           );
           if (!res.ok) throw new Error("Failed to fetch");
 
@@ -67,7 +67,7 @@ export default function BlogEditorSection({
             setMetaDescription(data.meta_description || "");
 
             if (data.thumbnail) {
-              setThumbnailPreview(`https://fluid.financial${data.thumbnail}`);
+              setThumbnailPreview(`https://api.fluid.financial${data.thumbnail}`);
             }
 
             if (data.sections) {
@@ -229,12 +229,12 @@ export default function BlogEditorSection({
       if (isEditingMode && blogId) {
         formData.append("id", String(blogId));
         
-        response = await fetch("/Backend/be.php", {
+        response = await fetch("https://api.fluid.financial/be.php", {
           method: "POST",
           body: formData,
         });
       } else {
-        response = await fetch("/Backend/be.php", {
+        response = await fetch("https://api.fluid.financial/be.php", {
           method: "POST",
           body: formData,
         });

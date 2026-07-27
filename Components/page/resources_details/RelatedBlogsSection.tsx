@@ -53,7 +53,7 @@ export default function RelatedBlogsSection() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`/Backend/rb.php`);
+        const response = await fetch(`https://api.fluid.financial/rb.php`);
 
         const data = await response.json();
 
@@ -140,7 +140,7 @@ export default function RelatedBlogsSection() {
                     <Image
                       src={
                         item.thumbnail
-                          ? `/Backend/${item.thumbnail}`
+                          ? `https://api.fluid.financial${item.thumbnail}`
                           : "/blog-sec-1.png"
                       }
                       alt={item.blog_title}
@@ -258,7 +258,7 @@ export default function RelatedBlogsSection() {
                     <Image
                       src={
                         item.thumbnail
-                          ? `/Backend/${item.thumbnail}`
+                          ? `https://api.fluid.financial${item.thumbnail}`
                           : "/blog-sec-1.png"
                       }
                       alt={item.blog_title}

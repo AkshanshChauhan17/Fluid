@@ -55,7 +55,7 @@ export default function AgentApplicationTable() {
       setLoading(true);
 
       const response = await fetch(
-        `/Backend/agent_app.php?search=${search}&sort=${sort}`
+        `https://api.fluid.financial/agent_app.php?search=${search}&sort=${sort}`
       );
 
       const result = await response.json();
@@ -86,7 +86,7 @@ export default function AgentApplicationTable() {
 
     try {
       const response = await fetch(
-        `/Backend/agent_application.php?id=${id}`,
+        `https://api.fluid.financial/agent_application.php?id=${id}`,
         {
           method: "DELETE",
         }
@@ -543,7 +543,7 @@ export default function AgentApplicationTable() {
               {/* FILE */}
 
               <a
-                href={`/Backend/${selectedItem.uploaded_file}`}
+                href={`https://api.fluid.financial/${selectedItem.uploaded_file}`}
                 target="_blank"
                 className="
                   h-[50px]

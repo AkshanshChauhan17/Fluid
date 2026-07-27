@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
-
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Link2, 
+  Check 
+} from "lucide-react";
 import { motion, Variants } from "framer-motion";
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 type BlogSection = {
   id: number;
@@ -53,72 +56,94 @@ const fadeUpVariants: Variants = {
 };
 
 export default function BlogDetailsPage() {
-
   const [blog, setBlog] = useState<BlogData | null>(null);
   const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-  const updateSlug = () => {
-    const currentSlug =
-      new URLSearchParams(
-        window.location.search
-      ).get("slug") || "";
+    const updateSlug = () => {
+      const currentSlug =
+        new URLSearchParams(window.location.search).get("slug") || "";
 
-    setSlug((prev) =>
-      prev !== currentSlug
-        ? currentSlug
-        : prev
-    );
-  };
+      setSlug((prev) => (prev !== currentSlug ? currentSlug : prev));
+    };
 
-  updateSlug();
+    updateSlug();
 
-  const interval = setInterval(
-    updateSlug,
-    200
-  );
+    const interval = setInterval(updateSlug, 200);
 
-  return () =>
-    clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
-useEffect(() => {
-  if (!slug) {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setBlog(null);
-    setLoading(false);
-    return;
-  }
-
-  const fetchBlog = async () => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(
-        `/Backend/rb.php?slug=${encodeURIComponent(
-          slug
-        )}`
-      );
-
-      const data =
-        await response.json();
-
-      if (data.success) {
-        setBlog(data.blog);
-      } else {
-        setBlog(null);
-      }
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (!slug) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBlog(null);
-    } finally {
       setLoading(false);
+      return;
+    }
+
+    const fetchBlog = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(
+          `https://api.fluid.financial/rb.php?slug=${encodeURIComponent(
+            slug
+          )}`
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+          setBlog(data.blog);
+        } else {
+          setBlog(null);
+        }
+      } catch (error) {
+        console.log(error);
+        setBlog(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [slug]);
+
+  // ============================================
+  // SOCIAL SHARE HANDLERS
+  // ============================================
+  const handleShare = (platform: "facebook" | "twitter" | "linkedin") => {
+    const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+    const encodedUrl = encodeURIComponent(shareUrl);
+    const encodedTitle = encodeURIComponent(blog?.blog_title || "Check out this blog");
+
+    let url = "";
+    switch (platform) {
+      case "facebook":
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        break;
+      case "twitter":
+        url = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+        break;
+      case "linkedin":
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+        break;
+    }
+    
+    if (url) {
+      window.open(url, "_blank", "width=600,height=400");
     }
   };
 
-  fetchBlog();
-}, [slug]);
+  const handleCopyLink = () => {
+    const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   if (loading) {
     return (
@@ -145,7 +170,6 @@ useEffect(() => {
         className="flex flex-col items-start gap-[32px] sm:gap-[40px]"
       >
         {/* BREADCRUMB */}
-
         <motion.div
           variants={fadeUpVariants}
           className="flex flex-wrap items-center gap-[10px]"
@@ -165,19 +189,14 @@ useEffect(() => {
 
         <div className="w-full max-w-7xl flex flex-col items-start gap-[32px] sm:gap-[40px]">
           {/* HERO */}
-
           <motion.div
             variants={containerVariants}
             className="w-full flex flex-col items-start gap-[24px] sm:gap-[32px]"
           >
             <motion.div
               variants={fadeUpVariants}
-              whileHover={{
-                scale: 1.01,
-              }}
-              transition={{
-                duration: 0.4,
-              }}
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.4 }}
               className="
                 relative
                 w-full
@@ -189,9 +208,7 @@ useEffect(() => {
               "
             >
               <motion.div
-                animate={{
-                  scale: [1, 1.02, 1],
-                }}
+                animate={{ scale: [1, 1.02, 1] }}
                 transition={{
                   duration: 8,
                   repeat: Infinity,
@@ -201,7 +218,9 @@ useEffect(() => {
               >
                 <Image
                   src={
-                    blog.thumbnail ? `/Backend/${blog.thumbnail}` : "/blog1.png"
+                    blog.thumbnail
+                      ? `https://api.fluid.financial${blog.thumbnail}`
+                      : "/blog1.png"
                   }
                   alt={blog.blog_title}
                   fill
@@ -210,8 +229,7 @@ useEffect(() => {
               </motion.div>
             </motion.div>
 
-            {/* META */}
-
+            {/* META & SHARE BAR */}
             <motion.div
               variants={containerVariants}
               className="
@@ -260,11 +278,65 @@ useEffect(() => {
               >
                 {blog.blog_title}
               </motion.h1>
+
+              {/* SOCIAL SHARE OPTIONS */}
+              <motion.div 
+                variants={fadeUpVariants}
+                className="flex items-center gap-[10px] mt-[8px] flex-wrap"
+              >
+                <span className="text-[#73797B] text-[14px] font-medium mr-[4px]">
+                  Share Article:
+                </span>
+                
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleShare("facebook")}
+                  className="w-[36px] h-[36px] rounded-full bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center text-[#3B747F] hover:bg-[#3B747F] hover:text-white transition-colors"
+                  aria-label="Share on Facebook"
+                >
+                  <FaFacebook size={16} />
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleShare("twitter")}
+                  className="w-[36px] h-[36px] rounded-full bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center text-[#3B747F] hover:bg-[#3B747F] hover:text-white transition-colors"
+                  aria-label="Share on Twitter"
+                >
+                  <FaTwitter size={16} />
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleShare("linkedin")}
+                  className="w-[36px] h-[36px] rounded-full bg-[#F4F8FB] border border-[#E4EDF3] flex items-center justify-center text-[#3B747F] hover:bg-[#3B747F] hover:text-white transition-colors"
+                  aria-label="Share on LinkedIn"
+                >
+                  <FaLinkedin size={16} />
+                </motion.button>
+
+                <div className="w-[1px] h-[20px] bg-[#E4EDF3] mx-1" />
+                
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleCopyLink}
+                  className={`flex items-center gap-2 h-[36px] px-4 rounded-full border border-[#E4EDF3] transition-colors ${
+                    copied ? "bg-green-50 text-green-600 border-green-200" : "bg-[#F4F8FB] text-[#3B747F] hover:bg-[#3B747F] hover:text-white"
+                  }`}
+                >
+                  {copied ? <Check size={14} /> : <Link2 size={14} />}
+                  <span className="text-[13px] font-medium">{copied ? "Copied!" : "Copy Link"}</span>
+                </motion.button>
+              </motion.div>
+
             </motion.div>
           </motion.div>
 
           {/* CONTENT */}
-
           <motion.div
             variants={containerVariants}
             className="
@@ -378,7 +450,6 @@ useEffect(() => {
           </motion.div>
 
           {/* FOOTER */}
-
           <motion.div
             variants={fadeUpVariants}
             className="

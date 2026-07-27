@@ -12,45 +12,54 @@ export default function Navbar() {
   } | null>(null);
 
   useEffect(() => {
-    const loadUser = () => {
-      const storedUser = localStorage.getItem("user");
+  const loadUser = () => {
+    const storedUser = localStorage.getItem("user");
 
-      if (!storedUser) {
-        setUser(null);
-        return;
+    if (!storedUser) {
+      setUser((prev) => (prev !== null ? null : prev));
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(storedUser);
+
+      if (
+        parsed &&
+        typeof parsed === "object" &&
+        Object.keys(parsed).length > 0
+      ) {
+        setUser((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(parsed)) {
+            return prev;
+          }
+          return parsed;
+        });
+      } else {
+        setUser((prev) => (prev !== null ? null : prev));
       }
+    } catch {
+      setUser((prev) => (prev !== null ? null : prev));
+    }
+  };
 
-      try {
-        const parsed = JSON.parse(storedUser);
+  // Initial load
+  loadUser();
 
-        if (
-          parsed &&
-          typeof parsed === "object" &&
-          Object.keys(parsed).length > 0
-        ) {
-          setUser(parsed);
-        } else {
-          setUser(null);
-        }
-      } catch {
-        setUser(null);
-      }
-    };
+  // Other tabs
+  window.addEventListener("storage", loadUser);
 
-    // Load initially
-    loadUser();
+  // Same tab (manual dispatch)
+  window.addEventListener("userAuthChange", loadUser);
 
-    // Listen for changes from OTHER tabs
-    window.addEventListener("storage", loadUser);
-    
-    // Listen for changes from the SAME tab (Custom Event)
-    window.addEventListener("userAuthChange", loadUser);
+  // Fallback: detect changes automatically
+  const interval = setInterval(loadUser, 500);
 
-    return () => {
-      window.removeEventListener("storage", loadUser);
-      window.removeEventListener("userAuthChange", loadUser);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener("storage", loadUser);
+    window.removeEventListener("userAuthChange", loadUser);
+    clearInterval(interval);
+  };
+}, []);
 
   const closeMenu = () => setOpen(false);
 

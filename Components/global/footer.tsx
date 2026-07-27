@@ -15,16 +15,55 @@ export default function Footer() {
       <div className="grid grid-cols-2 md:grid-cols-6 max-w-7xl mx-auto gap-10 pb-10 border-b border-white/10">
 
         <div className="col-span-1">
-          <div className="flex w-[150px] h-[55px] items-center bg-contain bg-no-repeat gap-2 mb-6" style={{backgroundImage: "url(/logo.png)"}}>
-            
+          <div className="flex w-[150px] h-[55px] items-center bg-contain bg-no-repeat gap-2 mb-6" style={{ backgroundImage: "url(/logo.png)" }}>
+
           </div>
 
           <div className="flex gap-4 text-white/90 text-lg">
-            <FaFacebookF className="hover:text-blue-400 cursor-pointer" />
-            <FaTwitter className="hover:text-blue-400 cursor-pointer" />
-            <FaInstagram className="hover:text-blue-400 cursor-pointer" />
-            <FaLinkedinIn className="hover:text-blue-400 cursor-pointer" />
-            <FaYoutube className="hover:text-blue-400 cursor-pointer" />
+            <a
+              href="https://www.facebook.com/profile.php?id=61585014598102&sk=about"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              <FaFacebookF />
+            </a>
+
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              <FaTwitter />
+            </a>
+
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              <FaInstagram />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/company/fluid-financial-llc/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              <FaLinkedinIn />
+            </a>
+
+            <a
+              href="https://www.youtube.com/channel/UCtMBLSKhoIudqQ35tbbRL7g"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400 cursor-pointer transition-colors"
+            >
+              <FaYoutube />
+            </a>
           </div>
         </div>
 
@@ -38,7 +77,7 @@ export default function Footer() {
             <Link href="/agent_partner_program"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Agent Partner Program</li></Link>
           </ul>
         </div>
-        
+
         <div>
           <h3 className="font-[500] text-lg mb-4">Resources</h3>
           <ul className="space-y-2 text-white/70">
@@ -57,7 +96,7 @@ export default function Footer() {
           </ul>
         </div>
 
-         <div>
+        <div>
           <h3 className="font-[500] text-lg mb-4">Account</h3>
           <ul className="space-y-2 text-white/70">
             <Link href="/signin"><li className="hover:text-white cursor-pointer text-[14px] font-[300]">Sign In</li></Link>

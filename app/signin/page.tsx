@@ -14,13 +14,10 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
 const GoogleLoginButton = dynamic(
-  () =>
-    import(
-      "@/Components/global/GoogleLoginButton"
-    ),
+  () => import("@/Components/global/GoogleLoginButton"),
   {
     ssr: false,
-  }
+  },
 );
 
 const containerVariants: Variants = {
@@ -68,7 +65,7 @@ export default function Signin() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/Backend/si.php", {
+      const response = await fetch("https://api.fluid.financial/si.php", {
         method: "POST",
 
         headers: {
@@ -85,6 +82,10 @@ export default function Signin() {
 
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Notify all components in the same tab
+        window.dispatchEvent(new Event("userAuthChange"));
+
         router.push("/");
       } else {
         setError(data.message);
@@ -266,13 +267,13 @@ export default function Signin() {
               >
                 <GoogleLoginButton />
 
-                <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
+                {/* <button className="flex-1 h-[44px] border border-[#D0D5DD] rounded-[8px] bg-white flex items-center justify-center gap-[8px] hover:bg-[#f8fafc] transition-colors">
                   <FaApple size={18} className="text-black" />
 
                   <span className="text-[#0F2133] text-[14px] tracking-[-0.02em]">
                     Apple
                   </span>
-                </button>
+                </button> */}
               </motion.div>
             </div>
 

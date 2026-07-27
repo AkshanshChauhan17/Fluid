@@ -4,6 +4,24 @@
 // HOME CALCULATOR API
 // ======================================================
 
+require __DIR__ . "/vendor/autoload.php";
+
+use Mailjet\Client;
+use Mailjet\Resources;
+
+// ======================================================
+// MAILJET CONFIG
+// ======================================================
+
+$MAILJET_PUBLIC_KEY  = "66e59d15d4be7ba86b4eabaaf007862a";
+$MAILJET_PRIVATE_KEY = "a3062580492f1ab1f1461b13a8c967c3";
+
+$FROM_EMAIL = "noreply@fluid.financial";
+$FROM_NAME  = "fluid.financial";
+
+$REPLY_TO_EMAIL = "complianceteam@fluid.financial";
+$REPLY_TO_NAME = "Fluid Compliance Team";
+
 // ======================================================
 // DATABASE
 // ======================================================
@@ -381,6 +399,57 @@ $stmt->bind_param(
 // ======================================================
 
 if ($stmt->execute()) {
+
+    // ======================================================
+    // SEND CONFIRMATION EMAIL IF CONTACT IS EMAIL
+    // ======================================================
+    
+    if (filter_var($contact, FILTER_VALIDATE_EMAIL)) {
+        
+        try {
+            $mj = new Client(
+                $MAILJET_PUBLIC_KEY,
+                $MAILJET_PRIVATE_KEY,
+                true,
+                ["version" => "v3.1"]
+            );
+
+            $body = [
+                "Messages" => [
+                    [
+                        "From" => [
+                            "Email" => $FROM_EMAIL,
+                            "Name" => $FROM_NAME
+                        ],
+                        "To" => [
+                            [
+                                "Email" => strtolower(trim($contact))
+                            ]
+                        ],
+                        "ReplyTo" => [
+                            "Email" => $REPLY_TO_EMAIL,
+                            "Name" => $REPLY_TO_NAME
+                        ],
+                        "Subject" => "We've received your submission - Custom Audit Processing",
+                        "HTMLPart" => "
+                            <div style='font-family:Arial, sans-serif; color: #1D3855; padding: 20px;'>
+                                <h2>Thank you for submitting!</h2>
+                                <p>Our team will review your information and statement, and will return with your custom audit shortly.</p>
+                                <br>
+                                <p>Best Regards,</p>
+                                <p><strong>The Fluid Financial Team</strong></p>
+                            </div>
+                        "
+                    ]
+                ]
+            ];
+
+            $mj->post(Resources::$Email, ["body" => $body]);
+
+        } catch (Exception $e) {
+            // Silently catch the error so it doesn't break the JSON response to the frontend
+        }
+    }
 
     echo json_encode([
 

@@ -63,7 +63,7 @@ export default function FeatureGrid() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("/Backend/rb.php");
+        const response = await fetch("https://api.fluid.financial/rb.php");
 
         const data = await response.json();
 
@@ -195,7 +195,7 @@ export default function FeatureGrid() {
                   <Image
                     src={
                       card.thumbnail
-                        ? `/Backend/${card.thumbnail}`
+                        ? `https://api.fluid.financial${card.thumbnail}`
                         : "/feature_grid_1.png"
                     }
                     alt={card.blog_title}

@@ -120,9 +120,8 @@ export default function AgentApplication() {
           <div
             className="
               w-full
-              h-[920px]
-              sm:h-[900px]
-              lg:h-[860px]
+              h-[1140px]
+              sm:h-full
               rounded-[18px]
               overflow-hidden
               bg-[#F8FAFD]

@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   CloudUpload,
   Check,
+  ChevronDown,
 } from "lucide-react";
 
 import {
@@ -57,9 +58,9 @@ const fields = [
     type: "text",
   },
   {
-    label: "Practice Name",
-    placeholder: "Enter your practice name",
-    type: "text",
+    label: "Practice Type",
+    placeholder: "Select Practice Type",
+    type: "select",
   },
   {
     label: "Email",
@@ -162,7 +163,7 @@ export default function ExampleCalculationSection({ oneSec }: ExampleCalculation
 
       // API REQUEST
       const response = await fetch(
-        "/Backend/sfs.php",
+        "https://api.fluid.financial/sfs.php",
         {
           method: "POST",
           body: form,
@@ -325,49 +326,95 @@ export default function ExampleCalculationSection({ oneSec }: ExampleCalculation
                     {field.label}
                   </label>
 
-                  <motion.input
-                    whileFocus={{
-                      scale: 1.01,
-                      borderColor: "#3B747F",
-                    }}
-                    transition={{
-                      duration: 0.2,
-                    }}
-                    type={field.type}
-                    required
-                    value={
-                      formData[
-                        fieldKeys[
-                          index
-                        ] as keyof typeof formData
-                      ]
-                    }
-                    onChange={(e) =>
-                      handleChange(
-                        fieldKeys[index],
-                        e.target.value
-                      )
-                    }
-                    placeholder={
-                      field.placeholder
-                    }
-                    className="
-                      w-full
-                      h-[48px]
-                      bg-white
-                      border
-                      border-[#D0D5DD]
-                      rounded-[8px]
-                      px-[16px]
-                      text-[#0F2133]
-                      text-[16px]
-                      leading-[24px]
-                      tracking-[-0.03em]
-                      placeholder:text-[#73797B]
-                      outline-none
-                      transition-all
-                    "
-                  />
+                  {field.type === "select" ? (
+                    <div className="relative w-full">
+                      <select
+                        required
+                        value={formData[fieldKeys[index] as keyof typeof formData]}
+                        onChange={(e) =>
+                          handleChange(
+                            fieldKeys[index],
+                            e.target.value
+                          )
+                        }
+                        className="w-full h-[52px] border border-[#D0D5DD] rounded-[10px] px-[16px] appearance-none outline-none bg-white text-black transition-all duration-300 focus:border-[#5DA7CF]"
+                      >
+                        <option value="">
+                          Select Practice Type
+                        </option>
+                        <option value="Dental">
+                          Dental
+                        </option>
+                        <option value="Medical">
+                          Medical
+                        </option>
+                        <option value="Med Spa">
+                          Med Spa
+                        </option>
+                        <option value="Wellness">
+                          Wellness
+                        </option>
+                        <option value="Chiropractic">
+                          Chiropractic
+                        </option>
+                        <option value="Physical Therapy">
+                          Physical Therapy
+                        </option>
+                        <option value="Other">
+                          Other
+                        </option>
+                      </select>
+
+                      <ChevronDown
+                        size={18}
+                        className="absolute right-[16px] top-1/2 -translate-y-1/2 text-[#73797B] pointer-events-none"
+                      />
+                    </div>
+                  ) : (
+                    <motion.input
+                      whileFocus={{
+                        scale: 1.01,
+                        borderColor: "#3B747F",
+                      }}
+                      transition={{
+                        duration: 0.2,
+                      }}
+                      type={field.type}
+                      required
+                      value={
+                        formData[
+                          fieldKeys[
+                            index
+                          ] as keyof typeof formData
+                        ]
+                      }
+                      onChange={(e) =>
+                        handleChange(
+                          fieldKeys[index],
+                          e.target.value
+                        )
+                      }
+                      placeholder={
+                        field.placeholder
+                      }
+                      className="
+                        w-full
+                        h-[48px]
+                        bg-white
+                        border
+                        border-[#D0D5DD]
+                        rounded-[8px]
+                        px-[16px]
+                        text-[#0F2133]
+                        text-[16px]
+                        leading-[24px]
+                        tracking-[-0.03em]
+                        placeholder:text-[#73797B]
+                        outline-none
+                        transition-all
+                      "
+                    />
+                  )}
 
                 </motion.div>
 
